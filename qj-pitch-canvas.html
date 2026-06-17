@@ -2592,8 +2592,7 @@ We spoke with Scott from Rapid Plumbing Group. He's been running the business fo
         <div class="for-who" style="font-size:16px;margin-bottom:8px;">Presented to <strong>Your Business</strong> · 2026</div>
         <div style="margin-top:36px;padding-top:28px;border-top:1px solid #333;display:flex;gap:24px;">
           <div style="text-align:center;flex:1;"><div style="font-size:52px;font-weight:800;color:var(--gold);">2x</div><div style="font-size:16px;color:#888;margin-top:6px;">Audience streams</div></div>
-          <div style="text-align:center;flex:1;"><div style="font-size:52px;font-weight:800;color:var(--gold);">10+</div><div style="font-size:16px;color:#888;margin-top:6px;">Qualified leads/mo</div></div>
-          <div style="text-align:center;flex:1;"><div style="font-size:52px;font-weight:800;color:var(--gold);">$120k</div><div style="font-size:16px;color:#888;margin-top:6px;">Revenue guarantee</div></div>
+          <div style="text-align:center;flex:1;"><div style="font-size:52px;font-weight:800;color:var(--gold);">20+</div><div style="font-size:16px;color:#888;margin-top:6px;">Qualified leads per 30 days</div></div>
         </div>
       </div>
       <!-- Social media frame (cloned dynamically) -->
@@ -3229,7 +3228,8 @@ function initBoard5() {
   // Clone social and ROI frames from board 1, position them after the title
   const toClone = [
     { id: 'frame-social', newLeft: 1100 },
-    { id: 'frame-roi',    newLeft: 1660 }
+    { id: 'frame-ads',    newLeft: 1660 },
+    { id: 'frame-roi',    newLeft: 2400 }
   ];
   toClone.forEach(({ id, newLeft }) => {
     const src = document.getElementById(id);
@@ -3244,6 +3244,7 @@ function initBoard5() {
   [
     { id: 'b5-frame-title',   label: 'Window & Door Lead System' },
     { id: 'b5-frame-social',  label: 'Social Media Setup' },
+    { id: 'b5-frame-ads',     label: 'Targeted Ads' },
     { id: 'b5-frame-roi',     label: 'ROI & Tracking' }
   ].forEach(({ id, label }) => {
     const dot = document.createElement('button');
