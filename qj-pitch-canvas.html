@@ -3520,6 +3520,7 @@ const QJ_TEMPLATES = {
     socialTitle:    'What other renovation<br>companies are achieving',
     agreementTitle: 'Meta Advertising & Lead Generation Program — Renovator Accelerator',
     purposeLine:    (client, niche) => `${client} engages Quality Jobs to provide a full managed Advertising, Lead Generation, Qualification and CRM Eco-System using Meta advertising systems for ${niche.toLowerCase().includes('renov') ? niche : niche + ' renovation'} project acquisition.`,
+    heroSub:        (contact, niche, goal) => `Hi ${contact} — this is exactly how Quality Jobs is going to take your ${niche} business to ${goal}. Built just for you.`,
     metaAdsDesc:    'Hyper-targeted campaigns engineered to reach homeowners with real renovation budgets.',
     defaultPain:    [
       'Inconsistent lead quality wasting your time on unqualified enquiries.',
@@ -3540,6 +3541,7 @@ const QJ_TEMPLATES = {
     socialTitle:    'What other businesses<br>are achieving',
     agreementTitle: 'Meta Advertising & Lead Generation Program — Window & Door Accelerator',
     purposeLine:    (client, niche) => `${client} engages Quality Jobs to provide a full managed Advertising, Lead Generation, Qualification and CRM Eco-System using Meta advertising systems to generate two streams of qualified leads — homeowners looking to replace or upgrade their windows and doors, and builders or construction companies actively sourcing a trusted window & door supplier.`,
+    heroSub:        (contact, niche, goal) => `Hi ${contact} — this is exactly how Quality Jobs is going to generate a consistent pipeline of qualified leads for your ${niche} business. Built just for you.`,
     metaAdsDesc:    'Hyper-targeted campaigns reaching two audiences — homeowners upgrading their windows & doors, and builders actively sourcing a trusted supplier.',
     defaultPain:    [
       'No consistent flow of leads from either homeowners or builders.',
@@ -3565,6 +3567,19 @@ function setTemplate(id) {
   // Update niche placeholder
   const nicheEl = document.getElementById('pa-niche');
   if (nicheEl && !nicheEl.value) nicheEl.placeholder = `e.g. ${tpl.nicheDefault}, Sydney`;
+  // Hide/show services that don't apply to windows & doors
+  const hiddenForWindows = ['Vetting Team', 'Booking System'];
+  document.querySelectorAll('.pa-checkbox-grid .pa-check').forEach(el => {
+    const label = el.textContent.trim();
+    if (hiddenForWindows.includes(label)) {
+      if (id === 'windows') {
+        el.classList.remove('checked');
+        el.style.display = 'none';
+      } else {
+        el.style.display = '';
+      }
+    }
+  });
 }
 
 async function saveToNetlify(filename, content) {
@@ -3911,6 +3926,8 @@ async function _buildAgreement(tunnelBase) {
     'Custom Ad Copywriting & Creative Production',
     'Custom CRM Build, Setup & Integration',
     'Automated Lead Capture, Nurture & Tracking',
+    'Cold Email Campaign Setup & Management via CRM',
+    'Introduction to Trusted In-House Videography Partners',
   ];
   const serviceScope = services.filter(s => !['Meta Ads','Social Media Setup'].includes(s)).map(s => {
     const map = {
@@ -4167,7 +4184,7 @@ async function _buildAgreement(tunnelBase) {
   <!-- 6. AD SPEND -->
   <h2>6. Ad Spend</h2>
   <ul>
-    <li><strong>Minimum:</strong> <span>$55/day</span></li>
+    <li><strong>Minimum:</strong> <span>$50/day</span></li>
     <li><span>Meta bills ${clientName} directly. Quality Jobs manages and optimises spend.</span></li>
   </ul>
 
@@ -4206,7 +4223,7 @@ async function _buildAgreement(tunnelBase) {
 
   <hr>
 
-  <!-- 9. REPRESENTING -->
+  ${_tpl.id !== 'windows' ? `<!-- 9. REPRESENTING -->
   <h2>9. Representing ${clientName}</h2>
   <p>Quality Jobs will:</p>
   <ul>
@@ -4215,7 +4232,7 @@ async function _buildAgreement(tunnelBase) {
     <li><span>Present as ${clientName}, not Quality Jobs</span></li>
   </ul>
 
-  <hr>
+  <hr>` : ''}
 
   <!-- 10. MONTHLY ACTIVITY -->
   <h2>10. Monthly Activity Outline</h2>
@@ -4228,8 +4245,8 @@ async function _buildAgreement(tunnelBase) {
   <p><strong>Lead Management &amp; Qualification</strong></p>
   <ul>
     <li><span>Daily monitoring of incoming leads</span></li>
-    <li><span>Lead screening, calling and qualification within 24 hours</span></li>
-    <li><span>Appointment booking based on ${clientName}'s availability</span></li>
+    ${_tpl.id !== 'windows' ? `<li><span>Lead screening, calling and qualification within 24 hours</span></li>
+    <li><span>Appointment booking based on ${clientName}'s availability</span></li>` : ''}
     <li><span>Automated SMS &amp; email sequences (confirmations, reminders)</span></li>
   </ul>
   <p><strong>CRM &amp; System Maintenance</strong></p>
@@ -4544,20 +4561,30 @@ async function _buildProposal(tunnelBase, polished = {}) {
     'Nail The Sale': 'A proven sales framework that turns consultations into signed contracts.'
   };
 
-  // Board 4 frame IDs in order (mirrors initBoard4 SKIP list — no pricing, no clients)
-  const b4Frames = [
-    { id:'b4-frame-title',        label:'Renovation Marketing System' },
-    { id:'b4-frame-social',       label:'Social Media Set Up' },
-    { id:'b4-frame-ads',          label:'Targeted Renovation Ads' },
-  ];
-  if (services.includes('Vetting Team'))        b4Frames.push({ id:'b4-frame-vetting',      label:'Lead Vetting Team' });
-  if (services.includes('CRM Ecosystem'))       b4Frames.push({ id:'b4-frame-crm',          label:'CRM Ecosystem' });
-  b4Frames.push({ id:'b4-frame-booking', label:'Booking System' });
-  if (services.includes('Nail The Sale'))       b4Frames.push({ id:'b4-frame-sale',         label:'Nail The Sale' });
-  if (services.includes('Quoting Software'))    b4Frames.push({ id:'b4-frame-quoting',      label:'Quoting Software' });
-  b4Frames.push({ id:'b4-frame-roi',     label:'ROI Dashboard' });
-  if (services.includes('Finance Partnership')) b4Frames.push({ id:'b4-frame-finance',      label:'Finance Partnership' });
-  b4Frames.push({ id:'b4-frame-testimonials',  label:'Client Results' });
+  // Mobile board frame list — template-aware
+  let b4Frames;
+  if (_tpl.id === 'windows') {
+    b4Frames = [
+      { id:'b5-frame-title',  label:'Window & Door Lead System' },
+      { id:'b5-frame-social', label:'Social Media Setup' },
+      { id:'b5-frame-ads',    label:'Targeted Ads' },
+      { id:'b5-frame-roi',    label:'ROI & Tracking' },
+    ];
+  } else {
+    b4Frames = [
+      { id:'b4-frame-title',        label:'Renovation Marketing System' },
+      { id:'b4-frame-social',       label:'Social Media Set Up' },
+      { id:'b4-frame-ads',          label:'Targeted Renovation Ads' },
+    ];
+    if (services.includes('Vetting Team'))        b4Frames.push({ id:'b4-frame-vetting',      label:'Lead Vetting Team' });
+    if (services.includes('CRM Ecosystem'))       b4Frames.push({ id:'b4-frame-crm',          label:'CRM Ecosystem' });
+    b4Frames.push({ id:'b4-frame-booking', label:'Booking System' });
+    if (services.includes('Nail The Sale'))       b4Frames.push({ id:'b4-frame-sale',         label:'Nail The Sale' });
+    if (services.includes('Quoting Software'))    b4Frames.push({ id:'b4-frame-quoting',      label:'Quoting Software' });
+    b4Frames.push({ id:'b4-frame-roi',     label:'ROI Dashboard' });
+    if (services.includes('Finance Partnership')) b4Frames.push({ id:'b4-frame-finance',      label:'Finance Partnership' });
+    b4Frames.push({ id:'b4-frame-testimonials',  label:'Client Results' });
+  }
 
   // Testimonials data
   const testimonials = [
@@ -4818,7 +4845,7 @@ async function _buildProposal(tunnelBase, polished = {}) {
   <div class="hero-tag">✦ Exclusive Proposal · ${new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'})}</div>
   <div class="hero-prepared">Prepared exclusively for</div>
   <div class="hero-client">${clientName}</div>
-  <div class="hero-sub">Hi ${contactName} — this is exactly how Quality Jobs is going to take your ${niche} business to ${goal}. Built just for you.</div>
+  <div class="hero-sub">${_tpl.heroSub(contactName, niche, goal)}</div>
   <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;align-items:center;">
     <a class="hero-cta" href="#problem">See the plan →</a>
     ${agreementUrl ? `<a href="${agreementUrl}" target="_blank" style="display:inline-block;background:transparent;border:2px solid rgba(201,162,37,0.6);color:#C9A225;font-weight:800;font-size:15px;letter-spacing:0.5px;padding:16px 36px;border-radius:14px;text-decoration:none;transition:all 0.2s;">✍️ Review &amp; Sign Agreement</a>` : ''}
@@ -4874,7 +4901,7 @@ async function _buildProposal(tunnelBase, polished = {}) {
         <!-- Step label bar -->
         <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#111;border-bottom:1px solid #1a1a2a;flex-shrink:0;">
           <div>
-            <div id="mb-step-label" style="font-size:13px;font-weight:800;color:#fff;line-height:1.2;">Renovation Marketing System</div>
+            <div id="mb-step-label" style="font-size:13px;font-weight:800;color:#fff;line-height:1.2;">${b4Frames[0].label}</div>
             <div id="mb-step-counter" style="font-size:10px;color:#C9A225;font-weight:700;margin-top:1px;">Step 1 of ${b4Frames.length}</div>
           </div>
           <div style="display:flex;gap:8px;">
@@ -5010,7 +5037,8 @@ ${agreementUrl ? `
     // Tell the Miro Board iframe to navigate to this frame via postMessage
     const ifrm = document.getElementById('mb-iframe');
     if (ifrm && ifrm.contentWindow) {
-      ifrm.contentWindow.postMessage({ action:'navToB4Frame', frameId: frame.id }, '*');
+      const navAction = frame.id.startsWith('b5-') ? 'navToB5Frame' : 'navToB4Frame';
+      ifrm.contentWindow.postMessage({ action: navAction, frameId: frame.id }, '*');
     }
     // Dots
     document.querySelectorAll('.mb-dot').forEach((d, i) => {
@@ -5251,16 +5279,17 @@ document.getElementById('fit-btn').onclick = () => {
   else if (activeBoard === 4) fitAllB4();
 };
 
-// ── POSTMESSAGE: allow proposal's mobile nav to drive Board 4 ─────
+// ── POSTMESSAGE: allow proposal's mobile nav to drive Board 4 or 5 ─────
 window.addEventListener('message', function(e) {
-  if (!e.data || e.data.action !== 'navToB4Frame') return;
+  if (!e.data || !e.data.action) return;
   const frameId = e.data.frameId;
   if (!frameId) return;
-  if (activeBoard !== 4) {
-    switchBoard(4);
-    setTimeout(() => navToB4Frame(frameId), 350);
-  } else {
-    navToB4Frame(frameId);
+  if (e.data.action === 'navToB4Frame') {
+    if (activeBoard !== 4) { switchBoard(4); setTimeout(() => navToB4Frame(frameId), 350); }
+    else { navToB4Frame(frameId); }
+  } else if (e.data.action === 'navToB5Frame') {
+    if (activeBoard !== 5) { switchBoard(5); setTimeout(() => navToB5Frame(frameId), 350); }
+    else { navToB5Frame(frameId); }
   }
 });
 
