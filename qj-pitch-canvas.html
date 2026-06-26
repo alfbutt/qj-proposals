@@ -2657,6 +2657,28 @@ We spoke with Scott from Rapid Plumbing Group. He's been running the business fo
           <input class="pa-input" id="wa-build-fee" type="text" placeholder="e.g. $3,500">
           <label class="pa-label">Hosting, Maintenance & Upkeep (per month)</label>
           <input class="pa-input" id="wa-maintenance-fee" type="text" placeholder="e.g. $99/month">
+          <!-- GST toggles -->
+          <div style="margin-top:10px;background:#0d0d16;border:1px solid #1e1e2e;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#555;margin-bottom:2px;">Add GST (+10%)</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:12px;color:#888;">Design & Development</span>
+              <div id="wa-gst-build" data-on="false" onclick="toggleWaGst('build')" style="width:36px;height:20px;border-radius:10px;background:#333;cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0;">
+                <div id="wa-gst-build-knob" style="width:14px;height:14px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:left 0.2s;"></div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:12px;color:#888;">Monthly Maintenance</span>
+              <div id="wa-gst-maint" data-on="false" onclick="toggleWaGst('maint')" style="width:36px;height:20px;border-radius:10px;background:#333;cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0;">
+                <div id="wa-gst-maint-knob" style="width:14px;height:14px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:left 0.2s;"></div>
+              </div>
+            </div>
+            <div id="wa-gst-seo-row" style="display:flex;align-items:center;justify-content:space-between;display:none;">
+              <span style="font-size:12px;color:#888;">SEO Retainer</span>
+              <div id="wa-gst-seo" data-on="false" onclick="toggleWaGst('seo')" style="width:36px;height:20px;border-radius:10px;background:#333;cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0;">
+                <div id="wa-gst-seo-knob" style="width:14px;height:14px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:left 0.2s;"></div>
+              </div>
+            </div>
+          </div>
           <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;margin-bottom:2px;">
             <label class="pa-label" style="margin:0;">Include SEO Package</label>
             <div id="wa-seo-toggle" data-on="false" onclick="toggleWaSeo()" style="width:44px;height:24px;border-radius:12px;background:#333;cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0;">
@@ -3709,15 +3731,25 @@ function previewWebLogo(input) {
   reader.readAsDataURL(input.files[0]);
 }
 
+function toggleWaGst(type) {
+  const el   = document.getElementById(`wa-gst-${type}`);
+  const knob = document.getElementById(`wa-gst-${type}-knob`);
+  const on   = el.dataset.on !== 'true';
+  el.dataset.on = on;
+  el.style.background = on ? '#C9A225' : '#333';
+  knob.style.left = on ? '19px' : '3px';
+}
 function toggleWaSeo() {
   const toggle = document.getElementById('wa-seo-toggle');
   const knob   = document.getElementById('wa-seo-knob');
   const field  = document.getElementById('wa-seo-field');
+  const gstSeoRow = document.getElementById('wa-gst-seo-row');
   const on     = toggle.dataset.on !== 'true';
   toggle.dataset.on = on;
   toggle.style.background = on ? '#C9A225' : '#333';
   knob.style.left = on ? '23px' : '3px';
   field.style.display = on ? 'block' : 'none';
+  gstSeoRow.style.display = on ? 'flex' : 'none';
 }
 
 async function generateWebProposal() {
@@ -3774,6 +3806,22 @@ function _buildWebProposal() {
   const agreementUrl = document.getElementById('wa-agreement-url').value || '';
   const seoOn        = document.getElementById('wa-seo-toggle').dataset.on === 'true';
   const seoFee       = document.getElementById('wa-seo-fee').value      || '';
+  const gstBuild     = document.getElementById('wa-gst-build').dataset.on === 'true';
+  const gstMaint     = document.getElementById('wa-gst-maint').dataset.on === 'true';
+  const gstSeo       = document.getElementById('wa-gst-seo').dataset.on === 'true';
+  function fmtFee(raw, addGst) {
+    if (!raw) return raw;
+    const num = parseFloat(raw.replace(/[^0-9.]/g, ''));
+    if (isNaN(num)) return raw;
+    const base = raw.replace(/[\d,]+(\.\d+)?/, n => Number(n).toLocaleString('en-AU'));
+    if (!addGst) return base;
+    const gstAmt = Math.round(num * 0.1);
+    const total = Math.round(num * 1.1);
+    return `${base} + GST ($${gstAmt.toLocaleString('en-AU')} · total $${total.toLocaleString('en-AU')})`;
+  }
+  const buildFeeDisplay = fmtFee(buildFee, gstBuild);
+  const maintFeeDisplay = fmtFee(maintFee, gstMaint);
+  const seoFeeDisplay   = fmtFee(seoFee,   gstSeo);
   const clientLogoHtml = waLogoDataUrl ? `<img src="${waLogoDataUrl}" style="height:48px;width:auto;object-fit:contain;">` : '';
 
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Website Proposal — ${clientName}</title>
@@ -3853,9 +3901,9 @@ footer{padding:40px 24px;text-align:center;font-size:12px;color:#333;}
   <div class="sec-title">Simple, transparent<br>pricing</div>
   <div class="sec-body">No hidden fees. No surprises. Just a clear breakdown of what you're getting and what it costs.</div>
   <div class="price-section">
-    ${buildFee ? `<div class="price-row"><div><div class="price-label">Design & Development</div><div style="font-size:11px;color:#444;margin-top:2px;">One-time project fee · due on signing</div></div><div class="price-value">${buildFee}</div></div>` : ''}
-    ${maintFee ? `<div class="price-row"><div><div class="price-label">Hosting, Maintenance & Upkeep</div><div style="font-size:11px;color:#444;margin-top:2px;">Monthly · commences after site launch</div></div><div class="price-value">${maintFee}</div></div>` : ''}
-    ${seoOn && seoFee ? `<div class="price-row"><div><div class="price-label">SEO Package</div><div style="font-size:11px;color:#444;margin-top:2px;">Monthly · search engine optimisation</div></div><div class="price-value">${seoFee}</div></div>` : ''}
+    ${buildFee ? `<div class="price-row"><div><div class="price-label">Design & Development</div><div style="font-size:11px;color:#444;margin-top:2px;">One-time project fee · due on signing</div></div><div class="price-value">${buildFeeDisplay}</div></div>` : ''}
+    ${maintFee ? `<div class="price-row"><div><div class="price-label">Hosting, Maintenance & Upkeep</div><div style="font-size:11px;color:#444;margin-top:2px;">Monthly · commences after site launch</div></div><div class="price-value">${maintFeeDisplay}</div></div>` : ''}
+    ${seoOn && seoFee ? `<div class="price-row"><div><div class="price-label">SEO Package</div><div style="font-size:11px;color:#444;margin-top:2px;">Monthly · search engine optimisation</div></div><div class="price-value">${seoFeeDisplay}</div></div>` : ''}
   </div>
 </section>
 
@@ -3886,6 +3934,20 @@ function _buildWebAgreement() {
   const paymentUrl   = document.getElementById('wa-payment-url').value  || '';
   const seoOn        = document.getElementById('wa-seo-toggle').dataset.on === 'true';
   const seoFee       = document.getElementById('wa-seo-fee').value      || '';
+  const gstBuild     = document.getElementById('wa-gst-build').dataset.on === 'true';
+  const gstMaint     = document.getElementById('wa-gst-maint').dataset.on === 'true';
+  const gstSeo       = document.getElementById('wa-gst-seo').dataset.on === 'true';
+  function fmtFeeAgr(raw, addGst) {
+    if (!raw) return raw;
+    const num = parseFloat(raw.replace(/[^0-9.]/g, ''));
+    if (isNaN(num)) return raw;
+    if (!addGst) return raw;
+    const total = Math.round(num * 1.1);
+    return `${raw} + GST (total $${total.toLocaleString('en-AU')})`;
+  }
+  const buildFeeDisplay = fmtFeeAgr(buildFee, gstBuild);
+  const maintFeeDisplay = fmtFeeAgr(maintFee, gstMaint);
+  const seoFeeDisplay   = fmtFeeAgr(seoFee,   gstSeo);
   const today        = new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
 
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -3969,9 +4031,9 @@ hr{border:none;border-top:1px solid #ddd;margin:28px 0;}
   <table class="price-table">
     <thead><tr><th>Item</th><th>Type</th><th class="amt">Amount</th></tr></thead>
     <tbody>
-      ${buildFee ? `<tr><td>Website Design & Development</td><td>One-time project fee</td><td class="amt">${buildFee}</td></tr>` : ''}
-      ${maintFee ? `<tr><td>Hosting, Maintenance & Upkeep</td><td>Monthly retainer</td><td class="amt">${maintFee}/month</td></tr>` : ''}
-      ${seoOn && seoFee ? `<tr><td>SEO Package</td><td>Monthly retainer</td><td class="amt">${seoFee}/month</td></tr>` : ''}
+      ${buildFee ? `<tr><td>Website Design & Development</td><td>One-time project fee</td><td class="amt">${buildFeeDisplay}</td></tr>` : ''}
+      ${maintFee ? `<tr><td>Hosting, Maintenance & Upkeep</td><td>Monthly retainer</td><td class="amt">${maintFeeDisplay}/month</td></tr>` : ''}
+      ${seoOn && seoFee ? `<tr><td>SEO Package</td><td>Monthly retainer</td><td class="amt">${seoFeeDisplay}/month</td></tr>` : ''}
     </tbody>
   </table>
   <p style="font-size:12px;color:#888;margin-top:8px;">All prices are in Australian Dollars and exclude GST unless otherwise stated.</p>
