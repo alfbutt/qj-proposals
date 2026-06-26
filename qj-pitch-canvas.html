@@ -4048,7 +4048,7 @@ hr{border:none;border-top:1px solid #ddd;margin:28px 0;}
     <li>The <strong>monthly maintenance fee</strong> commences the month following site launch and is billed in advance.</li>
     ${seoOn ? `<li>The <strong>SEO retainer</strong> commences on a date agreed by both parties and is billed monthly in advance.</li>` : ''}
     <li>Invoices are issued via email. Payment is due within 7 days of the invoice date.</li>
-    ${paymentUrl ? `<li>Online payment: <a href="${paymentUrl}" style="color:#C9A225;">${paymentUrl}</a></li>` : ''}
+    ${paymentUrl ? `<li>Online payment: <a href="${paymentUrl}" target="_blank" rel="noopener" style="color:#C9A225;">${paymentUrl}</a> <span style="font-size:12px;color:#888;">— clicking this link will open the payment page in a new tab.</span></li>` : ''}
   </ul>
 
   <hr>
