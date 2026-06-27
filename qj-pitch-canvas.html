@@ -841,6 +841,7 @@
     <button class="tab-btn" id="tab3-btn" onclick="switchBoard(3)">🤖 Proposal Agent</button>
     <button class="tab-btn" id="tab4-btn" onclick="switchBoard(4)">🗺️ Miro Board for Proposal</button>
     <button class="tab-btn" id="tab6-btn" onclick="switchBoard(6)">🌐 Web Agent</button>
+    <button onclick="qjSetupToken()" title="One-time setup — save upload token to this browser" style="margin-left:auto;background:transparent;border:1px solid #2a2a3a;border-radius:8px;padding:6px 12px;color:#555;font-size:11px;cursor:pointer;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.color='#C9A225';this.style.borderColor='#C9A225'" onmouseout="this.style.color='#555';this.style.borderColor='#2a2a3a'" id="setup-token-btn">🔑 Setup</button>
   </div>
 </div>
 
@@ -3629,7 +3630,27 @@ function getChecked(grid) {
 // Rewrites raw notes into polished proposal copy
 // ── AI TEXT POLISHING ────────────────────────────────────────────────────────
 // ── NETLIFY UPLOAD ────────────────────────────────────────────────────────────
-const _GH_TOKEN = '';
+function _getToken() {
+  return localStorage.getItem('qj_gh_token') || '';
+}
+function qjSetupToken() {
+  const existing = localStorage.getItem('qj_gh_token') ? '✅ Token already saved in this browser.\n\nPaste a new one to replace it, or cancel to keep the existing one.' : 'First-time setup: paste your GitHub token below.\nThis is saved only in this browser and never sent anywhere except GitHub.';
+  const val = prompt(existing);
+  if (!val) return;
+  const token = val.trim();
+  localStorage.setItem('qj_gh_token', token);
+  const btn = document.getElementById('setup-token-btn');
+  btn.textContent = '✅ Token saved';
+  btn.style.color = '#4CAF50';
+  setTimeout(() => { btn.textContent = '🔑 Setup'; btn.style.color = '#555'; }, 3000);
+}
+// Show green tick on load if token already saved
+window.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('qj_gh_token')) {
+    const btn = document.getElementById('setup-token-btn');
+    if (btn) { btn.textContent = '🔑 ✅'; btn.title = 'Upload token saved in this browser'; }
+  }
+});
 const _GH_REPO  = 'alfbutt/qj-proposals';
 const _GH_BASE  = 'https://alfbutt.github.io/qj-proposals';
 
@@ -4126,7 +4147,7 @@ async function saveToNetlify(filename, content) {
   let sha = null;
   try {
     const check = await fetch(`https://api.github.com/repos/${_GH_REPO}/contents/${filename}`, {
-      headers: { 'Authorization': `Bearer ${_GH_TOKEN}`, 'Accept': 'application/vnd.github+json' }
+      headers: { 'Authorization': `Bearer ${_getToken()}`, 'Accept': 'application/vnd.github+json' }
     });
     if (check.ok) { const d = await check.json(); sha = d.sha; }
   } catch(e) {}
@@ -4136,7 +4157,7 @@ async function saveToNetlify(filename, content) {
 
   const resp = await fetch(`https://api.github.com/repos/${_GH_REPO}/contents/${filename}`, {
     method: 'PUT',
-    headers: { 'Authorization': `Bearer ${_GH_TOKEN}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+    headers: { 'Authorization': `Bearer ${_getToken()}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
   });
   const data = await resp.json();
