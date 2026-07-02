@@ -840,6 +840,7 @@
     <button class="tab-btn" id="tab2-btn" onclick="switchBoard(2)">📱 DIY CRM System</button>
     <button class="tab-btn" id="tab3-btn" onclick="switchBoard(3)">🤖 Proposal Agent</button>
     <button class="tab-btn" id="tab4-btn" onclick="switchBoard(4)">🗺️ Miro Board for Proposal</button>
+    <button class="tab-btn" id="tab7-btn" onclick="switchBoard(7)">🖌️ Painting Board</button>
     <button class="tab-btn" id="tab6-btn" onclick="switchBoard(6)">🌐 Web Agent</button>
     <button onclick="qjSetupToken()" title="One-time setup — save upload token to this browser" style="margin-left:auto;background:transparent;border:1px solid #2a2a3a;border-radius:8px;padding:6px 12px;color:#555;font-size:11px;cursor:pointer;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.color='#C9A225';this.style.borderColor='#C9A225'" onmouseout="this.style.color='#555';this.style.borderColor='#2a2a3a'" id="setup-token-btn">🔑 Setup</button>
   </div>
@@ -2274,7 +2275,7 @@
       <!-- TEMPLATE SELECTOR -->
       <div class="pa-section" style="padding-bottom:10px;">
         <div class="pa-section-title">🎨 Proposal Template</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:4px;">
           <div id="tpl-renovator" onclick="setTemplate('renovator')" style="background:#C9A225;border:2px solid #C9A225;border-radius:10px;padding:12px 10px;cursor:pointer;text-align:center;transition:all 0.2s;">
             <div style="font-size:16px;margin-bottom:4px;">🏗️</div>
             <div style="font-size:11px;font-weight:800;color:#000;line-height:1.3;">Renovator<br>Accelerator</div>
@@ -2282,6 +2283,10 @@
           <div id="tpl-windows" onclick="setTemplate('windows')" style="background:#1a1a2a;border:2px solid #2a2a3a;border-radius:10px;padding:12px 10px;cursor:pointer;text-align:center;transition:all 0.2s;">
             <div style="font-size:16px;margin-bottom:4px;">🪟</div>
             <div style="font-size:11px;font-weight:800;color:#888;line-height:1.3;">Builder<br>Connect</div>
+          </div>
+          <div id="tpl-painting" onclick="setTemplate('painting')" style="background:#1a1a2a;border:2px solid #2a2a3a;border-radius:10px;padding:12px 10px;cursor:pointer;text-align:center;transition:all 0.2s;">
+            <div style="font-size:16px;margin-bottom:4px;">🖌️</div>
+            <div style="font-size:11px;font-weight:800;color:#888;line-height:1.3;">Painter<br>Pro</div>
           </div>
         </div>
         <div id="tpl-desc" style="font-size:10px;color:#555;margin-top:8px;line-height:1.5;">Renovation companies — homeowner lead generation.</div>
@@ -2610,6 +2615,28 @@ We spoke with Scott from Rapid Plumbing Group. He's been running the business fo
   </div>
   <div id="minimap-b5" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(20,20,20,0.85);border-radius:24px;padding:10px 16px;gap:8px;align-items:center;z-index:999;backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,0.4);"></div>
 </div><!-- end board5 -->
+
+<!-- BOARD 7: PAINTING -->
+<div id="board7" class="board-wrap hidden">
+  <div id="canvas-wrap-b7" style="position:absolute;top:0;left:0;right:0;bottom:0;overflow:hidden;cursor:default;">
+    <div id="world-b7" style="position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;">
+      <svg id="arrows-svg-b7"></svg>
+      <div class="frame" id="b7-frame-title" style="left:40px;top:80px;width:1000px;" data-w="1000" data-h="600">
+        <div class="frame-handle"><span></span><span></span><span></span></div>
+        <div class="frame-label">Quality Jobs</div>
+        <div style="margin-bottom:20px;"><img src="https://alfbutt.github.io/qj-proposals/qj-logo.png" alt="Quality Jobs" style="height:80px;width:auto;display:block;"></div>
+        <h1 style="font-size:72px;line-height:1.1;margin-bottom:20px;">The Painter Pro<br><span style="color:var(--gold);">Lead System</span></h1>
+        <p class="subtitle" style="font-size:22px;line-height:1.6;margin-bottom:24px;">A done-for-you lead generation system that fills your painting schedule with qualified homeowners, landlords and property managers — month after month.</p>
+        <div class="for-who" style="font-size:16px;margin-bottom:8px;">Presented to <strong>Your Business</strong> · 2026</div>
+        <div style="margin-top:36px;padding-top:28px;border-top:1px solid #333;display:flex;gap:24px;">
+          <div style="text-align:center;flex:1;"><div style="font-size:52px;font-weight:800;color:var(--gold);">20+</div><div style="font-size:16px;color:#888;margin-top:6px;">Qualified leads per 30 days</div></div>
+          <div style="text-align:center;flex:1;"><div style="font-size:52px;font-weight:800;color:var(--gold);">100%</div><div style="font-size:16px;color:#888;margin-top:6px;">Done for you</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="minimap-b7" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(20,20,20,0.85);border-radius:24px;padding:10px 16px;gap:8px;align-items:center;z-index:999;backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,0.4);"></div>
+</div><!-- end board7 -->
 
 <!-- BOARD 6: WEB AGENT -->
 <div id="board6" class="board-wrap hidden">
@@ -3330,15 +3357,18 @@ function switchBoard(n) {
   document.getElementById('board4').classList.toggle('hidden', n !== 4);
   document.getElementById('board5').classList.toggle('hidden', n !== 5);
   document.getElementById('board6').classList.toggle('hidden', n !== 6);
+  document.getElementById('board7').classList.toggle('hidden', n !== 7);
   document.getElementById('minimap').style.display    = n === 1 ? '' : 'none';
   document.getElementById('minimap-b2').style.display = n === 2 ? 'flex' : 'none';
   document.getElementById('minimap-b4').style.display = n === 4 ? 'flex' : 'none';
   document.getElementById('minimap-b5').style.display = n === 5 ? 'flex' : 'none';
-  [1,2,3,4,6].forEach(i => { const el = document.getElementById(`tab${i}-btn`); if(el) el.classList.toggle('active', i === n); });
+  document.getElementById('minimap-b7').style.display = n === 7 ? 'flex' : 'none';
+  [1,2,3,4,6,7].forEach(i => { const el = document.getElementById(`tab${i}-btn`); if(el) el.classList.toggle('active', i === n); });
   if (n === 1) document.getElementById('zoom-display').textContent = Math.round(scale*100)+'%';
   if (n === 2) setTimeout(()=>navToB2(0), 100);
   if (n === 4) { initBoard4(); setTimeout(()=>fitAllB4(), 200); }
   if (n === 5) { initBoard5(); setTimeout(()=>fitAllB5(), 200); }
+  if (n === 7) { initBoard7(); setTimeout(()=>fitAllB7(), 200); }
 }
 
 // ── BOARD 4: MIRO BOARD FOR PROPOSAL ─────────────────
@@ -3425,6 +3455,81 @@ function fitAllB5() {
   worldB5.style.transition='transform 0.5s cubic-bezier(0.4,0,0.2,1)';
   applyTransformB5();
   setTimeout(()=>worldB5.style.transition='',600);
+}
+
+// ── BOARD 7: PAINTING ─────────────────────────────────
+let b7tx = 0, b7ty = 56, b7scale = 0.5;
+let b7initialized = false;
+const worldB7 = document.getElementById('world-b7');
+
+function initBoard7() {
+  if (b7initialized) return;
+  b7initialized = true;
+  const minimap = document.getElementById('minimap-b7');
+  const toClone = [
+    { id: 'frame-social', newLeft: 1100 },
+    { id: 'frame-ads',    newLeft: 1660 },
+    { id: 'frame-roi',    newLeft: 2400 }
+  ];
+  toClone.forEach(({ id, newLeft }) => {
+    const src = document.getElementById(id);
+    if (!src) return;
+    const clone = src.cloneNode(true);
+    clone.id = 'b7-' + id;
+    clone.style.left = newLeft + 'px';
+    clone.style.top  = '80px';
+    worldB7.appendChild(clone);
+  });
+  [
+    { id: 'b7-frame-title',   label: 'Painter Pro Lead System' },
+    { id: 'b7-frame-social',  label: 'Social Media Setup' },
+    { id: 'b7-frame-ads',     label: 'Targeted Ads' },
+    { id: 'b7-frame-roi',     label: 'ROI & Tracking' }
+  ].forEach(({ id, label }) => {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot';
+    dot.title = label;
+    dot.onclick = () => navToB7Frame(id);
+    minimap.appendChild(dot);
+  });
+  applyTransformB7();
+}
+
+function applyTransformB7() {
+  worldB7.style.transform = `translate(${b7tx}px,${b7ty}px) scale(${b7scale})`;
+}
+
+function navToB7Frame(frameId) {
+  const el = document.getElementById(frameId);
+  if (!el) return;
+  const wrapW = window.innerWidth, wrapH = window.innerHeight - 56;
+  const elLeft = parseInt(el.style.left)||0, elTop = parseInt(el.style.top)||0;
+  const elW = el.dataset.w ? parseInt(el.dataset.w) : 460;
+  const elH = el.dataset.h ? parseInt(el.dataset.h) : 600;
+  b7scale = Math.min(wrapW / elW, wrapH / elH) * 0.85;
+  b7tx = (wrapW - elW * b7scale) / 2 - elLeft * b7scale;
+  b7ty = (wrapH - elH * b7scale) / 2 - elTop * b7scale + 56;
+  worldB7.style.transition = 'transform 0.45s cubic-bezier(0.4,0,0.2,1)';
+  applyTransformB7();
+  setTimeout(() => worldB7.style.transition = '', 500);
+}
+
+function fitAllB7() {
+  const wrapW = window.innerWidth, wrapH = window.innerHeight - 56;
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  worldB7.querySelectorAll('.frame').forEach(el => {
+    const l=parseInt(el.style.left)||0,t=parseInt(el.style.top)||0;
+    const w=el.dataset.w?parseInt(el.dataset.w):460;
+    const h=el.dataset.h?parseInt(el.dataset.h):600;
+    minX=Math.min(minX,l);minY=Math.min(minY,t);maxX=Math.max(maxX,l+w);maxY=Math.max(maxY,t+h);
+  });
+  const pad=80;
+  b7scale=Math.min((wrapW-pad*2)/(maxX-minX),(wrapH-pad*2)/(maxY-minY));
+  b7tx=(wrapW-(maxX-minX)*b7scale)/2-minX*b7scale;
+  b7ty=(wrapH-(maxY-minY)*b7scale)/2-minY*b7scale;
+  worldB7.style.transition='transform 0.5s cubic-bezier(0.4,0,0.2,1)';
+  applyTransformB7();
+  setTimeout(()=>worldB7.style.transition='',600);
 }
 
 function applyTransformB4() {
@@ -3715,6 +3820,27 @@ const QJ_TEMPLATES = {
       'No way to separate serious buyers from time-wasters before they reach you.'
     ],
     desc: 'Windows & doors — targeting homeowners AND builders actively sourcing a supplier.'
+  },
+  painting: {
+    id: 'painting',
+    programName:    'Painter Pro',
+    nicheDefault:   'Painting Business',
+    audienceLabel:  'painting businesses',
+    systemTag:      'Your Custom Painting Lead System',
+    miroBarLabel:   'qualityjobs.com.au — Painting Business Marketing System',
+    boardUrl:       'https://alfbutt.github.io/qj-proposals/qj-pitch-canvas.html?board=7',
+    socialTitle:    'What other painting<br>businesses are achieving',
+    agreementTitle: 'Meta Advertising & Lead Generation Program — Painter Pro',
+    purposeLine:    (client, niche) => `${client} engages Quality Jobs to provide a full managed Advertising, Lead Generation, Qualification and CRM Eco-System using Meta advertising systems to generate a consistent pipeline of qualified homeowners and property managers actively seeking professional painting services.`,
+    heroSub:        (contact, niche, goal) => `Hi ${contact} — this is exactly how Quality Jobs is going to fill your painting schedule with high-quality jobs and take your business to ${goal}. Built just for you.`,
+    metaAdsDesc:    'Hyper-targeted campaigns engineered to reach homeowners, landlords and property managers actively looking to book a professional painter.',
+    defaultPain:    [
+      'Inconsistent work — busy one month, quiet the next with no reliable lead flow.',
+      'Relying on word of mouth and referrals with nothing running in the background.',
+      'Spending hours chasing unqualified enquiries that never convert to booked jobs.',
+      'No system to follow up leads automatically, so jobs are slipping through the cracks.'
+    ],
+    desc: 'Painting businesses — homeowner, landlord & property manager lead generation.'
   }
 };
 
@@ -3722,12 +3848,14 @@ function setTemplate(id) {
   window._qjTemplate = id;
   const tpl = QJ_TEMPLATES[id];
   // Update sidebar UI
-  document.getElementById('tpl-renovator').style.background  = id === 'renovator' ? '#C9A225' : '#1a1a2a';
-  document.getElementById('tpl-renovator').style.borderColor = id === 'renovator' ? '#C9A225' : '#2a2a3a';
-  document.getElementById('tpl-renovator').querySelector('div:last-child').style.color = id === 'renovator' ? '#000' : '#888';
-  document.getElementById('tpl-windows').style.background    = id === 'windows'  ? '#C9A225' : '#1a1a2a';
-  document.getElementById('tpl-windows').style.borderColor   = id === 'windows'  ? '#C9A225' : '#2a2a3a';
-  document.getElementById('tpl-windows').querySelector('div:last-child').style.color = id === 'windows'  ? '#000' : '#888';
+  ['renovator','windows','painting'].forEach(t => {
+    const el = document.getElementById(`tpl-${t}`);
+    if (!el) return;
+    const active = id === t;
+    el.style.background  = active ? '#C9A225' : '#1a1a2a';
+    el.style.borderColor = active ? '#C9A225' : '#2a2a3a';
+    el.querySelector('div:last-child').style.color = active ? '#000' : '#888';
+  });
   document.getElementById('tpl-desc').textContent = tpl.desc;
   // Update niche placeholder
   const nicheEl = document.getElementById('pa-niche');
@@ -5141,6 +5269,13 @@ async function _buildProposal(tunnelBase, polished = {}) {
       { id:'b5-frame-ads',    label:'Targeted Ads' },
       { id:'b5-frame-roi',    label:'ROI & Tracking' },
     ];
+  } else if (_tpl.id === 'painting') {
+    b4Frames = [
+      { id:'b7-frame-title',   label:'Painter Pro Lead System' },
+      { id:'b7-frame-social',  label:'Social Media Setup' },
+      { id:'b7-frame-ads',     label:'Targeted Ads' },
+      { id:'b7-frame-roi',     label:'ROI & Tracking' },
+    ];
   } else {
     b4Frames = [
       { id:'b4-frame-title',        label:'Renovation Marketing System' },
@@ -5608,7 +5743,7 @@ ${agreementUrl ? `
     // Tell the Miro Board iframe to navigate to this frame via postMessage
     const ifrm = document.getElementById('mb-iframe');
     if (ifrm && ifrm.contentWindow) {
-      const navAction = frame.id.startsWith('b5-') ? 'navToB5Frame' : 'navToB4Frame';
+      const navAction = frame.id.startsWith('b7-') ? 'navToB7Frame' : frame.id.startsWith('b5-') ? 'navToB5Frame' : 'navToB4Frame';
       ifrm.contentWindow.postMessage({ action: navAction, frameId: frame.id }, '*');
     }
     // Dots
@@ -5861,6 +5996,9 @@ window.addEventListener('message', function(e) {
   } else if (e.data.action === 'navToB5Frame') {
     if (activeBoard !== 5) { switchBoard(5); setTimeout(() => navToB5Frame(frameId), 350); }
     else { navToB5Frame(frameId); }
+  } else if (e.data.action === 'navToB7Frame') {
+    if (activeBoard !== 7) { switchBoard(7); setTimeout(() => navToB7Frame(frameId), 350); }
+    else { navToB7Frame(frameId); }
   }
 });
 
@@ -5947,7 +6085,7 @@ window.addEventListener('message', function(e) {
 window.addEventListener('load', () => {
   // Auto-switch board if URL param ?board=N (used by proposal Miro iframe)
   const urlBoard = parseInt(new URLSearchParams(window.location.search).get('board'));
-  if (urlBoard && [1,2,3,4,5].includes(urlBoard)) {
+  if (urlBoard && [1,2,3,4,5,6,7].includes(urlBoard)) {
     setTimeout(() => switchBoard(urlBoard), 200);
   } else {
     setTimeout(() => navTo(0), 400);
