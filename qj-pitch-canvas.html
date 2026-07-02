@@ -3634,15 +3634,26 @@ function _getToken() {
   return localStorage.getItem('qj_gh_token') || '';
 }
 function qjSetupToken() {
-  const existing = localStorage.getItem('qj_gh_token') ? '✅ Token already saved in this browser.\n\nPaste a new one to replace it, or cancel to keep the existing one.' : 'Paste your upload token below.\nThis stays in your browser only.';
-  const val = prompt(existing);
-  if (!val) return;
-  const token = val.trim().replace(/[^\x20-\x7E]/g, '');
+  const modal = document.getElementById('token-modal');
+  const input = document.getElementById('token-modal-input');
+  const status = document.getElementById('token-modal-status');
+  input.value = '';
+  status.style.display = 'none';
+  modal.style.display = 'flex';
+  setTimeout(() => input.focus(), 100);
+}
+function saveTokenFromModal() {
+  const input = document.getElementById('token-modal-input');
+  const status = document.getElementById('token-modal-status');
+  const token = input.value.trim().replace(/[^\x20-\x7E]/g, '');
+  if (!token) { status.textContent = 'Please paste a token first.'; status.style.color = '#f44'; status.style.display = 'block'; return; }
   localStorage.setItem('qj_gh_token', token);
+  status.textContent = '✅ Token saved! You can now generate proposals and agreements.';
+  status.style.color = '#4CAF50';
+  status.style.display = 'block';
   const btn = document.getElementById('setup-token-btn');
-  btn.textContent = '✅ Token saved';
-  btn.style.color = '#4CAF50';
-  setTimeout(() => { btn.textContent = '🔑 Setup'; btn.style.color = '#555'; }, 3000);
+  if (btn) { btn.textContent = '🔑 ✅'; btn.style.color = '#4CAF50'; }
+  setTimeout(() => { document.getElementById('token-modal').style.display = 'none'; }, 1800);
 }
 // Show green tick on load if token already saved
 window.addEventListener('DOMContentLoaded', () => {
@@ -5944,5 +5955,19 @@ window.addEventListener('load', () => {
   applyTransformB2();
 });
 </script>
+
+<!-- TOKEN SETUP MODAL -->
+<div id="token-modal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;padding:24px;">
+  <div style="background:#0d0d18;border:1px solid #2a2a3a;border-radius:16px;padding:32px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,0.8);">
+    <div style="font-size:20px;font-weight:800;color:#fff;margin-bottom:8px;">🔑 One-Time Setup</div>
+    <div style="font-size:13px;color:#666;margin-bottom:20px;line-height:1.6;">Paste your upload token below. It saves to this browser only and is never stored anywhere else.</div>
+    <input id="token-modal-input" type="text" placeholder="Paste token here…" style="width:100%;background:#06060f;border:1px solid #2a2a3a;border-radius:10px;padding:12px 14px;color:#fff;font-size:13px;font-family:monospace;outline:none;margin-bottom:16px;" onfocus="this.style.borderColor='#C9A225'" onblur="this.style.borderColor='#2a2a3a'">
+    <div style="display:flex;gap:10px;">
+      <button onclick="saveTokenFromModal()" style="flex:1;background:linear-gradient(135deg,#C9A225,#E8C04A);color:#000;border:none;border-radius:10px;padding:12px;font-size:13px;font-weight:800;cursor:pointer;">Save Token</button>
+      <button onclick="document.getElementById('token-modal').style.display='none'" style="background:#1a1a2a;border:1px solid #2a2a3a;color:#666;border-radius:10px;padding:12px 18px;font-size:13px;cursor:pointer;">Cancel</button>
+    </div>
+    <div id="token-modal-status" style="font-size:12px;color:#4CAF50;margin-top:12px;display:none;"></div>
+  </div>
+</div>
 </body>
 </html>
