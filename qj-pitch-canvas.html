@@ -3634,7 +3634,7 @@ function _getToken() {
   return localStorage.getItem('qj_gh_token') || '';
 }
 function qjSetupToken() {
-  const existing = localStorage.getItem('qj_gh_token') ? '✅ Token already saved in this browser.\n\nPaste a new one to replace it, or cancel to keep the existing one.' : 'First-time setup: paste your GitHub token below.\nThis is saved only in this browser and never sent anywhere except GitHub.';
+  const existing = localStorage.getItem('qj_gh_token') ? '✅ Token already saved in this browser.\n\nPaste a new one to replace it, or cancel to keep the existing one.' : 'Paste your upload token below.\nThis stays in your browser only.';
   const val = prompt(existing);
   if (!val) return;
   const token = val.trim().replace(/[^\x20-\x7E]/g, '');
