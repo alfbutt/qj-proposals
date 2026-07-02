@@ -3637,7 +3637,7 @@ function qjSetupToken() {
   const existing = localStorage.getItem('qj_gh_token') ? '✅ Token already saved in this browser.\n\nPaste a new one to replace it, or cancel to keep the existing one.' : 'First-time setup: paste your GitHub token below.\nThis is saved only in this browser and never sent anywhere except GitHub.';
   const val = prompt(existing);
   if (!val) return;
-  const token = val.trim();
+  const token = val.trim().replace(/[^\x20-\x7E]/g, '');
   localStorage.setItem('qj_gh_token', token);
   const btn = document.getElementById('setup-token-btn');
   btn.textContent = '✅ Token saved';
