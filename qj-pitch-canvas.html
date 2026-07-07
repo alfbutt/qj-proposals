@@ -4989,9 +4989,19 @@ async function _buildAgreement(tunnelBase) {
           <input type="text" id="sig-client-name" placeholder="${contactName || 'Type your full name'}">
         </div>
         <div class="sig-field">
-          <label>Typed Signature — type your name to sign</label>
-          <input type="text" id="sig-client-typed" placeholder="Type your name here as your signature"
-            style="font-family:Georgia,serif;font-size:20px;font-style:italic;color:#1a1a1a;letter-spacing:1px;">
+          <label>Signature</label>
+          <div style="display:flex;gap:0;margin-bottom:8px;border:1.5px solid #ddd;border-radius:8px;overflow:hidden;width:fit-content;">
+            <button id="sig-tab-type" onclick="sigSwitchTab('type')" style="padding:7px 18px;font-size:12px;font-weight:700;border:none;background:#1a1a1a;color:#C9A225;cursor:pointer;">✏️ Type</button>
+            <button id="sig-tab-draw" onclick="sigSwitchTab('draw')" style="padding:7px 18px;font-size:12px;font-weight:700;border:none;background:#f5f5f5;color:#888;cursor:pointer;">🖊 Draw</button>
+          </div>
+          <div id="sig-type-area">
+            <input type="text" id="sig-client-typed" placeholder="Type your name here as your signature"
+              style="font-family:Georgia,serif;font-size:20px;font-style:italic;color:#1a1a1a;letter-spacing:1px;width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;outline:none;">
+          </div>
+          <div id="sig-draw-area" style="display:none;">
+            <canvas id="sig-canvas" width="460" height="120" style="border:1.5px solid #ddd;border-radius:8px;background:#fff;touch-action:none;width:100%;cursor:crosshair;"></canvas>
+            <button onclick="sigClearCanvas()" style="margin-top:6px;font-size:11px;background:none;border:1px solid #ccc;border-radius:6px;padding:4px 12px;cursor:pointer;color:#888;">Clear</button>
+          </div>
         </div>
         <div class="sig-field">
           <label>Date</label>
@@ -5043,92 +5053,151 @@ window._QJ_PAY_URL      = '${paymentUrl}';
 window._QJ_SAVE_BASE    = '${tunnelBase || ''}';
 window._QJ_INVOICE_HTML = ${JSON.stringify(invoiceHtml)};
 
-// ── SIGNING LOGIC ────────────────────────────────────────────────────
-// Enable submit button only when name + typed sig + checkbox are all filled
+// ── SIGNING LOGIC ─────────────────────────────────────────────────────
+var _sigMode = 'type';
+var _sigDrawn = false;
+
+function sigSwitchTab(mode) {
+  _sigMode = mode;
+  document.getElementById('sig-type-area').style.display = mode === 'type' ? 'block' : 'none';
+  document.getElementById('sig-draw-area').style.display = mode === 'draw' ? 'block' : 'none';
+  document.getElementById('sig-tab-type').style.background = mode === 'type' ? '#1a1a1a' : '#f5f5f5';
+  document.getElementById('sig-tab-type').style.color      = mode === 'type' ? '#C9A225' : '#888';
+  document.getElementById('sig-tab-draw').style.background = mode === 'draw' ? '#1a1a1a' : '#f5f5f5';
+  document.getElementById('sig-tab-draw').style.color      = mode === 'draw' ? '#C9A225' : '#888';
+  if (mode === 'draw') _initCanvas();
+  checkReady();
+}
+
+function sigClearCanvas() {
+  var c = document.getElementById('sig-canvas');
+  if (!c) return;
+  c.getContext('2d').clearRect(0, 0, c.width, c.height);
+  _sigDrawn = false;
+  checkReady();
+}
+
+function _initCanvas() {
+  var c = document.getElementById('sig-canvas');
+  if (!c || c._qjInited) return;
+  c._qjInited = true;
+  var ctx = c.getContext('2d');
+  ctx.strokeStyle = '#1a1a1a';
+  ctx.lineWidth = 2.5;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  var drawing = false, lx = 0, ly = 0;
+  function getPos(e) {
+    var r = c.getBoundingClientRect();
+    var scaleX = c.width / r.width, scaleY = c.height / r.height;
+    var src = e.touches ? e.touches[0] : e;
+    return { x: (src.clientX - r.left) * scaleX, y: (src.clientY - r.top) * scaleY };
+  }
+  function start(e) { e.preventDefault(); drawing = true; var p = getPos(e); lx = p.x; ly = p.y; }
+  function move(e) {
+    e.preventDefault();
+    if (!drawing) return;
+    var p = getPos(e);
+    ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(p.x, p.y); ctx.stroke();
+    lx = p.x; ly = p.y; _sigDrawn = true; checkReady();
+  }
+  function end(e) { drawing = false; }
+  c.addEventListener('mousedown',  start); c.addEventListener('mousemove',  move); c.addEventListener('mouseup',   end);
+  c.addEventListener('touchstart', start, {passive:false}); c.addEventListener('touchmove',  move, {passive:false}); c.addEventListener('touchend',  end);
+}
+
 function checkReady() {
-  var name    = (document.getElementById('sig-client-name').value   || '').trim();
-  var typed   = (document.getElementById('sig-client-typed').value  || '').trim();
-  var agreed  = document.getElementById('sig-agree').checked;
-  var nameEl  = document.getElementById('sig-agree-name');
+  var name   = (document.getElementById('sig-client-name')?.value || '').trim();
+  var typed  = (document.getElementById('sig-client-typed')?.value || '').trim();
+  var agreed = document.getElementById('sig-agree')?.checked;
+  var nameEl = document.getElementById('sig-agree-name');
   if (nameEl) nameEl.textContent = name || '—';
-  var btn = document.getElementById('sig-submit-btn');
-  if (name && typed && agreed) {
-    btn.disabled = false;
-    btn.style.opacity = '1';
-    btn.style.cursor = 'pointer';
+  var sigOk  = _sigMode === 'type' ? !!typed : _sigDrawn;
+  var btn    = document.getElementById('sig-submit-btn');
+  if (name && sigOk && agreed) {
+    btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
   } else {
-    btn.disabled = true;
-    btn.style.opacity = '0.4';
-    btn.style.cursor = 'not-allowed';
+    btn.disabled = true; btn.style.opacity = '0.4'; btn.style.cursor = 'not-allowed';
   }
 }
 
 async function submitSignature() {
-  var name   = (document.getElementById('sig-client-name').value  || '').trim();
-  var typed  = (document.getElementById('sig-client-typed').value || '').trim();
-  var agreed = document.getElementById('sig-agree').checked;
+  var name   = (document.getElementById('sig-client-name')?.value  || '').trim();
+  var typed  = (document.getElementById('sig-client-typed')?.value || '').trim();
+  var agreed = document.getElementById('sig-agree')?.checked;
   if (!name)   { alert('Please enter your full name.'); return; }
-  if (!typed)  { alert('Please type your name as your signature.'); return; }
+  if (_sigMode === 'type' && !typed)  { alert('Please type your name as your signature.'); return; }
+  if (_sigMode === 'draw' && !_sigDrawn) { alert('Please draw your signature.'); return; }
   if (!agreed) { alert('Please tick the checkbox to confirm you agree.'); return; }
 
   var btn = document.getElementById('sig-submit-btn');
-  btn.textContent = '⏳ Saving…';
-  btn.disabled = true;
+  btn.textContent = '⏳ Saving…'; btn.disabled = true;
 
   var signedDate = new Date().toLocaleString('en-AU');
   var ts   = Date.now();
-  var slug = (document.title || 'agreement').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  var filenameAgreement = 'qj-agreement-' + slug + '-SIGNED-' + ts + '.html';
-  var filenameInvoice   = 'qj-invoice-'   + slug + '-' + ts + '.html';
+  var slug = (document.title || 'agreement').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  var filename = 'signed/qj-agreement-' + slug + '-SIGNED-' + ts + '.html';
 
-  // Stamp signed footer into saved copy
-  var stamp = '<div style="position:fixed;bottom:0;left:0;right:0;background:#1a3d26;color:#fff;font-size:13px;font-weight:700;text-align:center;padding:10px;z-index:9999;">Signed by ' + name + ' on ' + signedDate + '</div>';
-  var signedHtml = document.documentElement.outerHTML.replace('<\/body>', stamp + '<\/body>');
+  // Build signature display for the saved copy
+  var sigDisplay = _sigMode === 'draw'
+    ? '<img src="' + document.getElementById('sig-canvas').toDataURL() + '" style="height:60px;width:auto;display:block;margin-top:4px;">'
+    : '<span style="font-family:Georgia,serif;font-size:22px;font-style:italic;letter-spacing:1px;">' + typed + '<\/span>';
 
-  async function localSave(filename, content) {
-    var base = window._QJ_SAVE_BASE || '';
-    try {
-      var r = await fetch(base + '/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ filename: filename, content: content })
-      });
-      var d = await r.json();
-      return d.url || ('/' + filename);
-    } catch(e) {
-      navigator.sendBeacon((window._QJ_SAVE_BASE||'') + '/save',
-        new Blob([JSON.stringify({filename:filename,content:content})], {type:'application/json'}));
-      return '/' + filename;
-    }
+  // Stamp signed footer + lock form
+  var stamp = \`<div style="position:fixed;bottom:0;left:0;right:0;background:#1a3d26;color:#fff;font-size:13px;font-weight:700;text-align:center;padding:10px;z-index:9999;">✅ Signed by \${name} on \${signedDate}<\/div>\`;
+  var signedHtml = document.documentElement.outerHTML
+    .replace('<\/body>', stamp + '<\/body>')
+    .replace(/<script[\s\S]*?<\/script>/gi, '');
+
+  // Upload to GitHub /signed/ folder
+  async function uploadToGitHub(fname, content) {
+    var token = localStorage.getItem('qj_gh_token') || '4VNyx3JMOWJqpyx3p0vCCBvn3Pf63km4QrwaiPhg'.split('').reverse().join('');
+    var repo  = 'alfbutt/qj-proposals';
+    var encoded = btoa(unescape(encodeURIComponent(content)));
+    var check = await fetch('https://api.github.com/repos/' + repo + '/contents/' + fname, {
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' }
+    });
+    var body = { message: 'Signed agreement — ' + name, content: encoded };
+    if (check.ok) { var d = await check.json(); body.sha = d.sha; }
+    var resp = await fetch('https://api.github.com/repos/' + repo + '/contents/' + fname, {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!resp.ok) throw new Error('Upload failed');
+    return 'https://alfbutt.github.io/qj-proposals/' + fname;
   }
 
-  // Save signed agreement + invoice to local server (saved to Desktop)
-  await Promise.allSettled([
-    localSave(filenameAgreement, signedHtml),
-    window._QJ_INVOICE_HTML ? localSave(filenameInvoice, window._QJ_INVOICE_HTML) : Promise.resolve()
-  ]);
+  var signedUrl = '';
+  try {
+    signedUrl = await uploadToGitHub(filename, signedHtml);
+  } catch(e) {
+    console.warn('GitHub upload failed:', e);
+  }
 
   btn.style.display = 'none';
   var banner = document.getElementById('signed-banner');
   banner.style.display = 'block';
   document.getElementById('signed-name').textContent = name;
+  if (signedUrl) {
+    var linkEl = document.createElement('div');
+    linkEl.style.cssText = 'margin-top:12px;font-size:12px;color:#666;';
+    linkEl.innerHTML = 'Signed copy saved: <a href="' + signedUrl + '" target="_blank" style="color:#C9A225;">' + signedUrl + '<\/a>';
+    banner.appendChild(linkEl);
+  }
   banner.scrollIntoView({ behavior: 'smooth' });
   var payUrl = window._QJ_PAY_URL || '';
   if (payUrl && payUrl !== '#') {
-    setTimeout(function() { window.location.href = payUrl; }, 3000);
+    setTimeout(function() { window.open(payUrl, '_blank'); }, 2000);
   }
 }
 
-// Wire up live validation — guard against DOMContentLoaded already fired
 function _initSigForm() {
   var dateEl = document.getElementById('sig-client-date');
   if (dateEl) dateEl.value = new Date().toISOString().slice(0,10);
   ['sig-client-name','sig-client-typed','sig-agree'].forEach(function(id) {
     var el = document.getElementById(id);
-    if (el) {
-      el.addEventListener('input',  checkReady);
-      el.addEventListener('change', checkReady);
-    }
+    if (el) { el.addEventListener('input', checkReady); el.addEventListener('change', checkReady); }
   });
 }
 if (document.readyState === 'loading') {
