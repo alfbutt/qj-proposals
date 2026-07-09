@@ -4843,16 +4843,26 @@ async function _buildAgreement(tunnelBase) {
   .sig-party h3{font-size:13px;font-weight:800;color:#1a1a1a;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.5px;}
   .sig-field{margin-bottom:16px;}
   .sig-field label{display:block;font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;}
-  .sig-field input{width:100%;border:none;border-bottom:1.5px solid #ddd;padding:6px 0;font-size:15px;background:transparent;outline:none;font-family:inherit;color:#1a1a1a;}
-  .sig-field input:focus{border-bottom-color:#C9A225;}
-  .sig-canvas-wrap{border:1.5px solid #ddd;border-radius:8px;overflow:hidden;background:#fafafa;position:relative;}
-  .sig-canvas-wrap canvas{display:block;width:100%;height:120px;cursor:crosshair;touch-action:none;}
-  .sig-clear{position:absolute;top:6px;right:8px;font-size:10px;color:#aaa;cursor:pointer;background:none;border:none;font-family:inherit;}
-  .sig-clear:hover{color:#C9A225;}
-  .sign-btn{width:100%;margin-top:32px;background:linear-gradient(135deg,#C9A225,#E8C04A);color:#000;border:none;border-radius:10px;padding:16px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:0.3px;}
-  .sign-btn:hover{opacity:0.92;}
-  .signed-banner{display:none;background:#e8f5e9;border:1px solid #81c784;border-radius:10px;padding:16px 20px;text-align:center;margin-top:16px;font-size:14px;font-weight:700;color:#2e7d32;}
+  .sig-field input{width:100%;border:1.5px solid #ddd;border-radius:8px;padding:12px 14px;font-size:16px;background:#fafafa;outline:none;font-family:inherit;color:#1a1a1a;-webkit-appearance:none;appearance:none;}
+  .sig-field input:focus{border-color:#C9A225;background:#fff;}
+  .sig-tabs{display:flex;gap:0;margin-bottom:10px;border:1.5px solid #ddd;border-radius:8px;overflow:hidden;}
+  .sig-tab{flex:1;padding:12px;font-size:13px;font-weight:700;border:none;background:#f5f5f5;color:#888;cursor:pointer;font-family:inherit;transition:all 0.15s;}
+  .sig-tab.active{background:#1a1a1a;color:#C9A225;}
+  .sig-canvas-wrap{border:1.5px solid #ddd;border-radius:8px;overflow:hidden;background:#fff;position:relative;-webkit-user-select:none;user-select:none;}
+  .sig-canvas-wrap canvas{display:block;width:100%;height:160px;cursor:crosshair;touch-action:none;-webkit-tap-highlight-color:transparent;}
+  .sig-clear{display:block;width:100%;margin-top:6px;font-size:12px;color:#aaa;cursor:pointer;background:none;border:1px solid #eee;border-radius:6px;padding:7px;font-family:inherit;text-align:center;}
+  .sig-clear:active{color:#C9A225;}
+  .sign-btn{width:100%;margin-top:24px;background:linear-gradient(135deg,#C9A225,#E8C04A);color:#000;border:none;border-radius:12px;padding:18px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:0.3px;-webkit-appearance:none;touch-action:manipulation;}
+  .sign-btn:active{opacity:0.88;}
+  .signed-banner{display:none;background:#e8f5e9;border:1px solid #81c784;border-radius:12px;padding:20px 24px;text-align:center;margin-top:16px;font-size:14px;font-weight:700;color:#2e7d32;}
   .footer-note{font-size:11px;color:#bbb;text-align:center;margin-top:48px;line-height:1.6;}
+  @media(max-width:580px){
+    .page{padding:24px 16px;}
+    .logo-bar{margin-bottom:32px;}
+    h1{font-size:22px;}
+    .sign-btn{font-size:17px;padding:20px;}
+    .sig-canvas-wrap canvas{height:180px;}
+  }
 </style>
 </head>
 <body>
@@ -5030,17 +5040,19 @@ async function _buildAgreement(tunnelBase) {
         </div>
         <div class="sig-field">
           <label>Signature</label>
-          <div style="display:flex;gap:0;margin-bottom:8px;border:1.5px solid #ddd;border-radius:8px;overflow:hidden;width:fit-content;">
-            <button id="sig-tab-type" onclick="sigSwitchTab('type')" style="padding:7px 18px;font-size:12px;font-weight:700;border:none;background:#1a1a1a;color:#C9A225;cursor:pointer;">✏️ Type</button>
-            <button id="sig-tab-draw" onclick="sigSwitchTab('draw')" style="padding:7px 18px;font-size:12px;font-weight:700;border:none;background:#f5f5f5;color:#888;cursor:pointer;">🖊 Draw</button>
+          <div class="sig-tabs">
+            <button id="sig-tab-type" class="sig-tab active" onclick="sigSwitchTab('type')">✏️ Type Name</button>
+            <button id="sig-tab-draw" class="sig-tab" onclick="sigSwitchTab('draw')">🖊 Draw Signature</button>
           </div>
           <div id="sig-type-area">
             <input type="text" id="sig-client-typed" placeholder="Type your name here as your signature"
               style="font-family:Georgia,serif;font-size:20px;font-style:italic;color:#1a1a1a;letter-spacing:1px;width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;outline:none;">
           </div>
           <div id="sig-draw-area" style="display:none;">
-            <canvas id="sig-canvas" width="460" height="120" style="border:1.5px solid #ddd;border-radius:8px;background:#fff;touch-action:none;width:100%;cursor:crosshair;"></canvas>
-            <button onclick="sigClearCanvas()" style="margin-top:6px;font-size:11px;background:none;border:1px solid #ccc;border-radius:6px;padding:4px 12px;cursor:pointer;color:#888;">Clear</button>
+            <div class="sig-canvas-wrap">
+              <canvas id="sig-canvas" width="800" height="240"></canvas>
+            </div>
+            <button class="sig-clear" onclick="sigClearCanvas()">Clear signature</button>
           </div>
         </div>
         <div class="sig-field">
@@ -5101,10 +5113,8 @@ function sigSwitchTab(mode) {
   _sigMode = mode;
   document.getElementById('sig-type-area').style.display = mode === 'type' ? 'block' : 'none';
   document.getElementById('sig-draw-area').style.display = mode === 'draw' ? 'block' : 'none';
-  document.getElementById('sig-tab-type').style.background = mode === 'type' ? '#1a1a1a' : '#f5f5f5';
-  document.getElementById('sig-tab-type').style.color      = mode === 'type' ? '#C9A225' : '#888';
-  document.getElementById('sig-tab-draw').style.background = mode === 'draw' ? '#1a1a1a' : '#f5f5f5';
-  document.getElementById('sig-tab-draw').style.color      = mode === 'draw' ? '#C9A225' : '#888';
+  document.getElementById('sig-tab-type').className = 'sig-tab' + (mode === 'type' ? ' active' : '');
+  document.getElementById('sig-tab-draw').className = 'sig-tab' + (mode === 'draw' ? ' active' : '');
   if (mode === 'draw') _initCanvas();
   checkReady();
 }
@@ -5133,17 +5143,22 @@ function _initCanvas() {
     var src = e.touches ? e.touches[0] : e;
     return { x: (src.clientX - r.left) * scaleX, y: (src.clientY - r.top) * scaleY };
   }
-  function start(e) { e.preventDefault(); drawing = true; var p = getPos(e); lx = p.x; ly = p.y; }
+  function start(e) { e.preventDefault(); drawing = true; var p = getPos(e); lx = p.x; ly = p.y; ctx.beginPath(); ctx.moveTo(lx, ly); }
   function move(e) {
     e.preventDefault();
     if (!drawing) return;
     var p = getPos(e);
-    ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(p.x, p.y); ctx.stroke();
+    ctx.lineTo(p.x, p.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(p.x, p.y);
     lx = p.x; ly = p.y; _sigDrawn = true; checkReady();
   }
-  function end(e) { drawing = false; }
-  c.addEventListener('mousedown',  start); c.addEventListener('mousemove',  move); c.addEventListener('mouseup',   end);
-  c.addEventListener('touchstart', start, {passive:false}); c.addEventListener('touchmove',  move, {passive:false}); c.addEventListener('touchend',  end);
+  function end(e) { e.preventDefault(); drawing = false; ctx.beginPath(); }
+  c.addEventListener('mousedown',  start, {passive:false});
+  c.addEventListener('mousemove',  move,  {passive:false});
+  c.addEventListener('mouseup',    end,   {passive:false});
+  c.addEventListener('mouseleave', end,   {passive:false});
+  c.addEventListener('touchstart', start, {passive:false});
+  c.addEventListener('touchmove',  move,  {passive:false});
+  c.addEventListener('touchend',   end,   {passive:false});
 }
 
 function checkReady() {
