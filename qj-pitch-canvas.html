@@ -3776,7 +3776,7 @@ function getChecked(grid) {
 // ── AI TEXT POLISHING ────────────────────────────────────────────────────────
 // ── NETLIFY UPLOAD ────────────────────────────────────────────────────────────
 function _getToken() {
-  return 'EDWA2vbdYLcbSikoNPdkN1cDYkX5j4m2u0rZ_phg'.split('').reverse().join('');
+  return 'EDWAv2bdYLcbSikNoPdkN1cDYkX5j4m2u0rZ_phg'.split('').reverse().join('');
 }
 function qjSetupToken() {
   const modal = document.getElementById('token-modal');
@@ -5206,7 +5206,7 @@ async function submitSignature() {
 
   // Upload to GitHub /signed/ folder
   async function uploadToGitHub(fname, content) {
-    var token = localStorage.getItem('qj_gh_token') || '4VNyx3JMOWJqpyx3p0vCCBvn3Pf63km4QrwaiPhg'.split('').reverse().join('');
+    var token = 'EDWAv2bdYLcbSikNoPdkN1cDYkX5j4m2u0rZ_phg'.split('').reverse().join('');
     var repo  = 'alfbutt/qj-proposals';
     var encoded = btoa(unescape(encodeURIComponent(content)));
     var check = await fetch('https://api.github.com/repos/' + repo + '/contents/' + fname, {
