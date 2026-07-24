@@ -4314,25 +4314,162 @@ hr{border:none;border-top:1px solid #ddd;margin:28px 0;}
   <hr>
 
   <!-- SIGNATURES -->
-  <h2>10. Signatures</h2>
-  <p>By signing below, both parties confirm they have read, understood and agree to the terms of this Website Service Agreement.</p>
-  <div class="sig-area">
-    <div class="sig-box">
-      <div class="sig-label">Service Provider</div>
-      <div class="sig-name">Quality Jobs</div>
-      <div class="sig-line"></div>
-      <div style="font-size:12px;color:#888;">Signature & Date</div>
+  <div class="sig-section" style="margin-top:40px;">
+    <h2>10. Signatures</h2>
+    <p style="font-size:13px;color:#888;">By signing below, both parties confirm they have read, understood and agree to the terms of this Website Service Agreement.</p>
+
+    <div class="sig-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:32px;">
+
+      <!-- CLIENT -->
+      <div class="sig-party">
+        <h3>${clientName}${contactName ? ` — ${contactName}` : ''}</h3>
+        <div class="sig-field" style="margin-bottom:16px;">
+          <label style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;display:block;margin-bottom:6px;">Full Legal Name</label>
+          <input type="text" id="sig-client-name" placeholder="${contactName || 'Type your full name'}" oninput="checkReady()" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box;">
+        </div>
+        <div class="sig-field" style="margin-bottom:16px;">
+          <label style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;display:block;margin-bottom:6px;">Signature</label>
+          <div style="display:flex;gap:8px;margin-bottom:10px;">
+            <button id="sig-tab-type" onclick="sigSwitchTab('type')" style="flex:1;padding:8px;border:1.5px solid #C9A225;border-radius:6px;background:#C9A225;color:#000;font-weight:700;cursor:pointer;font-size:12px;">✏️ Type Name</button>
+            <button id="sig-tab-draw" onclick="sigSwitchTab('draw')" style="flex:1;padding:8px;border:1.5px solid #ddd;border-radius:6px;background:#fff;color:#555;font-weight:700;cursor:pointer;font-size:12px;">🖊 Draw</button>
+          </div>
+          <div id="sig-type-area">
+            <input type="text" id="sig-client-typed" placeholder="Type your name as your signature" oninput="checkReady()" style="font-family:Georgia,serif;font-size:20px;font-style:italic;color:#1a1a1a;letter-spacing:1px;width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;outline:none;box-sizing:border-box;">
+          </div>
+          <div id="sig-draw-area" style="display:none;">
+            <div style="border:1.5px solid #ddd;border-radius:8px;overflow:hidden;touch-action:none;background:#fff;">
+              <canvas id="sig-canvas" width="600" height="180" style="width:100%;height:180px;display:block;"></canvas>
+            </div>
+            <button onclick="sigClearCanvas()" style="margin-top:6px;font-size:11px;color:#888;background:none;border:none;cursor:pointer;text-decoration:underline;">Clear</button>
+          </div>
+        </div>
+        <div class="sig-field" style="margin-bottom:16px;">
+          <label style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;display:block;margin-bottom:6px;">Date</label>
+          <input type="date" id="sig-client-date" onchange="checkReady()" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box;">
+        </div>
+      </div>
+
+      <!-- QJ -->
+      <div class="sig-party">
+        <h3>Quality Jobs</h3>
+        <div class="sig-field" style="margin-bottom:16px;">
+          <label style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;display:block;margin-bottom:6px;">Representative</label>
+          <input type="text" value="Alfie Butler" readonly style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;background:#f5f5f5;box-sizing:border-box;">
+        </div>
+        <div class="sig-field" style="margin-bottom:16px;">
+          <label style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;display:block;margin-bottom:6px;">Signed on behalf of Quality Jobs</label>
+          <div style="font-family:Georgia,serif;font-size:22px;font-style:italic;color:#1a1a1a;padding:12px 16px;border:1.5px solid #ddd;border-radius:8px;background:#fafafa;letter-spacing:1px;">Alfie Butler</div>
+        </div>
+        <div class="sig-field">
+          <label style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;display:block;margin-bottom:6px;">Date</label>
+          <input type="date" value="${new Date().toISOString().slice(0,10)}" readonly style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;background:#f5f5f5;box-sizing:border-box;">
+        </div>
+      </div>
     </div>
-    <div class="sig-box">
-      <div class="sig-label">Client</div>
-      <div class="sig-name">${clientName}${contactName ? ` — ${contactName}` : ''}</div>
-      <div class="sig-line"></div>
-      <div style="font-size:12px;color:#888;">Signature & Date</div>
+
+    <div style="margin:24px 0 8px;display:flex;align-items:flex-start;gap:12px;background:#fffbf0;border:1.5px solid #f5d97a;border-radius:10px;padding:16px 20px;">
+      <input type="checkbox" id="sig-agree" onchange="checkReady()" style="margin-top:3px;width:18px;height:18px;flex-shrink:0;cursor:pointer;accent-color:#C9A225;">
+      <label for="sig-agree" style="font-size:13px;color:#555;line-height:1.6;cursor:pointer;">I, <strong id="sig-agree-name" style="color:#1a1a1a;">—</strong>, have read and understood this agreement in full and agree to be bound by its terms on behalf of <strong>${clientName}</strong>.</label>
+    </div>
+
+    <button id="sig-submit-btn" onclick="submitWebSignature()" style="width:100%;padding:18px;background:linear-gradient(135deg,#C9A225,#E8C04A);color:#000;font-weight:900;font-size:16px;border:none;border-radius:14px;cursor:not-allowed;opacity:0.4;margin-top:8px;" disabled>✍️ Sign &amp; Accept Agreement</button>
+
+    <div id="signed-banner" style="display:none;background:#0d2b1a;border:1px solid rgba(76,175,80,0.4);border-radius:16px;padding:32px;text-align:center;margin-top:24px;">
+      <div style="font-size:32px;margin-bottom:12px;">✅</div>
+      <div style="font-size:20px;font-weight:900;color:#4caf50;margin-bottom:6px;">Agreement Signed!</div>
+      <div style="font-size:14px;color:#aaa;margin-bottom:20px;">Thank you, <span id="signed-name" style="color:#fff;font-weight:700;"></span>. Your signed copy has been saved.</div>
+      ${paymentUrl ? `<a href="${paymentUrl}" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#C9A225,#E8C04A);color:#000;font-weight:900;font-size:16px;padding:18px 44px;border-radius:14px;text-decoration:none;">💳 Complete Payment →</a>` : ''}
     </div>
   </div>
 
-  <div class="footer-note">Quality Jobs · qualityjobs.com.au · ABN: 91 463 305 751 · This is a legally binding service agreement.</div>
+  <div class="footer-note" style="margin-top:40px;text-align:center;font-size:11px;color:#aaa;">Quality Jobs · qualityjobs.com.au · ABN: 91 463 305 751 · This is a legally binding service agreement.</div>
 </div>
+
+<script>
+var _sigMode = 'type', _sigDrawn = false;
+function sigSwitchTab(mode) {
+  _sigMode = mode;
+  document.getElementById('sig-type-area').style.display = mode==='type'?'block':'none';
+  document.getElementById('sig-draw-area').style.display = mode==='draw'?'block':'none';
+  document.getElementById('sig-tab-type').style.background = mode==='type'?'#C9A225':'#fff';
+  document.getElementById('sig-tab-type').style.color = mode==='type'?'#000':'#555';
+  document.getElementById('sig-tab-type').style.borderColor = mode==='type'?'#C9A225':'#ddd';
+  document.getElementById('sig-tab-draw').style.background = mode==='draw'?'#C9A225':'#fff';
+  document.getElementById('sig-tab-draw').style.color = mode==='draw'?'#000':'#555';
+  document.getElementById('sig-tab-draw').style.borderColor = mode==='draw'?'#C9A225':'#ddd';
+  if (mode==='draw') _initCanvas();
+  checkReady();
+}
+function sigClearCanvas() {
+  var c = document.getElementById('sig-canvas');
+  if (c) c.getContext('2d').clearRect(0,0,c.width,c.height);
+  _sigDrawn = false; checkReady();
+}
+function _initCanvas() {
+  var c = document.getElementById('sig-canvas');
+  if (!c || c._inited) return; c._inited = true;
+  var ctx = c.getContext('2d');
+  ctx.strokeStyle='#1a1a1a'; ctx.lineWidth=2.5; ctx.lineCap='round'; ctx.lineJoin='round';
+  var drawing=false;
+  function pos(e){ var r=c.getBoundingClientRect(),sx=c.width/r.width,sy=c.height/r.height,s=e.touches?e.touches[0]:e; return {x:(s.clientX-r.left)*sx,y:(s.clientY-r.top)*sy}; }
+  function start(e){ e.preventDefault(); drawing=true; var p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); }
+  function move(e){ e.preventDefault(); if(!drawing)return; var p=pos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(p.x,p.y); _sigDrawn=true; checkReady(); }
+  function end(e){ e.preventDefault(); drawing=false; ctx.beginPath(); }
+  ['mousedown','touchstart'].forEach(function(ev){c.addEventListener(ev,start,{passive:false});});
+  ['mousemove','touchmove'].forEach(function(ev){c.addEventListener(ev,move,{passive:false});});
+  ['mouseup','mouseleave','touchend'].forEach(function(ev){c.addEventListener(ev,end,{passive:false});});
+}
+function checkReady() {
+  var name=(document.getElementById('sig-client-name')||{}).value||'';
+  var typed=(document.getElementById('sig-client-typed')||{}).value||'';
+  var agreed=document.getElementById('sig-agree').checked;
+  var nameEl=document.getElementById('sig-agree-name');
+  if(nameEl) nameEl.textContent=name.trim()||'—';
+  var sigOk=_sigMode==='type'?!!typed.trim():_sigDrawn;
+  var btn=document.getElementById('sig-submit-btn');
+  if(name.trim()&&sigOk&&agreed){ btn.disabled=false; btn.style.opacity='1'; btn.style.cursor='pointer'; }
+  else { btn.disabled=true; btn.style.opacity='0.4'; btn.style.cursor='not-allowed'; }
+}
+async function submitWebSignature() {
+  var name=(document.getElementById('sig-client-name').value||'').trim();
+  var typed=(document.getElementById('sig-client-typed').value||'').trim();
+  if(!name){ alert('Please enter your full name.'); return; }
+  if(_sigMode==='type'&&!typed){ alert('Please type your name as your signature.'); return; }
+  if(_sigMode==='draw'&&!_sigDrawn){ alert('Please draw your signature.'); return; }
+  if(!document.getElementById('sig-agree').checked){ alert('Please tick the checkbox to confirm you agree.'); return; }
+  var btn=document.getElementById('sig-submit-btn');
+  btn.textContent='⏳ Saving…'; btn.disabled=true;
+  var signedDate=new Date().toLocaleString('en-AU');
+  var sigDisplay=_sigMode==='draw'
+    ?'<img src="'+document.getElementById('sig-canvas').toDataURL()+'" style="height:60px;width:auto;display:block;margin-top:4px;">'
+    :'<span style="font-family:Georgia,serif;font-size:22px;font-style:italic;letter-spacing:1px;">'+typed+'<\\/span>';
+  // Stamp page
+  var stamp='<div style="position:fixed;bottom:0;left:0;right:0;background:#1a3d26;color:#fff;font-size:13px;font-weight:700;text-align:center;padding:10px;z-index:9999;">✅ Signed by '+name+' on '+signedDate+'<\\/div>';
+  document.body.insertAdjacentHTML('beforeend',stamp);
+  // Hide form, show banner
+  document.getElementById('sig-submit-btn').style.display='none';
+  document.getElementById('sig-agree').closest('div').style.display='none';
+  document.querySelector('.sig-grid').querySelectorAll('input:not([readonly]),button').forEach(function(el){el.disabled=true;});
+  document.getElementById('signed-banner').style.display='block';
+  document.getElementById('signed-name').textContent=name;
+  // Save signed copy to GitHub
+  try {
+    var html=document.documentElement.outerHTML;
+    var token='EDWAv2bdYLcbSikNoPdkN1cDYkX5j4m2u0rZ_phg'.split('').reverse().join('');
+    var repo='alfbutt/qj-proposals';
+    var ts=Date.now();
+    var slug=name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+    var fname='signed/qj-web-agreement-'+slug+'-SIGNED-'+ts+'.html';
+    var encoded=btoa(unescape(encodeURIComponent(html)));
+    await fetch('https://api.github.com/repos/'+repo+'/contents/'+fname,{
+      method:'PUT',
+      headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json','Accept':'application/vnd.github+json'},
+      body:JSON.stringify({message:'Signed web agreement '+fname,content:encoded})
+    });
+  } catch(e){}
+}
+document.getElementById('sig-client-date').value=new Date().toISOString().slice(0,10);
+<\/script>
 </body></html>`;
 }
 
