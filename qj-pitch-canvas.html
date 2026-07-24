@@ -3952,6 +3952,20 @@ function toggleWaSeo() {
   gstSeoRow.style.display = on ? 'flex' : 'none';
 }
 
+async function waitUntilLive(url, statusEl, label) {
+  const max = 40, interval = 5000;
+  for (let i = 0; i < max; i++) {
+    await new Promise(r => setTimeout(r, interval));
+    try {
+      const r = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+      if (r.ok) return true;
+    } catch(e) {}
+    const elapsed = Math.round((i + 1) * interval / 1000);
+    statusEl.innerHTML = `⏳ ${label} uploaded — waiting for GitHub to deploy… (${elapsed}s)`;
+  }
+  return false;
+}
+
 async function generateWebProposal() {
   const btn = document.querySelector('#board6 button[onclick="generateWebProposal()"]');
   const status = document.getElementById('wa-agr-status');
@@ -3961,6 +3975,8 @@ async function generateWebProposal() {
     const html = _buildWebProposal();
     const filename = `qj-web-proposal-${(document.getElementById('wa-client-name').value||'client').toLowerCase().replace(/[^a-z0-9]+/g,'-')}-${Date.now()}.html`;
     const url = await saveToNetlify(filename, html);
+    status.innerHTML = `⏳ Proposal uploaded — waiting for GitHub to deploy…`;
+    const live = await waitUntilLive(url, status, 'Proposal');
     document.getElementById('wa-iframe').src = url;
     document.getElementById('wa-iframe').style.display = 'block';
     document.getElementById('wa-placeholder').style.display = 'none';
@@ -3981,6 +3997,8 @@ async function generateWebAgreement() {
     const html = _buildWebAgreement();
     const filename = `qj-web-agreement-${(document.getElementById('wa-client-name').value||'client').toLowerCase().replace(/[^a-z0-9]+/g,'-')}-${Date.now()}.html`;
     const url = await saveToNetlify(filename, html);
+    status.innerHTML = `⏳ Agreement uploaded — waiting for GitHub to deploy…`;
+    const live = await waitUntilLive(url, status, 'Agreement');
     document.getElementById('wa-agreement-url').value = url;
     document.getElementById('wa-iframe').src = url;
     document.getElementById('wa-iframe').style.display = 'block';
