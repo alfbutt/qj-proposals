@@ -2893,8 +2893,38 @@ We spoke with Scott from Rapid Plumbing Group. He's been running the business fo
 
         <div class="pa-section">
           <div class="pa-section-title">🖼️ Client Logo</div>
-          <label class="pa-label">Logo URL (paste a direct image link)</label>
-          <input class="pa-input" id="ap-logo-url" type="text" placeholder="https://...">
+          <div id="ap-logo-drop" onclick="document.getElementById('ap-logo-file').click()" style="border:2px dashed #333;border-radius:10px;padding:18px 12px;text-align:center;cursor:pointer;transition:border-color 0.2s,background 0.2s;background:#111;">
+            <div id="ap-logo-preview" style="display:none;margin-bottom:8px;"><img id="ap-logo-img" style="max-height:56px;max-width:160px;object-fit:contain;display:block;margin:0 auto;border-radius:4px;" alt="logo"></div>
+            <div id="ap-logo-placeholder" style="font-size:11px;color:#555;line-height:1.6;">Drop logo here<br>or click to browse</div>
+            <div id="ap-logo-name" style="font-size:10px;color:#f5a623;margin-top:4px;display:none;"></div>
+          </div>
+          <input type="file" id="ap-logo-file" accept="image/*" style="display:none" onchange="apLogoFromFile(this)">
+          <input type="hidden" id="ap-logo-url">
+          <script>
+          (function(){
+            var drop = document.getElementById('ap-logo-drop');
+            drop.addEventListener('dragover', function(e){ e.preventDefault(); drop.style.borderColor='#f5a623'; drop.style.background='#1a1600'; });
+            drop.addEventListener('dragleave', function(){ drop.style.borderColor='#333'; drop.style.background='#111'; });
+            drop.addEventListener('drop', function(e){
+              e.preventDefault(); drop.style.borderColor='#333'; drop.style.background='#111';
+              var file = e.dataTransfer.files[0];
+              if(file && file.type.startsWith('image/')) apLogoLoad(file);
+            });
+          })();
+          function apLogoFromFile(input){ if(input.files[0]) apLogoLoad(input.files[0]); }
+          function apLogoLoad(file){
+            var reader = new FileReader();
+            reader.onload = function(e){
+              document.getElementById('ap-logo-url').value = e.target.result;
+              document.getElementById('ap-logo-img').src = e.target.result;
+              document.getElementById('ap-logo-preview').style.display = 'block';
+              document.getElementById('ap-logo-placeholder').style.display = 'none';
+              document.getElementById('ap-logo-name').textContent = file.name;
+              document.getElementById('ap-logo-name').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+          }
+          </script>
         </div>
 
         <div class="pa-section">
