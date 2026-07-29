@@ -1,0 +1,154 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ads Proposal — Captial SC</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--gold:#C9A225;--gold-light:#E8C04A;--dark:#0a0a0a;--card:#111;}
+body{background:var(--dark);color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;}
+.page{max-width:860px;margin:0 auto;padding:0 24px 80px;}
+/* HERO */
+.hero{padding:80px 0 60px;text-align:center;border-bottom:1px solid #1a1a1a;}
+.hero-tag{display:inline-block;background:rgba(201,162,37,0.12);color:var(--gold);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:20px;border:1px solid rgba(201,162,37,0.25);margin-bottom:28px;}
+.hero h1{font-size:clamp(36px,6vw,64px);font-weight:900;line-height:1.1;margin-bottom:20px;}
+.hero h1 span{color:var(--gold);}
+.hero-sub{font-size:18px;color:rgba(255,255,255,0.5);max-width:580px;margin:0 auto 48px;}
+.hero-stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;}
+.hero-stat .num{font-size:48px;font-weight:900;color:var(--gold);line-height:1;}
+.hero-stat .lbl{font-size:12px;color:#555;margin-top:6px;text-transform:uppercase;letter-spacing:1px;}
+/* SECTIONS */
+.sec{padding:64px 0;border-bottom:1px solid #111;}
+.sec-tag{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.sec-title{font-size:clamp(26px,4vw,40px);font-weight:900;line-height:1.15;margin-bottom:16px;}
+.sec-body{font-size:16px;color:rgba(255,255,255,0.45);max-width:600px;margin-bottom:36px;}
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
+.card{background:var(--card);border:1px solid #1e1e1e;border-radius:16px;padding:24px;}
+.card-icon{font-size:28px;margin-bottom:12px;}
+.card-title{font-size:14px;font-weight:800;margin-bottom:8px;}
+.card-body{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6;}
+/* SPEND BLOCK */
+.spend-block{background:linear-gradient(135deg,#111,#0d1a0d);border:1.5px solid rgba(201,162,37,0.3);border-radius:20px;padding:40px;text-align:center;margin-bottom:24px;}
+.spend-amount{font-size:72px;font-weight:900;color:var(--gold);line-height:1;}
+.spend-period{font-size:16px;color:#555;margin-top:8px;}
+.spend-breakdown{display:flex;justify-content:center;gap:32px;margin-top:32px;flex-wrap:wrap;}
+.spend-item .val{font-size:28px;font-weight:900;color:#fff;}
+.spend-item .lbl{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
+.mgmt-row{display:flex;justify-content:space-between;align-items:center;background:#111;border:1px solid #1e1e1e;border-radius:12px;padding:20px 24px;margin-top:16px;}.mgmt-label{font-size:14px;color:rgba(255,255,255,0.6);}.mgmt-val{font-size:20px;font-weight:900;color:var(--gold);}
+/* TESTIMONIALS */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+.testi{background:var(--card);border:1px solid #1e1e1e;border-radius:16px;padding:24px;}
+.testi-stars{color:var(--gold);font-size:14px;margin-bottom:10px;}
+.testi-text{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:16px;font-style:italic;}
+.testi-author{display:flex;align-items:center;gap:12px;}
+.testi-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:top;}
+.testi-name{font-size:13px;font-weight:700;}
+.testi-role{font-size:11px;color:#555;}
+/* PROCESS */
+.process{display:flex;flex-direction:column;gap:0;}
+.process-step{display:flex;gap:20px;padding:20px 0;}
+.process-step:not(:last-child){border-bottom:1px solid #111;}
+.step-num{width:40px;height:40px;min-width:40px;border-radius:50%;background:rgba(201,162,37,0.12);border:1px solid rgba(201,162,37,0.3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--gold);}
+.step-body h4{font-size:14px;font-weight:800;margin-bottom:4px;}
+.step-body p{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6;}
+/* CTA */
+.cta-section{padding:80px 0;text-align:center;}
+.cta-section h2{font-size:clamp(28px,4vw,44px);font-weight:900;margin-bottom:16px;}
+.cta-section p{font-size:16px;color:rgba(255,255,255,0.4);margin-bottom:40px;}
+.cta-btn{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#000;font-weight:900;font-size:16px;padding:20px 52px;border-radius:16px;text-decoration:none;box-shadow:0 8px 40px rgba(201,162,37,0.3);}
+/* FOOTER */
+.footer{text-align:center;padding:40px 0;font-size:12px;color:#333;border-top:1px solid #111;}
+@media(max-width:600px){.hero{padding:48px 0 40px;}.hero-stats{gap:24px;}.spend-amount{font-size:52px;}.spend-breakdown{gap:20px;}}
+</style></head><body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Prepared exclusively for Captial SC</div>
+    <h1>More Leads.<br><span>More Jobs.</span><br>On Autopilot.</h1>
+    <p class="hero-sub">A done-for-you advertising system that puts Captial SC in front of Higher End Home Owners in Canberra — every single day.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">$45</div><div class="lbl">Per day ad spend</div></div>
+      <div class="hero-stat"><div class="num">30d</div><div class="lbl">To first results</div></div>
+      <div class="hero-stat"><div class="num">100%</div><div class="lbl">Done for you</div></div>
+    </div>
+  </div>
+
+  <!-- WHAT WE DO -->
+  <div class="sec">
+    <div class="sec-tag">What's Included</div>
+    <div class="sec-title">Everything handled.<br>Nothing left to chance.</div>
+    <div class="sec-body">We build, manage and optimise your ads campaign end to end — so you can focus on the jobs, not the marketing.</div>
+    <div class="cards">
+      <div class="card"><div class="card-icon">🎯</div><div class="card-title">Targeted Ad Campaigns</div><div class="card-body">We build campaigns that reach Higher End Home Owners in Canberra who are actively looking for Renovation services right now.</div></div>
+      <div class="card"><div class="card-icon">✍️</div><div class="card-title">Ad Copy & Creative</div><div class="card-body">Compelling headlines, copy and visuals written and designed by us — tested and refined to get you the lowest cost per lead.</div></div>
+      <div class="card"><div class="card-icon">📲</div><div class="card-title">Lead Capture Setup</div><div class="card-body">Instant lead forms and landing pages that capture enquiries directly and deliver them straight to your phone.</div></div>
+      <div class="card"><div class="card-icon">🔄</div><div class="card-title">Ongoing Optimisation</div><div class="card-body">We monitor and optimise your campaigns daily — adjusting bids, audiences and creatives to keep costs down and results up.</div></div>
+      <div class="card"><div class="card-icon">📊</div><div class="card-title">Monthly Reporting</div><div class="card-body">A clear monthly report showing your spend, leads generated, cost per lead and what we're doing to improve performance.</div></div>
+      <div class="card"><div class="card-icon">📞</div><div class="card-title">Dedicated Support</div><div class="card-body">Direct access to your account manager. No call centres. No waiting. Just fast answers from the team running your ads.</div></div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="sec">
+    <div class="sec-tag">How It Works</div>
+    <div class="sec-title">Live in days,<br>not months.</div>
+    <div class="process">
+      <div class="process-step"><div class="step-num">1</div><div class="step-body"><h4>Onboarding Call</h4><p>We get to know your business, your ideal client and the jobs you want more of — so every ad speaks directly to them.</p></div></div>
+      <div class="process-step"><div class="step-num">2</div><div class="step-body"><h4>Campaign Build</h4><p>We build your full campaign — audiences, creatives, copy and lead forms — ready for launch within days of signing.</p></div></div>
+      <div class="process-step"><div class="step-num">3</div><div class="step-body"><h4>Launch & Monitor</h4><p>Your ads go live. We monitor performance daily and make adjustments in real time to maximise your return.</p></div></div>
+      <div class="process-step"><div class="step-num">4</div><div class="step-body"><h4>Leads Hit Your Phone</h4><p>Enquiries come directly to you — name, number and job details. You call, you quote, you close.</p></div></div>
+      <div class="process-step"><div class="step-num">5</div><div class="step-body"><h4>Monthly Review</h4><p>Every month we review results with you, show you exactly what's working and set the plan for the next 30 days.</p></div></div>
+    </div>
+  </div>
+
+  <!-- INVESTMENT -->
+  <div class="sec">
+    <div class="sec-tag">Your Investment</div>
+    <div class="sec-title">Simple, transparent<br>pricing.</div>
+    <div class="sec-body">No lock-in contracts. No hidden fees. Just a clear daily ad spend with everything managed for you.</div>
+    <div class="spend-block">
+      <div style="font-size:13px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;">Daily Ad Spend</div>
+      <div class="spend-amount">$45<span style="font-size:24px;color:#555;">/day</span></div>
+      <div class="spend-period">Billed directly to your ad account · ~$1,350/month</div>
+      <div class="spend-breakdown">
+        <div class="spend-item"><div class="val">$45</div><div class="lbl">Daily budget</div></div>
+        <div class="spend-item"><div class="val">$1,350</div><div class="lbl">Monthly reach</div></div>
+        <div class="spend-item"><div class="val">100%</div><div class="lbl">Goes to your ads</div></div>
+      </div>
+    </div>
+    <div class="mgmt-row"><div><div class="mgmt-label">Campaign Management</div><div style="font-size:11px;color:#555;margin-top:2px;">Strategy, build, optimisation & reporting — done for you</div></div><div class="mgmt-val">$245-$600 P/W (Package Dependant)</div></div>
+  </div>
+
+  <!-- SOCIAL PROOF -->
+  <div class="sec">
+    <div class="sec-tag">What Clients Say</div>
+    <div class="sec-title">Real results for<br>real businesses.</div>
+    <div class="testi-grid">
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"We were sceptical at first but the leads started coming in within the first week. We've been booked out ever since."</div>
+        <div class="testi-author"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-josh.png" class="testi-avatar" alt=""><div><div class="testi-name">Josh M.</div><div class="testi-role">Builder · Sydney</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"The quality of leads is night and day compared to what we were getting before. These people actually want to book."</div>
+        <div class="testi-author"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-ryan.png" class="testi-avatar" alt=""><div><div class="testi-name">Ryan K.</div><div class="testi-role">Renovator · Melbourne</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Alfie and the team are across it. I don't have to think about marketing at all — I just answer my phone and quote jobs."</div>
+        <div class="testi-author"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-max.png" class="testi-avatar" alt=""><div><div class="testi-name">Max T.</div><div class="testi-role">Trades Business · Brisbane</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section" id="get-started">
+    <div class="sec-tag">Ready to go?</div>
+    <h2>Let's get Captial SC<br><span style="color:var(--gold);">more jobs.</span></h2>
+    <p>This proposal was prepared exclusively for Moe at Captial SC.<br>Reach out to lock in your start date.</p>
+    <a href="mailto:alfie@qualityjobs.com.au?subject=Ready to start — Captial%20SC" class="cta-btn">📞 Get Started →</a>
+  </div>
+
+  <div class="footer">Quality Jobs · qualityjobs.com.au · ABN: 91 463 305 751<br>Prepared for Captial SC · 29 July 2026</div>
+
+</div></body></html>
