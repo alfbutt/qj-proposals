@@ -2885,16 +2885,16 @@ We spoke with Scott from Rapid Plumbing Group. He's been running the business fo
 
         <div class="pa-section">
           <div class="pa-section-title">💰 Pricing</div>
-          <label class="pa-label">Daily Ad Spend — shown as range ($30–$100/day)</label>
-          <div style="display:flex;gap:8px;">
-            <input class="pa-input" id="ap-ad-spend-min" type="number" placeholder="Min e.g. 30" style="flex:1;">
-            <input class="pa-input" id="ap-ad-spend-max" type="number" placeholder="Max e.g. 100" style="flex:1;">
-          </div>
-          <label class="pa-label">Management Fee — shown as range ($245–$600/month)</label>
-          <div style="display:flex;gap:8px;">
-            <input class="pa-input" id="ap-mgmt-min" type="text" placeholder="Min e.g. 245" style="flex:1;">
-            <input class="pa-input" id="ap-mgmt-max" type="text" placeholder="Max e.g. 600" style="flex:1;">
-          </div>
+          <label class="pa-label">Minimum Daily Ad Spend (p/d)</label>
+          <input class="pa-input" id="ap-ad-spend-min" type="number" placeholder="e.g. 30">
+          <label class="pa-label">Campaign Management Fee (per week)</label>
+          <input class="pa-input" id="ap-mgmt-weekly" type="text" placeholder="e.g. 250">
+        </div>
+
+        <div class="pa-section">
+          <div class="pa-section-title">🖼️ Client Logo</div>
+          <label class="pa-label">Logo URL (paste a direct image link)</label>
+          <input class="pa-input" id="ap-logo-url" type="text" placeholder="https://...">
         </div>
 
         <div class="pa-section">
@@ -4167,13 +4167,12 @@ function _buildAdsProposal() {
   const niche       = document.getElementById('ap-niche').value        || 'your industry';
   const location    = document.getElementById('ap-location').value     || 'your area';
   const audience    = document.getElementById('ap-audience').value     || 'local homeowners';
-  const spendMin    = parseFloat(document.getElementById('ap-ad-spend-min').value) || 30;
-  const spendMax    = parseFloat(document.getElementById('ap-ad-spend-max').value) || 100;
-  const mgmtMin     = document.getElementById('ap-mgmt-min').value || '245';
-  const mgmtMax     = document.getElementById('ap-mgmt-max').value || '600';
-  const spendDisplay   = `$${spendMin}–$${spendMax}`;
-  const monthlyDisplay = `$${(spendMin*30).toLocaleString('en-AU')}–$${(spendMax*30).toLocaleString('en-AU')}`;
-  const mgmtDisplay    = `$${mgmtMin}–$${mgmtMax}/month`;
+  const spendMin       = parseFloat(document.getElementById('ap-ad-spend-min').value) || 30;
+  const mgmtWeekly     = document.getElementById('ap-mgmt-weekly').value || '250';
+  const logoUrl        = (document.getElementById('ap-logo-url').value || '').trim();
+  const spendDisplay   = `$${spendMin}`;
+  const monthlyDisplay = `$${(spendMin*30).toLocaleString('en-AU')}`;
+  const mgmtDisplay    = `$${mgmtWeekly}/week`;
   const today = new Date().toLocaleDateString('en-AU', { day:'numeric', month:'long', year:'numeric' });
 
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -4234,11 +4233,12 @@ body{background:var(--dark);color:#fff;font-family:-apple-system,BlinkMacSystemF
 <div class="page">
 
   <div class="hero">
+    ${logoUrl ? `<div style="margin-bottom:28px;"><img src="${logoUrl}" style="max-height:72px;max-width:220px;object-fit:contain;display:block;margin:0 auto;filter:brightness(1.05);" alt="${clientName} logo"></div>` : ''}
     <div class="hero-tag">Prepared exclusively for ${clientName}</div>
     <h1>More Leads.<br><span>More Jobs.</span><br>On Autopilot.</h1>
     <p class="hero-sub">A done-for-you advertising system that puts ${clientName} in front of ${audience} in ${location} — every single day.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="num">${spendDisplay}</div><div class="lbl">Ad spend per day</div></div>
+      <div class="hero-stat"><div class="num">${spendDisplay} p/d</div><div class="lbl">Minimum ad spend</div></div>
       <div class="hero-stat"><div class="num">24–48h</div><div class="lbl">To first results</div></div>
       <div class="hero-stat"><div class="num">100%</div><div class="lbl">Done for you</div></div>
     </div>
@@ -4276,15 +4276,15 @@ body{background:var(--dark);color:#fff;font-family:-apple-system,BlinkMacSystemF
     <div class="sec-body">No lock-in contracts. No hidden fees. A flexible daily ad spend — start lean, scale up as results come in.</div>
     <div class="spend-block">
       <div style="font-size:13px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;">Daily Ad Spend</div>
-      <div class="spend-amount">${spendDisplay}<span style="font-size:22px;color:#555;">/day</span></div>
-      <div class="spend-period">Goes directly to your ad account · ~${monthlyDisplay}/month</div>
+      <div class="spend-amount">${spendDisplay}<span style="font-size:22px;color:#555;"> p/d minimum</span></div>
+      <div class="spend-period">Goes directly to your ad account · ~${monthlyDisplay}/month estimated</div>
       <div class="spend-breakdown">
-        <div class="spend-item"><div class="val">${spendDisplay}</div><div class="lbl">Daily budget</div></div>
-        <div class="spend-item"><div class="val">${monthlyDisplay}</div><div class="lbl">Monthly total</div></div>
+        <div class="spend-item"><div class="val">${spendDisplay}</div><div class="lbl">Minimum daily</div></div>
+        <div class="spend-item"><div class="val">${monthlyDisplay}</div><div class="lbl">Est. monthly</div></div>
         <div class="spend-item"><div class="val">100%</div><div class="lbl">To your ads</div></div>
       </div>
     </div>
-    <div class="mgmt-row"><div><div class="mgmt-label">Campaign Management</div><div style="font-size:11px;color:#555;margin-top:2px;">Strategy, build, daily optimisation & monthly reporting — done for you</div></div><div class="mgmt-val">$${mgmtDisplay}</div></div>
+    <div class="mgmt-row"><div><div class="mgmt-label">Campaign Management</div><div style="font-size:11px;color:#555;margin-top:2px;">Strategy, build, daily optimisation & reporting — done for you</div></div><div class="mgmt-val">${mgmtDisplay}</div></div>
   </div>
 
   <div class="sec">
