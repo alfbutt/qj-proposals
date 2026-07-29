@@ -1,0 +1,148 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ads Proposal — Capital DC</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--gold:#C9A225;--gold-light:#E8C04A;--dark:#0a0a0a;--card:#111;}
+body{background:var(--dark);color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;}
+.page{max-width:860px;margin:0 auto;padding:0 24px 80px;}
+.hero{padding:80px 0 60px;text-align:center;border-bottom:1px solid #1a1a1a;}
+.hero-tag{display:inline-block;background:rgba(201,162,37,0.12);color:var(--gold);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:20px;border:1px solid rgba(201,162,37,0.25);margin-bottom:28px;}
+.hero h1{font-size:clamp(36px,6vw,64px);font-weight:900;line-height:1.1;margin-bottom:20px;}
+.hero h1 span{color:var(--gold);}
+.hero-sub{font-size:18px;color:rgba(255,255,255,0.5);max-width:580px;margin:0 auto 48px;}
+.hero-stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;}
+.hero-stat .num{font-size:48px;font-weight:900;color:var(--gold);line-height:1;}
+.hero-stat .lbl{font-size:12px;color:#555;margin-top:6px;text-transform:uppercase;letter-spacing:1px;}
+.sec{padding:64px 0;border-bottom:1px solid #111;}
+.sec-tag{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.sec-title{font-size:clamp(26px,4vw,40px);font-weight:900;line-height:1.15;margin-bottom:16px;}
+.sec-body{font-size:16px;color:rgba(255,255,255,0.45);max-width:600px;margin-bottom:36px;}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
+.card{background:var(--card);border:1px solid #1e1e1e;border-radius:16px;padding:24px;}
+.card-icon{font-size:28px;margin-bottom:12px;}
+.card-title{font-size:14px;font-weight:800;margin-bottom:8px;}
+.card-body{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6;}
+.spend-block{background:linear-gradient(135deg,#111,#0d1a0d);border:1.5px solid rgba(201,162,37,0.3);border-radius:20px;padding:40px;text-align:center;margin-bottom:24px;}
+.spend-amount{font-size:64px;font-weight:900;color:var(--gold);line-height:1;}
+.spend-period{font-size:15px;color:#555;margin-top:10px;}
+.spend-breakdown{display:flex;justify-content:center;gap:32px;margin-top:32px;flex-wrap:wrap;}
+.spend-item .val{font-size:26px;font-weight:900;color:#fff;}
+.spend-item .lbl{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
+.mgmt-row{display:flex;justify-content:space-between;align-items:center;background:#111;border:1px solid #1e1e1e;border-radius:12px;padding:20px 24px;margin-top:16px;}
+.mgmt-label{font-size:14px;color:rgba(255,255,255,0.6);}
+.mgmt-val{font-size:20px;font-weight:900;color:var(--gold);}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;}
+.testi{background:var(--card);border:1px solid #1e1e1e;border-radius:16px;padding:22px;}
+.testi-stars{color:var(--gold);font-size:13px;margin-bottom:10px;}
+.testi-text{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:14px;font-style:italic;}
+.testi-author{display:flex;align-items:center;gap:10px;}
+.testi-avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:top;flex-shrink:0;}
+.testi-name{font-size:12px;font-weight:700;}
+.testi-role{font-size:11px;color:#555;}
+.process{display:flex;flex-direction:column;gap:0;}
+.process-step{display:flex;gap:20px;padding:20px 0;}
+.process-step:not(:last-child){border-bottom:1px solid #111;}
+.step-num{width:40px;height:40px;min-width:40px;border-radius:50%;background:rgba(201,162,37,0.12);border:1px solid rgba(201,162,37,0.3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--gold);}
+.step-body h4{font-size:14px;font-weight:800;margin-bottom:4px;}
+.step-body p{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6;}
+.fast-badge{display:inline-block;background:rgba(76,175,80,0.12);border:1px solid rgba(76,175,80,0.3);color:#4caf50;font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;letter-spacing:1px;margin-left:10px;vertical-align:middle;}
+.cta-section{padding:80px 0;text-align:center;}
+.cta-section h2{font-size:clamp(28px,4vw,44px);font-weight:900;margin-bottom:16px;}
+.cta-section p{font-size:16px;color:rgba(255,255,255,0.4);margin-bottom:40px;}
+.cta-btn{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#000;font-weight:900;font-size:17px;padding:22px 56px;border-radius:16px;text-decoration:none;box-shadow:0 8px 40px rgba(201,162,37,0.35);}
+.footer{text-align:center;padding:40px 0;font-size:12px;color:#333;border-top:1px solid #111;}
+@media(max-width:600px){.hero{padding:48px 0 40px;}.hero-stats{gap:24px;}.spend-amount{font-size:44px;}.spend-breakdown{gap:20px;}.testi-grid{grid-template-columns:1fr;}}
+</style></head><body>
+<div class="page">
+
+  <div class="hero">
+    
+    <div class="hero-tag">Prepared exclusively for Capital DC</div>
+    <h1>More Leads.<br><span>More Jobs.</span><br>On Autopilot.</h1>
+    <p class="hero-sub">A done-for-you advertising system that puts Capital DC in front of High end affluent homeowners, in Canberra — every single day.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">$30 p/d</div><div class="lbl">Minimum ad spend</div></div>
+      <div class="hero-stat"><div class="num">24–48h</div><div class="lbl">To first results</div></div>
+      <div class="hero-stat"><div class="num">100%</div><div class="lbl">Done for you</div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-tag">What's Included</div>
+    <div class="sec-title">Everything handled.<br>Nothing left to chance.</div>
+    <div class="sec-body">We build, manage and optimise your ads campaign end to end — so you can focus on the jobs, not the marketing.</div>
+    <div class="cards">
+      <div class="card"><div class="card-icon">🎯</div><div class="card-title">Targeted Ad Campaigns</div><div class="card-body">We build campaigns that reach High end affluent homeowners, in Canberra who are actively looking for Renovation services right now.</div></div>
+      <div class="card"><div class="card-icon">✍️</div><div class="card-title">Ad Copy & Creative</div><div class="card-body">Compelling headlines, copy and visuals written and designed by us — tested and refined to get you the lowest cost per lead.</div></div>
+      <div class="card"><div class="card-icon">📲</div><div class="card-title">Lead Capture Setup</div><div class="card-body">Instant lead forms that capture enquiries directly and deliver them straight to your phone — name, number and job details.</div></div>
+      <div class="card"><div class="card-icon">🔄</div><div class="card-title">Ongoing Optimisation</div><div class="card-body">We monitor and optimise your campaigns daily — adjusting bids, audiences and creatives to keep costs down and results up.</div></div>
+      <div class="card"><div class="card-icon">📊</div><div class="card-title">Monthly Reporting</div><div class="card-body">A clear monthly report showing your spend, leads generated, cost per lead and what we're doing next to improve performance.</div></div>
+      <div class="card"><div class="card-icon">📞</div><div class="card-title">Direct Support</div><div class="card-body">Direct access to the team running your ads. No call centres. No waiting. Fast answers from the people who know your campaign.</div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-tag">How It Works</div>
+    <div class="sec-title">Live within days.<br>Results within 24–48 hours.</div>
+    <div class="process">
+      <div class="process-step"><div class="step-num">1</div><div class="step-body"><h4>Intro Call</h4><p>We learn your business, your ideal client and the jobs you want more of — so every ad speaks directly to the right person.</p></div></div>
+      <div class="process-step"><div class="step-num">2</div><div class="step-body"><h4>Campaign Build</h4><p>We build your full campaign — audiences, creatives, copy and lead forms — ready for launch within days of your intro call.</p></div></div>
+      <div class="process-step"><div class="step-num">3</div><div class="step-body"><h4>Launch <span class="fast-badge">⚡ Results in 24–48h</span></h4><p>Your ads go live and the platform starts delivering them immediately. Most clients see their first leads within 24 to 48 hours of launch.</p></div></div>
+      <div class="process-step"><div class="step-num">4</div><div class="step-body"><h4>Leads Hit Your Phone</h4><p>Enquiries come directly to you — name, number and job details. You call, you quote, you close.</p></div></div>
+      <div class="process-step"><div class="step-num">5</div><div class="step-body"><h4>Monthly Review</h4><p>Every month we review results with you, show you exactly what's working and set the plan for the next 30 days.</p></div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-tag">Your Investment</div>
+    <div class="sec-title">Simple, transparent<br>pricing.</div>
+    <div class="sec-body">No lock-in contracts. No hidden fees. A flexible daily ad spend — start lean, scale up as results come in.</div>
+    <div class="spend-block">
+      <div style="font-size:13px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;">Daily Ad Spend</div>
+      <div class="spend-amount">$30<span style="font-size:22px;color:#555;"> p/d minimum</span></div>
+      <div class="spend-period">Goes directly to your ad account · ~$900/month estimated</div>
+      <div class="spend-breakdown">
+        <div class="spend-item"><div class="val">$30</div><div class="lbl">Minimum daily</div></div>
+        <div class="spend-item"><div class="val">$900</div><div class="lbl">Est. monthly</div></div>
+        <div class="spend-item"><div class="val">100%</div><div class="lbl">To your ads</div></div>
+      </div>
+    </div>
+    <div class="mgmt-row"><div><div class="mgmt-label">Campaign Management</div><div style="font-size:11px;color:#555;margin-top:2px;">Strategy, build, daily optimisation & reporting — done for you</div></div><div class="mgmt-val">$245-600 P/W/week</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-tag">What Our Clients Say</div>
+    <div class="sec-title">Real businesses.<br>Real results.</div>
+    <a href="https://share.google/ZiqCy8Dtd94cvtpAx" target="_blank" style="display:flex;align-items:center;gap:12px;background:#fff;border:2px solid #e0e0e0;border-radius:12px;padding:12px 16px;text-decoration:none;margin-bottom:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+      <img src="https://www.google.com/favicon.ico" style="width:24px;height:24px;" alt="Google">
+      <div><div style="display:flex;align-items:center;gap:4px;"><span style="font-size:16px;color:#f5a623;">★★★★★</span><span style="font-size:13px;font-weight:800;color:#222;margin-left:4px;">5.0</span></div><div style="font-size:11px;color:#555;margin-top:1px;">See our Google Reviews ↗</div></div>
+    </a>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+      <div style="background:linear-gradient(135deg,#1a2235,#243050);border-radius:12px;overflow:hidden;"><div style="position:relative;"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-l2.png" style="width:100%;height:220px;object-fit:cover;object-position:top;display:block;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:50px;height:50px;background:rgba(0,0,0,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,0.85);"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid white;margin-left:4px;"></div></div></div></div><div style="padding:10px 12px;"><div style="font-size:17px;color:#f5a623;font-weight:900;">$2M+</div><div style="font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;">L2 Homes</div><div style="font-size:10px;color:rgba(255,255,255,0.6);line-height:1.4;">Pipeline filled with $2M in new builds</div></div></div>
+      <div style="background:linear-gradient(135deg,#1a2235,#243050);border-radius:12px;overflow:hidden;"><div style="position:relative;"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-josh.png" style="width:100%;height:220px;object-fit:cover;object-position:top;display:block;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:50px;height:50px;background:rgba(0,0,0,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,0.85);"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid white;margin-left:4px;"></div></div></div></div><div style="padding:10px 12px;"><div style="font-size:17px;color:#f5a623;font-weight:900;">$330k</div><div style="font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;">Josh, Quality Custom Homes</div><div style="font-size:10px;color:rgba(255,255,255,0.6);line-height:1.4;">$330k in 2 weeks</div></div></div>
+      <div style="background:linear-gradient(135deg,#1a2235,#243050);border-radius:12px;overflow:hidden;"><div style="position:relative;"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-elijah.png" style="width:100%;height:220px;object-fit:cover;object-position:top;display:block;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:50px;height:50px;background:rgba(0,0,0,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,0.85);"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid white;margin-left:4px;"></div></div></div></div><div style="padding:10px 12px;"><div style="font-size:17px;color:#f5a623;font-weight:900;">$350k</div><div style="font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;">Elijah, Spa Space</div><div style="font-size:10px;color:rgba(255,255,255,0.6);line-height:1.4;">$350k in 3 months</div></div></div>
+      <div style="background:linear-gradient(135deg,#1a2235,#243050);border-radius:12px;overflow:hidden;"><div style="position:relative;"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-vish.png" style="width:100%;height:220px;object-fit:cover;object-position:top;display:block;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:50px;height:50px;background:rgba(0,0,0,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,0.85);"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid white;margin-left:4px;"></div></div></div></div><div style="padding:10px 12px;"><div style="font-size:17px;color:#f5a623;font-weight:900;">$200k</div><div style="font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;">Vish, Streamline Building</div><div style="font-size:10px;color:rgba(255,255,255,0.6);line-height:1.4;">$200k in 2 months</div></div></div>
+      <div style="background:linear-gradient(135deg,#1a2235,#243050);border-radius:12px;overflow:hidden;"><div style="position:relative;"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-ryan.png" style="width:100%;height:220px;object-fit:cover;object-position:top;display:block;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:50px;height:50px;background:rgba(0,0,0,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,0.85);"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid white;margin-left:4px;"></div></div></div></div><div style="padding:10px 12px;"><div style="font-size:17px;color:#f5a623;font-weight:900;">$200k</div><div style="font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;">Ryan, Mode Group</div><div style="font-size:10px;color:rgba(255,255,255,0.6);line-height:1.4;">$200k in 2 months</div></div></div>
+      <div style="background:linear-gradient(135deg,#1a2235,#243050);border-radius:12px;overflow:hidden;"><div style="position:relative;"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-max.png" style="width:100%;height:220px;object-fit:cover;object-position:top;display:block;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:50px;height:50px;background:rgba(0,0,0,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,0.85);"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid white;margin-left:4px;"></div></div></div></div><div style="padding:10px 12px;"><div style="font-size:17px;color:#f5a623;font-weight:900;">$200k</div><div style="font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;">Max, Churches Restorations</div><div style="font-size:10px;color:rgba(255,255,255,0.6);line-height:1.4;">$200k in 2 months</div></div></div>
+      <div style="background:linear-gradient(135deg,#1a2235,#243050);border-radius:12px;overflow:hidden;"><div style="position:relative;"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-rr.png" style="width:100%;height:220px;object-fit:cover;object-position:top;display:block;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:50px;height:50px;background:rgba(0,0,0,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,0.85);"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid white;margin-left:4px;"></div></div></div></div><div style="padding:10px 12px;"><div style="font-size:17px;color:#f5a623;font-weight:900;">$120k</div><div style="font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;">Renovate Right Homes</div><div style="font-size:10px;color:rgba(255,255,255,0.6);line-height:1.4;">$120k in 30 days</div></div></div>
+      <div style="background:linear-gradient(135deg,#1a2235,#243050);border-radius:12px;overflow:hidden;"><div style="position:relative;"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-sean.png" style="width:100%;height:220px;object-fit:cover;object-position:top;display:block;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:50px;height:50px;background:rgba(0,0,0,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,0.85);"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid white;margin-left:4px;"></div></div></div></div><div style="padding:10px 12px;"><div style="font-size:17px;color:#f5a623;font-weight:900;">$136k</div><div style="font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;">Sean, Quality Custom Homes</div><div style="font-size:10px;color:rgba(255,255,255,0.6);line-height:1.4;">$136k in 30 days</div></div></div>
+      <div style="background:linear-gradient(135deg,#1a2235,#243050);border-radius:12px;overflow:hidden;"><div style="position:relative;"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-jeremy.png" style="width:100%;height:220px;object-fit:cover;object-position:top;display:block;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:50px;height:50px;background:rgba(0,0,0,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,0.85);"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid white;margin-left:4px;"></div></div></div></div><div style="padding:10px 12px;"><div style="font-size:17px;color:#f5a623;font-weight:900;">$112k</div><div style="font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;">Jeremy, Aurum Kitchens</div><div style="font-size:10px;color:rgba(255,255,255,0.6);line-height:1.4;">$112k kitchen in 2 weeks</div></div></div>
+      <div style="background:linear-gradient(135deg,#1a2235,#243050);border-radius:12px;overflow:hidden;"><div style="position:relative;"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-perth.png" style="width:100%;height:220px;object-fit:cover;object-position:top;display:block;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:50px;height:50px;background:rgba(0,0,0,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,0.85);"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid white;margin-left:4px;"></div></div></div></div><div style="padding:10px 12px;"><div style="font-size:17px;color:#f5a623;font-weight:900;">$100k</div><div style="font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;">Perth Building Projects</div><div style="font-size:10px;color:rgba(255,255,255,0.6);line-height:1.4;">$100k first month</div></div></div>
+      <div style="background:linear-gradient(135deg,#1a2235,#243050);border-radius:12px;overflow:hidden;"><div style="position:relative;"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-jorge.png" style="width:100%;height:220px;object-fit:cover;object-position:top;display:block;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:50px;height:50px;background:rgba(0,0,0,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,0.85);"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid white;margin-left:4px;"></div></div></div></div><div style="padding:10px 12px;"><div style="font-size:17px;color:#f5a623;font-weight:900;">$93k</div><div style="font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;">Jorge, Budget Reno</div><div style="font-size:10px;color:rgba(255,255,255,0.6);line-height:1.4;">$93k in 1 month</div></div></div>
+      <div style="background:linear-gradient(135deg,#1a2235,#243050);border-radius:12px;overflow:hidden;"><div style="position:relative;"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-harry.png" style="width:100%;height:220px;object-fit:cover;object-position:top;display:block;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:50px;height:50px;background:rgba(0,0,0,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,0.85);"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid white;margin-left:4px;"></div></div></div></div><div style="padding:10px 12px;"><div style="font-size:17px;color:#f5a623;font-weight:900;">$80k MRR</div><div style="font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;">Harry, Simply Shutters & Shades</div><div style="font-size:10px;color:rgba(255,255,255,0.6);line-height:1.4;">$80k added in MRR</div></div></div>
+      <div style="background:linear-gradient(135deg,#1a2235,#243050);border-radius:12px;overflow:hidden;"><div style="position:relative;"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-andrew.png" style="width:100%;height:220px;object-fit:cover;object-position:top;display:block;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:50px;height:50px;background:rgba(0,0,0,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,0.85);"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid white;margin-left:4px;"></div></div></div></div><div style="padding:10px 12px;"><div style="font-size:17px;color:#f5a623;font-weight:900;">$70k</div><div style="font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;">Andrew, Buildavate</div><div style="font-size:10px;color:rgba(255,255,255,0.6);line-height:1.4;">$70k in first month</div></div></div>
+      <div style="background:linear-gradient(135deg,#1a2235,#243050);border-radius:12px;overflow:hidden;"><div style="position:relative;"><img src="https://alfbutt.github.io/qj-proposals/qj-tp-paul.png" style="width:100%;height:220px;object-fit:cover;object-position:top;display:block;"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:50px;height:50px;background:rgba(0,0,0,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,0.85);"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid white;margin-left:4px;"></div></div></div></div><div style="padding:10px 12px;"><div style="font-size:17px;color:#f5a623;font-weight:900;">2/month</div><div style="font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;">Paul, Alegre Homes</div><div style="font-size:10px;color:rgba(255,255,255,0.6);line-height:1.4;">2 bathrooms every month</div></div></div>
+      <div style="background:linear-gradient(135deg,#1a2235,#243050);border-radius:12px;overflow:hidden;"><div style="height:220px;display:flex;align-items:center;justify-content:center;background:#111d30;position:relative;"><div style="text-align:center;"><div style="font-size:26px;font-weight:900;color:#f5a623;letter-spacing:1px;">BARCO</div><div style="font-size:12px;font-weight:700;color:#fff;letter-spacing:2px;">BUILD</div></div><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="width:50px;height:50px;background:rgba(0,0,0,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid rgba(255,255,255,0.85);"><div style="width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:18px solid white;margin-left:4px;"></div></div></div></div><div style="padding:10px 12px;"><div style="font-size:17px;color:#f5a623;font-weight:900;">$140k</div><div style="font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;">Barco Build</div><div style="font-size:10px;color:rgba(255,255,255,0.6);line-height:1.4;">$140k in 2 months</div></div></div>
+    </div>
+  </div>
+
+  <div class="cta-section" id="get-started">
+    <div class="sec-tag">Ready to go?</div>
+    <h2>Let's get Capital DC<br><span style="color:var(--gold);">more jobs.</span></h2>
+    <p>This proposal was prepared exclusively for Moe at Capital DC.<br>Book your intro call below and we'll have your campaign live within days.</p>
+    <a href="https://calendar.qualityjobs.com.au" target="_blank" class="cta-btn">📅 Book Your Intro Call →</a>
+  </div>
+
+  <div class="footer">Quality Jobs · qualityjobs.com.au · ABN: 91 463 305 751<br>Prepared for Capital DC · 29 July 2026</div>
+
+</div></body></html>
