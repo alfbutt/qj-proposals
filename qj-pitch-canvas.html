@@ -2440,8 +2440,25 @@
         <label class="pa-label">Ad Spend — Agreement Covers (per day)</label>
         <input class="pa-input" id="pa-adspend-covers" type="text" placeholder="e.g. $80/day">
         <input type="hidden" id="pa-adspend" value="">
-        <label class="pa-label">Program Length</label>
-        <input class="pa-input" id="pa-duration" type="text" placeholder="e.g. 90 days">
+        <label class="pa-label">Programme Term</label>
+        <div id="pa-term-toggle" style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #1e1e2e;margin-bottom:2px;">
+          <button id="pa-term-90" onclick="setPaTerm('90')" style="flex:1;padding:10px 6px;font-size:11px;font-weight:800;cursor:pointer;border:none;background:linear-gradient(135deg,#C9A225,#E8C04A);color:#000;font-family:inherit;letter-spacing:0.3px;">90-Day Programme</button>
+          <button id="pa-term-mtm" onclick="setPaTerm('mtm')" style="flex:1;padding:10px 6px;font-size:11px;font-weight:800;cursor:pointer;border:none;background:#0d0d16;color:#555;font-family:inherit;letter-spacing:0.3px;">Month-by-Month</button>
+        </div>
+        <input type="hidden" id="pa-duration" value="90 days">
+        <script>
+        function setPaTerm(val){
+          var is90 = val==='90';
+          document.getElementById('pa-duration').value = is90 ? '90 days' : 'month-by-month';
+          document.getElementById('pa-term-90').style.background  = is90 ? 'linear-gradient(135deg,#C9A225,#E8C04A)' : '#0d0d16';
+          document.getElementById('pa-term-90').style.color        = is90 ? '#000' : '#555';
+          document.getElementById('pa-term-mtm').style.background = is90 ? '#0d0d16' : 'linear-gradient(135deg,#C9A225,#E8C04A)';
+          document.getElementById('pa-term-mtm').style.color       = is90 ? '#555' : '#000';
+          // also sync the agreement field
+          var agrField = document.getElementById('agr-t-duration');
+          if(agrField) agrField.value = is90 ? '90 days' : 'month-by-month';
+        }
+        </script>
       </div>
 
       <!-- AGREEMENT + EXTRAS -->
@@ -5141,6 +5158,7 @@ async function _buildAgreement(tunnelBase) {
   const adspend = adspendCovers;
   const paymentUrl       = document.getElementById('pa-payment-url').value  || '';
   const duration         = document.getElementById('pa-duration').value     || '90 days';
+  const isMtM            = duration === 'month-by-month';
   const transcript       = document.getElementById('pa-transcript').value   || '';
   const pain             = document.getElementById('pa-pain').value         || '';
   const services         = getChecked(document.querySelector('.pa-checkbox-grid'));
@@ -5423,7 +5441,7 @@ async function _buildAgreement(tunnelBase) {
   <!-- 5. INVESTMENT -->
   <h2>5. Your Investment</h2>
   <div class="price-box">
-    <div class="sub">Initial ${duration} Programme (Minimum)</div>
+    <div class="sub">${isMtM ? 'Month-by-Month Programme' : `Initial ${duration} Programme (Minimum)`}</div>
     <div class="amount">${price}</div>
     <div class="sub">Covers up to ${adspendCovers} in Ad Spend · Paid Advertising Management + Lead Generation</div>
     <div class="note">Continuation (Month 4 onwards): ongoing management at the same monthly rate, billed in advance.</div>
@@ -5444,15 +5462,15 @@ async function _buildAgreement(tunnelBase) {
   <h2>7. Guarantee Mechanics</h2>
   <div class="guarantee-box">
     <h3>7.1 Performance Guarantee</h3>
-    <p style="margin:0">Quality Jobs guarantees that within the initial ${duration} term, ${clientName} will achieve a minimum of <strong>${guaranteeAmt}</strong> in verified renovation work from leads generated through the programme.${guaranteeQuotes ? ` Based on the volume and quality of leads delivered, ${clientName} can reasonably expect to receive <strong>${guaranteeQuotes} job quotes</strong> during this period.` : ''}</p>
+    <p style="margin:0">${isMtM ? `Quality Jobs guarantees that ${clientName} will achieve a minimum of <strong>${guaranteeAmt}</strong> in verified renovation work from leads generated through the programme.${guaranteeQuotes ? ` Based on the volume and quality of leads delivered, ${clientName} can reasonably expect to receive <strong>${guaranteeQuotes} job quotes</strong> per month.` : ''}` : `Quality Jobs guarantees that within the initial ${duration} term, ${clientName} will achieve a minimum of <strong>${guaranteeAmt}</strong> in verified renovation work from leads generated through the programme.${guaranteeQuotes ? ` Based on the volume and quality of leads delivered, ${clientName} can reasonably expect to receive <strong>${guaranteeQuotes} job quotes</strong> during this period.` : ''}`}</p>
   </div>
   ${includeCallOff ? `<div class="guarantee-box" style="margin-top:12px;">
     <h3>7.2 One-Month Revenue Call-Off Period</h3>
-    <p style="margin:0">Upon completion of the initial ${duration} term, a <strong>1-month call-off period</strong> will commence automatically. During this month ${clientName} continues on the standard management fee and Quality Jobs continues all services in full. This period exists solely to allow leads and quotes generated during the programme to convert into confirmed, invoiced revenue — ensuring ${clientName} receives full credit for all pipeline work produced.</p>
+    ${isMtM ? '' : `<p style="margin:0">Upon completion of the initial ${duration} term, a <strong>1-month call-off period</strong> will commence automatically. During this month ${clientName} continues on the standard management fee and Quality Jobs continues all services in full. This period exists solely to allow leads and quotes generated during the programme to convert into confirmed, invoiced revenue — ensuring ${clientName} receives full credit for all pipeline work produced.</p>`}
   </div>` : ''}
   <div class="guarantee-box" style="margin-top:12px;">
     <h3>7.3 "Work for Free" Commitment</h3>
-    <p style="margin:0">If, after the initial ${duration} term${includeCallOff ? ' <strong>plus</strong> the one-month call-off period' : ''}, the ${guaranteeAmt} revenue benchmark has still not been reached, Quality Jobs will continue managing and optimising all campaigns at <strong>no additional management fee</strong> for a further <strong>1 month</strong>.</p>
+    <p style="margin:0">${isMtM ? `If the ${guaranteeAmt} revenue benchmark has not been reached in any given month, Quality Jobs will continue managing and optimising all campaigns at <strong>no additional management fee</strong> for a further <strong>1 month</strong>.` : `If, after the initial ${duration} term${includeCallOff ? ' <strong>plus</strong> the one-month call-off period' : ''}, the ${guaranteeAmt} revenue benchmark has still not been reached, Quality Jobs will continue managing and optimising all campaigns at <strong>no additional management fee</strong> for a further <strong>1 month</strong>.`}</p>
     <ul style="margin-top:10px;">
       <li><span>Guarantee applies to management fees only — ad spend continues to be paid directly by ${clientName}</span></li>
       <li><span>If the benchmark is achieved during the free extension, no further extension is required</span></li>
@@ -5461,7 +5479,7 @@ async function _buildAgreement(tunnelBase) {
   ${ongoingRetainer ? `
   <div class="guarantee-box" style="margin-top:12px;">
     <h3>7.4 Ongoing Monthly Retainer</h3>
-    <p style="margin:0">Following the completion of the initial ${duration} term, this agreement will continue on a rolling monthly basis at a retainer of <strong>${ongoingRetainer}</strong>. Either party may terminate the ongoing arrangement by providing 30 days written notice at any time.</p>
+    <p style="margin:0">${isMtM ? `This agreement operates on a rolling month-by-month basis at a retainer of <strong>${price}</strong>. Either party may terminate by providing <strong>30 days written notice</strong> at any time.` : `Following the completion of the initial ${duration} term, this agreement will continue on a rolling monthly basis at a retainer of <strong>${ongoingRetainer}</strong>. Either party may terminate the ongoing arrangement by providing 30 days written notice at any time.`}</p>
   </div>` : ''}
 
   <hr>` : ''}
