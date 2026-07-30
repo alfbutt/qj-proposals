@@ -2906,6 +2906,12 @@ We spoke with Scott from Rapid Plumbing Group. He's been running the business fo
           <input class="pa-input" id="ap-ad-spend-min" type="number" placeholder="e.g. 30">
           <label class="pa-label">Campaign Management Fee (per week)</label>
           <input class="pa-input" id="ap-mgmt-weekly" type="text" placeholder="e.g. 250">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;">
+            <label class="pa-label" style="margin:0;">Include GST (+10%)</label>
+            <div id="ap-gst-toggle" data-on="false" onclick="this.dataset.on=this.dataset.on==='true'?'false':'true';this.style.background=this.dataset.on==='true'?'#C9A225':'#333';document.getElementById('ap-gst-knob').style.left=this.dataset.on==='true'?'19px':'3px';" style="width:36px;height:20px;border-radius:10px;background:#333;cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0;">
+              <div id="ap-gst-knob" style="width:14px;height:14px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:left 0.2s;"></div>
+            </div>
+          </div>
         </div>
 
         <div class="pa-section">
@@ -4217,9 +4223,13 @@ function _buildAdsProposal() {
   const spendMin       = parseFloat(document.getElementById('ap-ad-spend-min').value) || 30;
   const mgmtWeekly     = document.getElementById('ap-mgmt-weekly').value || '250';
   const logoUrl        = (document.getElementById('ap-logo-url').value || '').trim();
+  const includeGst     = document.getElementById('ap-gst-toggle').dataset.on === 'true';
+  const gstMult        = includeGst ? 1.1 : 1;
   const spendDisplay   = `$${spendMin}`;
-  const monthlyDisplay = `$${(spendMin*30).toLocaleString('en-AU')}`;
-  const mgmtDisplay    = `$${mgmtWeekly}/week`;
+  const weeklyDisplay  = `$${Math.round(spendMin * 7 * gstMult).toLocaleString('en-AU')}`;
+  const mgmtRaw        = parseFloat(mgmtWeekly) || 0;
+  const mgmtFinal      = includeGst ? Math.round(mgmtRaw * 1.1) : mgmtRaw;
+  const mgmtDisplay    = `$${mgmtFinal}/week${includeGst ? ' inc. GST' : ' + GST'}`;
   const today = new Date().toLocaleDateString('en-AU', { day:'numeric', month:'long', year:'numeric' });
 
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -4358,10 +4368,10 @@ body{background:var(--dark);color:#fff;font-family:-apple-system,BlinkMacSystemF
     <div class="spend-block">
       <div style="font-size:13px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;">Daily Ad Spend</div>
       <div class="spend-amount">${spendDisplay}<span style="font-size:22px;color:#555;"> p/d minimum</span></div>
-      <div class="spend-period">Goes directly to your ad account · ~${monthlyDisplay}/month estimated</div>
+      <div class="spend-period">Goes directly to your ad account · ~${weeklyDisplay}/week estimated${includeGst ? ' inc. GST' : ''}</div>
       <div class="spend-breakdown">
         <div class="spend-item"><div class="val">${spendDisplay}</div><div class="lbl">Minimum daily</div></div>
-        <div class="spend-item"><div class="val">${monthlyDisplay}</div><div class="lbl">Est. monthly</div></div>
+        <div class="spend-item"><div class="val">${weeklyDisplay}</div><div class="lbl">Est. weekly</div></div>
         <div class="spend-item"><div class="val">100%</div><div class="lbl">To your ads</div></div>
       </div>
     </div>
