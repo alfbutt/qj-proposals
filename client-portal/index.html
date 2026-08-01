@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Quality Jobs · Client Success Path</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Wistia player — add one extra "embed/<mediaId>.js" line below per new Wistia video used in MODULES -->
+<script src="https://fast.wistia.com/player.js" async></script>
+<script src="https://fast.wistia.com/embed/40h74rg610.js" async type="module"></script>
+<script src="https://fast.wistia.com/embed/8icntfy6l0.js" async type="module"></script>
+<script src="https://fast.wistia.com/embed/yp8hecnmfx.js" async type="module"></script>
+<style>
+  wistia-player[media-id]:not(:defined) { display: block; filter: blur(5px); }
+</style>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --bg: #0a0908;
+    --surface: #17150f;
+    --border: rgba(255,255,255,0.1);
+    --text: #f8f5ec;
+    --muted: #a89f8c;
+    --accent: #d6a520;
+    --accent-glow: rgba(214,165,32,0.55);
+    --green: #34d399;
+    --green-glow: rgba(52,211,153,0.55);
+  }
+
+  html, body { height: 100%; overscroll-behavior-y: contain; }
+  body {
+    font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text);
+    overflow: hidden;
+  }
+
+  /* ── Feed ── */
+  .feed {
+    height: 100vh; height: 100dvh; width: 100%;
+    overflow-y: scroll; scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+  .slide {
+    height: 100vh; height: 100dvh; width: 100%;
+    scroll-snap-align: start; scroll-snap-stop: always;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; padding: 4.25rem 1.25rem 1.25rem;
+    background: radial-gradient(ellipse at 50% 30%, #1c1811 0%, var(--bg) 65%);
+    overflow-y: auto; scrollbar-width: none;
+  }
+  .slide::-webkit-scrollbar { display: none; }
+
+  /* ── Glow + video card ── */
+  .glow-card { position: relative; width: 100%; max-width: 380px; display: flex; justify-content: center; }
+  .glow {
+    position: absolute; inset: -48px -64px;
+    background: radial-gradient(closest-side, var(--accent-glow), transparent 72%);
+    filter: blur(38px); opacity: 0.85; z-index: 0; pointer-events: none;
+    transition: background 0.4s ease;
+  }
+  .slide.done .glow { background: radial-gradient(closest-side, var(--green-glow), transparent 72%); }
+  .video-frame {
+    position: relative; z-index: 1; width: min(84vw, 380px); aspect-ratio: 16/9;
+    background: #000; border-radius: 22px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .video-frame iframe, .video-frame video, .video-frame wistia-player { width: 100%; height: 100%; border: 0; display: block; object-fit: cover; }
+  .video-placeholder {
+    width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.6rem; background: linear-gradient(160deg, #232018, #17150f); padding: 1.5rem; text-align: center;
+  }
+  .video-placeholder .icon { font-size: 2.4rem; opacity: 0.75; }
+  .video-placeholder .msg { font-size: 0.92rem; font-weight: 600; color: var(--text); }
+  .video-placeholder .sub { font-size: 0.72rem; color: var(--muted); max-width: 220px; }
+
+  .play-btn {
+    position: absolute; z-index: 2; width: 62px; height: 62px; border-radius: 50%;
+    background: rgba(0,0,0,0.45); border: 1.5px solid rgba(255,255,255,0.5);
+    backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; color: #fff; cursor: pointer;
+  }
+
+  /* ── Branded poster (custom thumbnail over a blurred video preview) ── */
+  .poster {
+    position: absolute; inset: 0; cursor: pointer;
+    background-size: cover; background-position: center;
+  }
+  .poster-scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(10,9,8,0.32) 0%, rgba(10,9,8,0.72) 100%);
+  }
+  .poster-content {
+    position: relative; z-index: 1; width: 100%; height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.7rem;
+    padding: 1rem;
+  }
+  .poster-logo { width: 40px; height: 40px; filter: drop-shadow(0 2px 10px rgba(0,0,0,0.5)); }
+  .poster-cta {
+    font-size: 0.92rem; font-weight: 700; color: #fff; text-align: center;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.6); max-width: 260px; line-height: 1.3;
+  }
+  .poster-play {
+    width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,0.95);
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+  }
+  .poster-play::after {
+    content: ''; border-style: solid; border-width: 8px 0 8px 13px;
+    border-color: transparent transparent transparent #1a1a1a; margin-left: 3px;
+  }
+
+  .resource-link {
+    position: relative; z-index: 1; margin-top: 0.6rem; display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.7rem; font-weight: 600; color: var(--accent); text-decoration: none;
+    background: rgba(214,165,32,0.12); border: 1px solid rgba(214,165,32,0.32); border-radius: 100px;
+    padding: 0.4rem 0.9rem; max-width: 90%;
+  }
+
+  /* ── Info below video ── */
+  .slide-info { width: 100%; max-width: 380px; margin-top: 0.7rem; text-align: center; position: relative; z-index: 1; }
+  .slide-eyebrow {
+    font-size: 0.68rem; font-weight: 600; color: var(--accent); letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 0.35rem;
+  }
+  .slide-title {
+    font-size: 1.05rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.35rem; letter-spacing: -0.01em;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .slide-desc {
+    font-size: 0.8rem; line-height: 1.45; color: var(--muted); margin-bottom: 0.65rem;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .chip-row {
+    display: flex; flex-wrap: nowrap; gap: 0.4rem; overflow-x: auto; scrollbar-width: none;
+    padding-bottom: 2px; justify-content: flex-start; mask-image: linear-gradient(90deg, #000 88%, transparent);
+  }
+  .chip-row::-webkit-scrollbar { display: none; }
+  .chip {
+    font-size: 0.66rem; color: var(--text); background: rgba(255,255,255,0.08);
+    border: 1px solid var(--border); border-radius: 100px; padding: 0.3rem 0.65rem;
+    white-space: nowrap; flex-shrink: 0;
+  }
+
+  /* ── Top overlay ── */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+    padding: 0.9rem 1rem 1.6rem; display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(180deg, rgba(0,0,0,0.55), transparent);
+    pointer-events: none;
+  }
+  .topbar * { pointer-events: auto; }
+  .topbar-left { display: flex; align-items: center; gap: 0.6rem; }
+  .topbar-logo { width: 34px; height: 34px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.25); }
+  .topbar-counter { font-size: 0.68rem; color: var(--muted); font-weight: 500; }
+  .topbar-counter b { color: var(--text); }
+  .list-btn {
+    width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18); color: var(--text); font-size: 1.05rem;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+
+  .top-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.08); z-index: 25; }
+  .top-progress-fill { height: 100%; background: var(--accent); transition: width 0.3s ease; }
+
+  /* ── Right side action rail ── */
+  .rail {
+    position: fixed; right: 0.85rem; top: 50%; transform: translateY(-50%);
+    z-index: 20; display: flex; flex-direction: column; align-items: center; gap: 1.1rem;
+  }
+  .complete-btn {
+    width: 54px; height: 54px; border-radius: 50%; background: rgba(255,255,255,0.1);
+    border: 1.5px solid rgba(255,255,255,0.25); color: var(--text); font-size: 1.4rem;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .complete-btn.done { background: var(--green); border-color: var(--green); color: #06231a; transform: scale(1.05); }
+  .complete-btn .pop { animation: pop 0.35s ease; }
+  @keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.3); } 100% { transform: scale(1); } }
+
+  .dots { display: flex; flex-direction: column; gap: 6px; max-height: 40vh; overflow: hidden; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.25); cursor: pointer; transition: all 0.2s; flex-shrink: 0; }
+  .dot.active { background: var(--accent); width: 8px; height: 8px; }
+  .dot.done { background: var(--green); }
+
+  .nav-hint {
+    position: fixed; bottom: 1.4rem; left: 50%; transform: translateX(-50%);
+    z-index: 20; font-size: 0.72rem; color: var(--muted); display: flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.07); border: 1px solid var(--border); padding: 0.45rem 0.9rem; border-radius: 100px;
+    transition: opacity 0.5s ease; pointer-events: none;
+  }
+  .nav-hint.hide { opacity: 0; }
+  .bounce { animation: bounce 1.4s ease-in-out infinite; }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+
+  /* ── Lesson list sheet ── */
+  .sheet-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 30;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+  }
+  .sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+  .sheet {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 31; height: 78vh; max-height: 78vh;
+    background: var(--surface); border-radius: 20px 20px 0 0; border-top: 1px solid var(--border);
+    transform: translateY(100%); transition: transform 0.3s ease; display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .sheet.open { transform: translateY(0); }
+  .sheet-handle { width: 40px; height: 4px; background: rgba(255,255,255,0.25); border-radius: 100px; margin: 0.75rem auto 0.5rem; flex-shrink: 0; }
+  .sheet-title { font-size: 0.95rem; font-weight: 700; text-align: center; margin-bottom: 0.75rem; flex-shrink: 0; }
+  .sheet-list { flex: 1; min-height: 0; overflow-y: auto; padding: 0 1rem 1.5rem; display: flex; flex-direction: column; gap: 0.3rem; }
+  .sheet-group-title {
+    font-size: 0.66rem; font-weight: 600; color: var(--accent); text-transform: uppercase;
+    letter-spacing: 0.06em; margin: 0.7rem 0 0.3rem 0.5rem;
+  }
+  .sheet-row {
+    display: flex; align-items: center; gap: 0.7rem; padding: 0.65rem 0.6rem; border-radius: 10px; cursor: pointer;
+  }
+  .sheet-row:active { background: rgba(255,255,255,0.06); }
+  .sheet-row.active { background: rgba(214,165,32,0.14); }
+  .sheet-check {
+    width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center; font-size: 0.68rem; flex-shrink: 0;
+  }
+  .sheet-row.done .sheet-check { background: var(--green); border-color: var(--green); color: #06231a; }
+  .sheet-row-title { font-size: 0.84rem; color: var(--text); }
+  .sheet-row.active .sheet-row-title { color: var(--accent); font-weight: 600; }
+
+  @media (min-width: 640px) {
+    .video-frame { height: 48dvh; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-progress"><div class="top-progress-fill" id="topProgressFill" style="width:0%"></div></div>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <img class="topbar-logo" src="qj-client-portal-logo.png" alt="Quality Jobs" />
+    <div class="topbar-counter" id="topbarCounter"><b>1</b> / 10 · Getting Set Up</div>
+  </div>
+  <div class="list-btn" id="openSheetBtn">☰</div>
+</div>
+
+<div class="feed" id="feed"></div>
+
+<div class="rail">
+  <div class="complete-btn" id="completeBtn">✓</div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="nav-hint" id="navHint"><span class="bounce">↑</span> Swipe up for the next video</div>
+
+<div class="sheet-backdrop" id="sheetBackdrop"></div>
+<div class="sheet" id="sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-title">All Lessons</div>
+  <div class="sheet-list" id="sheetList"></div>
+</div>
+
+<script>
+/* Same curriculum data as the full course version — keep both files in sync when editing. */
+const MODULES = [
+  { title: 'Getting Set Up', lessons: [
+    { title: 'Setting Up Your Google My Business Profile', video: 'wistia:40h74rg610', aspect: 1.5434083601286173,
+      poster: { brand: 'google', label: 'Set Up Your Business Profile on Google' },
+      link: { label: 'Set Up Your Google Business Profile ↗', url: 'https://business.google.com/create' },
+      description: "Claim, verify and fully fill out your Google My Business profile — often the first thing a homeowner checks before they trust you enough to book a quote.",
+      takeaways: ['Claim & verify your profile', 'What to fill in first', 'Look trustworthy fast'] },
+    { title: 'Setting Up Your Quoting Software', video: 'wistia:yp8hecnmfx', aspect: 1.5434083601286173,
+      poster: { label: 'Set Up Your Quality Quotes Account' },
+      link: { label: 'quotes.qualityjobs.com.au ↗', url: 'https://quotes.qualityjobs.com.au' },
+      description: "A walkthrough of the quoting software we provide, so you're ready to send professional quotes from your very first job.",
+      takeaways: ['Get logged in & set up', 'Build your first template', 'Send your first quote'] }
+  ]},
+  { title: 'The Sales Process', lessons: [
+    { title: 'The Qualification Call', video: 'wistia:8icntfy6l0', aspect: 1.5434083601286173,
+      poster: { label: 'The Pre-Qualification Script' },
+      link: { label: 'View the Sales Script Document ↗', url: 'https://docs.google.com/document/d/1WrQr96PTgBdkeqpA_CF4FRAIFBd0wAxC7-_6V_iDMO8/edit?usp=sharing' },
+      description: 'Built with our top clients — including a HIA judge — this is the exact script for pre-qualifying a client before you go to site, how to conduct yourself once you’re there, and the questions to ask around buying triggers so your sales process is systemised and your close rate goes up.',
+      takeaways: ['Pre-qualify before you quote', 'How to conduct yourself on site', 'Spot the buying triggers', 'Systemise your sales process'] },
+    { title: 'On-Site Quoting: What To Do, Say & How To Help Them Envision It', video: '',
+      description: 'What a strong on-site quote actually looks like — from arrival to getting the client picturing the finished result.',
+      takeaways: ['What to do on arrival', 'The language to use', 'Help them envision it'] }
+  ]},
+  { title: 'Financing Projects', lessons: [
+    { title: 'Offering Financing to Clients', video: '',
+      description: 'How to introduce financing as an option so price is never the reason a job doesn’t go ahead.',
+      takeaways: ['When to bring it up', 'How to present it', 'Close bigger jobs'] }
+  ]},
+  { title: 'The 3D Render Proposal', lessons: [
+    { title: 'Building a 3D Render Proposal in 5–10 Minutes', video: '',
+      description: 'How to put together a client’s 3D render proposal fast — from on-site details to a finished render in 5–10 minutes.',
+      takeaways: ['What to capture on-site', 'Build the render fast', 'Turn it into a proposal'] }
+  ]},
+  { title: 'Vision Boards', lessons: [
+    { title: 'Putting Together a Vision Board', video: '',
+      description: 'How to build a vision board for a client that reflects the style and finish they’re after.',
+      takeaways: ['Source the right images', 'Lay it out well', 'Keep it quick per client'] },
+    { title: 'Selling the Vision Board On-Site (As An Add-On)', video: '',
+      description: 'How to position and sell the vision board as an extra, paid add-on while on site.',
+      takeaways: ['When to bring it up', 'How to price & pitch it', 'Handle hesitation'] },
+    { title: 'Fulfilling & Delivering the Vision Board', video: '',
+      description: 'How to fulfil the vision board once sold, using the same 3D render tool to deliver it.',
+      takeaways: ['Sold-to-delivered workflow', 'Ties into the render tool', 'What "delivered" looks like'] }
+  ]},
+  { title: 'Presenting & Closing', lessons: [
+    { title: 'Presenting the Vision Board on Zoom & Closing the Deal', video: '',
+      description: 'How to present the finished vision board over Zoom — and close the client on that same call.',
+      takeaways: ['Structure the Zoom call', 'Talk through the board', 'Move straight into the close'] }
+  ]}
+];
+
+let allLessons = [];
+MODULES.forEach((m, mi) => m.lessons.forEach((l, li) => allLessons.push({ ...l, mi, li, id: mi + '-' + li, moduleTitle: m.title })));
+
+const clientKey = 'default';
+function storageKey(k) { return 'qj_portal_progress_' + k; }
+function getDone() { return JSON.parse(localStorage.getItem(storageKey(clientKey)) || '[]'); }
+function setDone(arr) { localStorage.setItem(storageKey(clientKey), JSON.stringify(arr)); }
+function isDone(id) { return getDone().includes(id); }
+
+function toEmbedUrl(url) {
+  if (!url) return null;
+  url = url.trim();
+  let m = url.match(/(?:youtu\.be\/|youtube\.com\/watch\?v=|youtube\.com\/embed\/)([\w-]{6,})/);
+  if (m) return 'https://www.youtube.com/embed/' + m[1] + '?playsinline=1';
+  m = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (m) return 'https://player.vimeo.com/video/' + m[1];
+  m = url.match(/loom\.com\/(?:share|embed)\/([a-zA-Z0-9]+)/);
+  if (m) return 'https://www.loom.com/embed/' + m[1];
+  return url;
+}
+function isDirectVideoFile(url) { return /\.(mp4|webm|mov)(\?.*)?$/i.test(url); }
+
+const GOOGLE_G_SVG = `<svg class="poster-logo" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+  <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+  <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+  <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+</svg>`;
+
+function posterHtml(lesson, wistiaId) {
+  const bg = wistiaId ? `https://fast.wistia.com/embed/medias/${wistiaId}/swatch` : '';
+  const logo = lesson.poster && lesson.poster.brand === 'google' ? GOOGLE_G_SVG : '';
+  const label = (lesson.poster && lesson.poster.label) || 'Watch this lesson';
+  return `<div class="poster" style="background-image:url('${bg}')" onclick="playLessonVideo(this)">
+    <div class="poster-scrim"></div>
+    <div class="poster-content">
+      ${logo}
+      <div class="poster-cta">${label}</div>
+      <div class="poster-play"></div>
+    </div>
+  </div>`;
+}
+
+/* ── Build slides ── */
+const feed = document.getElementById('feed');
+feed.innerHTML = allLessons.map(lesson => {
+  let mediaHtml, wistiaId = '';
+  if (lesson.video && lesson.video.startsWith('wistia:')) {
+    wistiaId = lesson.video.slice(7);
+    mediaHtml = posterHtml(lesson, wistiaId);
+  } else {
+    const embed = toEmbedUrl(lesson.video);
+    if (!embed) {
+      mediaHtml = `<div class="video-placeholder">
+        <div class="icon">🎬</div>
+        <div class="msg">Video coming soon</div>
+        <div class="sub">This lesson hasn't been recorded yet — check back shortly.</div>
+      </div>`;
+    } else if (isDirectVideoFile(embed)) {
+      mediaHtml = `<video src="${embed}" controls playsinline></video>`;
+    } else {
+      mediaHtml = `<div class="play-btn" onclick="playVideo(this,'${embed}')">▶</div>`;
+    }
+  }
+  const chips = (lesson.takeaways || []).map(t => `<div class="chip">${t}</div>`).join('');
+  const frameStyle = lesson.aspect ? ` style="aspect-ratio:${lesson.aspect}"` : '';
+  const linkHtml = lesson.link
+    ? `<a class="resource-link" href="${lesson.link.url}" target="_blank" rel="noopener">${lesson.link.label}</a>`
+    : '';
+  return `<section class="slide" data-id="${lesson.id}">
+    <div class="glow-card">
+      <div class="glow"></div>
+      <div class="video-frame" data-wistia-id="${wistiaId}" data-aspect="${lesson.aspect || ''}"${frameStyle}>${mediaHtml}</div>
+    </div>
+    ${linkHtml}
+    <div class="slide-info">
+      <div class="slide-eyebrow">${lesson.moduleTitle}</div>
+      <div class="slide-title">${lesson.title}</div>
+      <div class="slide-desc">${lesson.description}</div>
+      <div class="chip-row">${chips}</div>
+    </div>
+  </section>`;
+}).join('');
+
+function playVideo(btn, embed) {
+  const frame = btn.closest('.video-frame');
+  frame.innerHTML = `<iframe src="${embed}${embed.includes('?') ? '&' : '?'}autoplay=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+}
+
+function playLessonVideo(posterEl) {
+  const frame = posterEl.closest('.video-frame');
+  const id = frame.dataset.wistiaId;
+  const aspect = frame.dataset.aspect;
+  frame.innerHTML = `<wistia-player media-id="${id}"${aspect ? ` aspect="${aspect}"` : ''}></wistia-player>`;
+}
+
+/* ── Dots ── */
+const dotsEl = document.getElementById('dots');
+function renderDots() {
+  const done = getDone();
+  dotsEl.innerHTML = allLessons.map((l, i) =>
+    `<div class="dot ${i === activeIndex ? 'active' : ''} ${done.includes(l.id) ? 'done' : ''}" data-i="${i}"></div>`
+  ).join('');
+}
+dotsEl.addEventListener('click', e => {
+  const dot = e.target.closest('.dot');
+  if (!dot) return;
+  goToIndex(+dot.dataset.i);
+});
+
+/* ── Active slide tracking ── */
+let activeIndex = 0;
+const slides = () => Array.from(document.querySelectorAll('.slide'));
+
+function updateOverlayForIndex(i) {
+  activeIndex = i;
+  const lesson = allLessons[i];
+  const done = isDone(lesson.id);
+  document.getElementById('topbarCounter').innerHTML = `<b>${i + 1}</b> / ${allLessons.length} · ${lesson.moduleTitle}`;
+  const cbtn = document.getElementById('completeBtn');
+  cbtn.classList.toggle('done', done);
+  slides()[i]?.classList.toggle('done', done);
+  const doneCount = getDone().length;
+  document.getElementById('topProgressFill').style.width = (doneCount / allLessons.length * 100) + '%';
+  renderDots();
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
+      const idx = slides().indexOf(entry.target);
+      if (idx > -1) updateOverlayForIndex(idx);
+    }
+  });
+}, { root: feed, threshold: [0.6] });
+slides().forEach(s => observer.observe(s));
+
+function goToIndex(i) {
+  i = Math.max(0, Math.min(allLessons.length - 1, i));
+  feed.scrollTo({ top: i * feed.clientHeight, behavior: 'smooth' });
+  updateOverlayForIndex(i);
+  closeSheet();
+}
+
+/* ── Complete button ── */
+document.getElementById('completeBtn').addEventListener('click', () => {
+  const lesson = allLessons[activeIndex];
+  const done = getDone();
+  const idx = done.indexOf(lesson.id);
+  if (idx === -1) done.push(lesson.id); else done.splice(idx, 1);
+  setDone(done);
+  const btn = document.getElementById('completeBtn');
+  btn.classList.add('pop');
+  setTimeout(() => btn.classList.remove('pop'), 350);
+  updateOverlayForIndex(activeIndex);
+});
+
+/* ── Keyboard nav (up/down + left/right) ── */
+window.addEventListener('keydown', e => {
+  if (['ArrowDown','ArrowRight','PageDown'].includes(e.key)) { e.preventDefault(); goToIndex(activeIndex + 1); }
+  if (['ArrowUp','ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); goToIndex(activeIndex - 1); }
+});
+
+/* ── First-scroll hint ── */
+const navHint = document.getElementById('navHint');
+feed.addEventListener('scroll', () => { navHint.classList.add('hide'); }, { once: true });
+setTimeout(() => navHint.classList.add('hide'), 5000);
+
+/* ── Lesson sheet ── */
+const sheet = document.getElementById('sheet');
+const sheetBackdrop = document.getElementById('sheetBackdrop');
+const sheetList = document.getElementById('sheetList');
+
+function renderSheet() {
+  const done = getDone();
+  let html = '';
+  MODULES.forEach((m, mi) => {
+    html += `<div class="sheet-group-title">${m.title}</div>`;
+    m.lessons.forEach((l, li) => {
+      const id = mi + '-' + li;
+      const idx = allLessons.findIndex(x => x.id === id);
+      html += `<div class="sheet-row ${idx === activeIndex ? 'active' : ''} ${done.includes(id) ? 'done' : ''}" data-i="${idx}">
+        <div class="sheet-check">${done.includes(id) ? '✓' : ''}</div>
+        <div class="sheet-row-title">${l.title}</div>
+      </div>`;
+    });
+  });
+  sheetList.innerHTML = html;
+}
+sheetList.addEventListener('click', e => {
+  const row = e.target.closest('.sheet-row');
+  if (!row) return;
+  goToIndex(+row.dataset.i);
+});
+
+function openSheet() { renderSheet(); sheet.classList.add('open'); sheetBackdrop.classList.add('open'); }
+function closeSheet() { sheet.classList.remove('open'); sheetBackdrop.classList.remove('open'); }
+document.getElementById('openSheetBtn').addEventListener('click', openSheet);
+sheetBackdrop.addEventListener('click', closeSheet);
+
+updateOverlayForIndex(0);
+</script>
+</body>
+</html>
