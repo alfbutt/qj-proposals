@@ -3279,6 +3279,7 @@ document.querySelectorAll('.frame-handle').forEach(handle => {
     if (tool !== 'select') return;
     e.stopPropagation();
     draggingFrame = handle.closest('.frame');
+    if (draggingFrame.dataset.locked === 'true') { draggingFrame = null; return; }
     draggingFrame.classList.add('frame-selected');
     const wx = (e.clientX - tx) / scale;
     const wy = (e.clientY - 56 - ty) / scale;
@@ -6952,5 +6953,14 @@ window.addEventListener('load', () => {
     <div id="token-modal-status" style="font-size:12px;color:#4CAF50;margin-top:12px;display:none;"></div>
   </div>
 </div>
+<script>
+// Lock all frames except pricing cards — runs once on load
+(function() {
+  const UNLOCKED = new Set(['frame-pricing-a2','frame-pricing','frame-pricing-b','frame-pricing-c']);
+  document.querySelectorAll('.frame').forEach(function(f) {
+    if (!UNLOCKED.has(f.id)) f.dataset.locked = 'true';
+  });
+})();
+</script>
 </body>
 </html>
