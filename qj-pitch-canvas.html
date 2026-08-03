@@ -2643,6 +2643,15 @@
           </div>
         </div>
         <div style="font-size:10px;color:#444;margin-bottom:10px;line-height:1.5;">Section 7.2 — allows pipeline leads to convert before guarantee is assessed.</div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;margin-bottom:2px;">
+          <label class="pa-label" style="margin:0;">🚀 Include $500k Pipeline Guarantee</label>
+          <div id="pipeline-guarantee-toggle" data-on="false" onclick="togglePipelineGuarantee()" style="width:44px;height:24px;border-radius:12px;background:#333;cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0;">
+            <div id="pipeline-guarantee-knob" style="width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:left 0.2s;box-shadow:0 1px 4px rgba(0,0,0,0.3);"></div>
+          </div>
+        </div>
+        <div id="pipeline-guarantee-label" style="font-size:10px;color:#444;margin-bottom:10px;line-height:1.5;">Off — $500k in pipeline opportunity within 90 days or we work free after</div>
+
         <label class="pa-label" style="margin-top:10px;">Payment Link (after signing)</label>
         <input class="pa-input" id="pa-payment-url" type="text" placeholder="e.g. https://pay.qualityjobs.com.au/...">
         <div style="font-size:10px;color:#444;margin-top:4px;line-height:1.5;">Client is redirected here after they sign — e.g. Stripe, Square or your invoice link.</div>
@@ -5326,6 +5335,26 @@ async function buildAgreementFromModal() {
 // Legacy direct-call kept for backward compat
 function generateAgreement() { openAgreementModal(); }
 
+function togglePipelineGuarantee() {
+  const toggle = document.getElementById('pipeline-guarantee-toggle');
+  const knob   = document.getElementById('pipeline-guarantee-knob');
+  const label  = document.getElementById('pipeline-guarantee-label');
+  const isOn   = toggle.dataset.on === 'true';
+  if (isOn) {
+    toggle.dataset.on      = 'false';
+    toggle.style.background = '#333';
+    knob.style.left         = '3px';
+    label.style.color       = '#444';
+    label.textContent       = 'Off — $500k in pipeline opportunity within 90 days or we work free after';
+  } else {
+    toggle.dataset.on      = 'true';
+    toggle.style.background = '#C9A225';
+    knob.style.left         = '23px';
+    label.style.color       = '#C9A225';
+    label.textContent       = 'On — $500k pipeline guaranteed or we work free until achieved';
+  }
+}
+
 function toggleGuarantee() {
   const toggle = document.getElementById('guarantee-toggle');
   const knob   = document.getElementById('guarantee-knob');
@@ -5377,7 +5406,8 @@ async function _buildAgreement(tunnelBase) {
   const durationMonths = (() => { const m = duration.match(/(\d+)\s*month/i); return m ? parseInt(m[1]) : (duration.match(/(\d+)\s*day/i) ? Math.round(parseInt(duration.match(/(\d+)\s*day/i)[1]) / 30) : 1); })();
   const guaranteeQuotes = guaranteeQuotesRaw ? (() => { const n = parseInt(guaranteeQuotesRaw); return isNaN(n) ? guaranteeQuotesRaw : String(n * durationMonths); })() : '';
   const ongoingRetainer   = (document.getElementById('agr-t-retainer')?.value || '').trim();
-  const includeCallOff    = document.getElementById('calloff-toggle')?.dataset.on !== 'false';
+  const includeCallOff          = document.getElementById('calloff-toggle')?.dataset.on !== 'false';
+  const includePipelineGuarantee = document.getElementById('pipeline-guarantee-toggle')?.dataset.on === 'true';
   const clientABN         = (document.getElementById('agr-t-abn')?.value || '').trim();
 
   // Build scope from selected services + always-included core items
@@ -5679,9 +5709,19 @@ async function _buildAgreement(tunnelBase) {
       <li><span>If the benchmark is achieved during the free extension, no further extension is required</span></li>
     </ul>
   </div>
+  ${includePipelineGuarantee ? `
+  <div class="guarantee-box" style="margin-top:12px;border-color:#C9A225;">
+    <h3>7.4 $500,000 Pipeline Opportunity Guarantee</h3>
+    <p style="margin:0">Quality Jobs guarantees to generate a minimum of <strong>$500,000 in pipeline opportunity</strong> (combined value of quotes issued and leads qualified) for ${clientName} within the initial ${duration} term. If this benchmark is not reached by the end of the ${duration} term, Quality Jobs will continue providing all services at <strong>no management fee</strong> until the $500,000 pipeline figure is achieved.</p>
+    <ul style="margin-top:10px;">
+      <li><span>Pipeline opportunity is defined as the combined value of all quotes issued and qualified leads passed to ${clientName} during the term</span></li>
+      <li><span>Ad spend continues to be paid directly by ${clientName} during any extended free-service period</span></li>
+      <li><span>This guarantee operates independently of the revenue guarantee in 7.1 and the commitment in 7.3</span></li>
+    </ul>
+  </div>` : ''}
   ${ongoingRetainer ? `
   <div class="guarantee-box" style="margin-top:12px;">
-    <h3>7.4 Ongoing Monthly Retainer</h3>
+    <h3>${includePipelineGuarantee ? '7.5' : '7.4'} Ongoing Monthly Retainer</h3>
     <p style="margin:0">${isMtM ? `This agreement operates on a rolling month-by-month basis at a retainer of <strong>${price}</strong>. Either party may terminate by providing <strong>30 days written notice</strong> at any time.` : `Following the completion of the initial ${duration} term, this agreement will continue on a rolling monthly basis at a retainer of <strong>${ongoingRetainer}</strong>. Either party may terminate the ongoing arrangement by providing 30 days written notice at any time.`}</p>
   </div>` : ''}
 
