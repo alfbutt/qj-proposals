@@ -2659,9 +2659,15 @@
 
       <!-- MEETING NOTES -->
       <div class="pa-section">
-        <div class="pa-section-title">🎙️ Meeting Notes / Transcript</div>
-        <label class="pa-label">Paste key points from your conversation</label>
-        <textarea class="pa-input" id="pa-transcript" rows="7" placeholder="e.g. Michael mentioned they've tried Facebook ads before but had low quality leads. Currently doing $80k/mo, want to get to $150k. Main concern is time — they're already overwhelmed. Keen on having someone handle calls for them..."></textarea>
+        <div class="pa-section-title">🎙️ Meeting Transcript</div>
+        <label class="pa-label">Paste or upload the full transcript — then auto-fill all fields</label>
+        <textarea class="pa-input" id="pa-transcript" rows="7" placeholder="Paste your full meeting transcript or notes here, then press Auto-Fill below…"></textarea>
+        <label style="display:flex;align-items:center;gap:8px;margin-top:6px;cursor:pointer;background:#0d0d16;border:1px dashed #2a2a3a;border-radius:8px;padding:9px 12px;font-size:11px;color:#555;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#C9A225'" onmouseout="this.style.borderColor='#2a2a3a'">
+          <input type="file" id="pa-transcript-file" accept=".txt,.md,.pdf,.doc,.docx" style="display:none;" onchange="loadTranscriptFile(this)">
+          📄 <span>Upload transcript file (.txt, .pdf, .docx)</span>
+        </label>
+        <button onclick="autoFillFromTranscript()" style="width:100%;margin-top:8px;padding:13px;background:linear-gradient(135deg,#1a0a40,#2d1060);border:1px solid #5a2db5;border-radius:10px;color:#c084fc;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:0.3px;transition:all 0.2s;" onmouseover="this.style.background='linear-gradient(135deg,#2d1060,#4a1d96)'" onmouseout="this.style.background='linear-gradient(135deg,#1a0a40,#2d1060)'">🪄 Auto-Fill All Fields from Transcript</button>
+        <div id="pa-autofill-status" style="font-size:11px;color:#555;margin-top:6px;line-height:1.5;min-height:14px;"></div>
       </div>
 
       <!-- PAIN POINTS -->
@@ -4103,6 +4109,163 @@ function previewClientLogo(input) {
 
 function toggleCheck(el) {
   el.classList.toggle('checked');
+}
+
+// ── TRANSCRIPT AUTO-FILL ─────────────────────────────────────────────────────
+
+function loadTranscriptFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const status = document.getElementById('pa-autofill-status');
+  status.textContent = 'Reading file…';
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('pa-transcript').value = e.target.result;
+    status.textContent = '✓ File loaded — press Auto-Fill to populate fields.';
+    status.style.color = '#C9A225';
+  };
+  reader.onerror = function() { status.textContent = '⚠️ Could not read file.'; status.style.color = '#e53935'; };
+  reader.readAsText(file);
+}
+
+async function autoFillFromTranscript() {
+  const transcript = (document.getElementById('pa-transcript').value || '').trim();
+  const status = document.getElementById('pa-autofill-status');
+
+  if (!transcript) {
+    status.textContent = '⚠️ Paste or upload a transcript first.';
+    status.style.color = '#e53935';
+    return;
+  }
+
+  // Get API key — try field first, then localStorage
+  const keyField = document.getElementById('pa-api-key');
+  const apiKey = (keyField && keyField.value.trim()) || localStorage.getItem('qj-anthropic-key') || '';
+  if (!apiKey) {
+    status.innerHTML = '⚠️ Paste your Anthropic API key in the AI Rewrite field below first.';
+    status.style.color = '#e53935';
+    return;
+  }
+  if (keyField && keyField.value.trim()) {
+    localStorage.setItem('qj-anthropic-key', keyField.value.trim());
+  }
+
+  status.style.color = '#C9A225';
+  status.textContent = '🪄 Reading transcript…';
+
+  const prompt = `You are extracting client information from a sales meeting transcript for Quality Jobs, a digital marketing agency.
+
+Extract these fields and return ONLY a valid JSON object. Use null for anything not mentioned.
+
+{
+  "client_name": "Business/company name",
+  "contact_name": "First name of contact person",
+  "niche": "Their trade + city (e.g. Bathroom Renovations, Sydney)",
+  "goal": "Their revenue/business goal (e.g. $500k this year)",
+  "price": "Monthly management fee agreed or discussed (e.g. $2,200 + GST)",
+  "adspend_min": "Minimum daily ad spend (e.g. $55/day)",
+  "adspend_covers": "Maximum or target daily ad spend (e.g. $80/day)",
+  "retainer_ongoing": "Ongoing monthly retainer after initial term if mentioned",
+  "expected_quotes": "Expected quotes per month or per 90 days (e.g. 15–20)",
+  "guarantee_amt": "Revenue guarantee amount discussed (e.g. $100,000 AUD)",
+  "abn": "Client ABN if mentioned",
+  "pain_points": "2–3 sentences summarising their main pain points and frustrations",
+  "context": "2–3 sentences summarising what was discussed and agreed — used in the agreement",
+  "services": ["array of services from ONLY these options: Meta Ads, Social Media Setup, CRM Ecosystem, Booking System, Quoting Software, ROI Tracking, Vetting Team, Finance Partner, Google My Business, Nail The Sale"],
+  "term": "90 days OR month-by-month",
+  "template": "renovator OR windows OR painting — based on their trade (painting/trades = painting, windows/doors = windows, everything else = renovator)"
+}
+
+TRANSCRIPT:
+${transcript.slice(0, 12000)}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1024,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || 'API error ' + res.status);
+    }
+
+    const data = await res.json();
+    const raw = data.content[0].text.trim();
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('No JSON in response');
+    const d = JSON.parse(jsonMatch[0]);
+
+    status.textContent = '⏳ Populating fields…';
+
+    // Helper to set input value
+    const set = (id, val) => { if (val && document.getElementById(id)) document.getElementById(id).value = val; };
+
+    set('pa-client-name',     d.client_name);
+    set('pa-contact-name',    d.contact_name);
+    set('pa-niche',           d.niche);
+    set('pa-goal',            d.goal);
+    set('pa-price',           d.price);
+    set('pa-adspend-min',     d.adspend_min);
+    set('pa-adspend-covers',  d.adspend_covers);
+    set('pa-retainer-ongoing',d.retainer_ongoing);
+    set('pa-expected-quotes', d.expected_quotes);
+    set('pa-guarantee-amt',   d.guarantee_amt);
+    set('pa-pain',            d.pain_points);
+    set('agr-t-client',       d.client_name);
+    set('agr-t-contact',      d.contact_name);
+    set('agr-t-price',        d.price);
+    set('agr-t-adspend',      d.adspend_min);
+    set('agr-t-goal',         d.goal);
+    set('agr-t-retainer',     d.retainer_ongoing);
+    set('agr-t-abn',          d.abn);
+    set('agr-t-context',      d.context);
+    if (d.expected_quotes) set('agr-t-quotes', d.expected_quotes);
+
+    // Template
+    if (d.template && ['renovator','windows','painting'].includes(d.template)) {
+      setTemplate(d.template);
+    }
+
+    // Term
+    if (d.term) {
+      setPaTerm(d.term === 'month-by-month' ? 'mtm' : '90');
+    }
+
+    // Services — uncheck all first, then check matched ones
+    const allChecks = document.querySelectorAll('#pa-wrap .pa-check');
+    const serviceLabels = ['Meta Ads','Social Media Setup','CRM Ecosystem','Booking System','Quoting Software','ROI Tracking','Vetting Team','Finance Partner','Google My Business','Nail The Sale'];
+    allChecks.forEach(el => {
+      const txt = el.textContent.trim();
+      if (!serviceLabels.includes(txt)) return;
+      const shouldCheck = d.services && d.services.includes(txt);
+      el.classList.toggle('checked', !!shouldCheck);
+    });
+
+    // Sync agr-t-duration field
+    if (document.getElementById('agr-t-duration')) {
+      document.getElementById('agr-t-duration').value = document.getElementById('pa-duration').value;
+    }
+
+    const filled = Object.values(d).filter(v => v && (typeof v !== 'object' || v.length)).length;
+    status.style.color = '#28c840';
+    status.textContent = `✅ Done — ${filled} fields populated from transcript.`;
+
+  } catch(e) {
+    status.style.color = '#e53935';
+    status.textContent = '⚠️ ' + (e.message || 'Something went wrong. Check your API key.');
+    console.error('Auto-fill error:', e);
+  }
 }
 
 function selectTone(el) {
