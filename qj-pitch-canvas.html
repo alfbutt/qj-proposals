@@ -5961,7 +5961,7 @@ async function _buildAgreement(tunnelBase) {
         <h3>${clientName}</h3>
         <div class="sig-field">
           <label>Full Legal Name</label>
-          <input type="text" id="sig-client-name" placeholder="${contactName || 'Type your full name'}">
+          <input type="text" id="sig-client-name" placeholder="${contactName || 'Type your full name'}" oninput="checkReady()" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box;">
         </div>
         <div class="sig-field">
           <label>Signature</label>
@@ -5970,8 +5970,8 @@ async function _buildAgreement(tunnelBase) {
             <button id="sig-tab-draw" class="sig-tab" onclick="sigSwitchTab('draw')">🖊 Draw Signature</button>
           </div>
           <div id="sig-type-area">
-            <input type="text" id="sig-client-typed" placeholder="Type your name here as your signature"
-              style="font-family:Georgia,serif;font-size:20px;font-style:italic;color:#1a1a1a;letter-spacing:1px;width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;outline:none;">
+            <input type="text" id="sig-client-typed" placeholder="Type your name here as your signature" oninput="checkReady()"
+              style="font-family:Georgia,serif;font-size:20px;font-style:italic;color:#1a1a1a;letter-spacing:1px;width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;outline:none;box-sizing:border-box;">
           </div>
           <div id="sig-draw-area" style="display:none;">
             <div class="sig-canvas-wrap">
@@ -5982,7 +5982,7 @@ async function _buildAgreement(tunnelBase) {
         </div>
         <div class="sig-field">
           <label>Date</label>
-          <input type="date" id="sig-client-date">
+          <input type="date" id="sig-client-date" style="width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box;">
         </div>
       </div>
 
@@ -6005,7 +6005,7 @@ async function _buildAgreement(tunnelBase) {
     </div>
 
     <div style="margin:24px 0 8px;display:flex;align-items:flex-start;gap:12px;background:#fffbf0;border:1.5px solid #f5d97a;border-radius:10px;padding:16px 20px;">
-      <input type="checkbox" id="sig-agree" style="margin-top:3px;width:18px;height:18px;flex-shrink:0;cursor:pointer;accent-color:#C9A225;">
+      <input type="checkbox" id="sig-agree" onchange="checkReady()" style="margin-top:3px;width:18px;height:18px;flex-shrink:0;cursor:pointer;accent-color:#C9A225;">
       <label for="sig-agree" style="font-size:13px;color:#555;line-height:1.6;cursor:pointer;">I, <strong id="sig-agree-name" style="color:#1a1a1a;">—</strong>, have read and understood this agreement in full and agree to be bound by its terms on behalf of <strong>${clientName}</strong>.</label>
     </div>
 
@@ -6087,13 +6087,17 @@ function _initCanvas() {
 }
 
 function checkReady() {
-  var name   = (document.getElementById('sig-client-name')?.value || '').trim();
-  var typed  = (document.getElementById('sig-client-typed')?.value || '').trim();
-  var agreed = document.getElementById('sig-agree')?.checked;
-  var nameEl = document.getElementById('sig-agree-name');
-  if (nameEl) nameEl.textContent = name || '—';
+  var nameEl2 = document.getElementById('sig-client-name');
+  var typedEl = document.getElementById('sig-client-typed');
+  var agreeEl = document.getElementById('sig-agree');
+  var labelEl = document.getElementById('sig-agree-name');
+  var name   = nameEl2 ? nameEl2.value.trim() : '';
+  var typed  = typedEl ? typedEl.value.trim() : '';
+  var agreed = agreeEl ? agreeEl.checked : false;
+  if (labelEl) labelEl.textContent = name || '—';
   var sigOk  = _sigMode === 'type' ? !!typed : _sigDrawn;
   var btn    = document.getElementById('sig-submit-btn');
+  if (!btn) return;
   if (name && sigOk && agreed) {
     btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
   } else {
@@ -6102,9 +6106,9 @@ function checkReady() {
 }
 
 async function submitSignature() {
-  var name   = (document.getElementById('sig-client-name')?.value  || '').trim();
-  var typed  = (document.getElementById('sig-client-typed')?.value || '').trim();
-  var agreed = document.getElementById('sig-agree')?.checked;
+  var name   = (document.getElementById('sig-client-name')  ? document.getElementById('sig-client-name').value.trim()  : '');
+  var typed  = (document.getElementById('sig-client-typed') ? document.getElementById('sig-client-typed').value.trim() : '');
+  var agreed = document.getElementById('sig-agree') ? document.getElementById('sig-agree').checked : false;
   if (!name)   { alert('Please enter your full name.'); return; }
   if (_sigMode === 'type' && !typed)  { alert('Please type your name as your signature.'); return; }
   if (_sigMode === 'draw' && !_sigDrawn) { alert('Please draw your signature.'); return; }
