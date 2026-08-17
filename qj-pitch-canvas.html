@@ -6901,20 +6901,20 @@ function generateOutreach(publicUrl) {
   const insight = tLines[0] || '';
 
   // ── WhatsApp ──
-  const wa = `Hey ${contactName}! 👋
+  const wa = `Afternoon ${contactName},
 
-Really enjoyed our chat today — you're clearly building something solid with ${clientName} and I think we can do some serious damage together.
+Really enjoyed our chat today — you're clearly building something solid with ${clientName} and I think we can help you increase that revenue dramatically this financial year.
 
-As promised, here's your custom proposal — everything we walked through on the Miro board is in there, tailored specifically to ${niche}:
+As promised, here's your custom proposal — everything we walked through on the meeting is in there, tailored specifically to you:
 
-🔗 ${publicUrl}
+🔗${publicUrl}
 
 It covers:
 ${services ? services.split(', ').slice(0,5).map(s=>`✅ ${s}`).join('\n') : '✅ Everything we discussed'}
 
 Take 5 mins to have a look through it on your phone when you get a chance. Happy to jump on a quick call to answer any questions or tweak anything.
 
-– Quality Jobs 🏆`;
+– Alfie, Quality Jobs`;
 
   // ── Email 1 (same day) ──
   const sub1 = `Your Custom Proposal — ${clientName} × Quality Jobs`;
