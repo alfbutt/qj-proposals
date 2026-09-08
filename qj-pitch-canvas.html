@@ -2727,6 +2727,7 @@
         <div id="pa-preview-url">No proposal generated yet — fill in the form and click Generate</div>
         <button id="pa-open-btn" onclick="openProposal()" style="display:none;">↗ Open</button>
         <button id="pa-copy-btn" onclick="copyProposalUrl()" style="display:none;">🔗 Copy Link</button>
+        <button id="pa-lm-bar-btn" onclick="generateLeadMagnetPDF()" style="display:none;background:#2d5a2d;color:#4caf50;border:1px solid #4caf50;border-radius:5px;padding:4px 11px;font-size:11px;cursor:pointer;white-space:nowrap;font-family:inherit;font-weight:700;transition:all 0.15s;" onmouseover="this.style.background='#4caf50';this.style.color='#000'" onmouseout="this.style.background='#2d5a2d';this.style.color='#4caf50'">🏠 Lead Magnet PDF</button>
       </div>
       <div id="pa-placeholder">
         <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#C9A225" stroke-width="1"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>
@@ -7763,6 +7764,7 @@ ${agreementUrl ? `
     openBtn.onclick = () => window.open(blobUrl, '_blank');
     copyBtn.style.display = 'none';
     document.getElementById('pa-leadmagnet').style.display='block';
+    document.getElementById('pa-lm-bar-btn').style.display='';
     return;
   }
   proposalDataUrl = netlifyUrl;
@@ -7774,6 +7776,7 @@ ${agreementUrl ? `
   iframe.src = netlifyUrl;
   generateOutreach(netlifyUrl);
   document.getElementById('pa-leadmagnet').style.display='block';
+  document.getElementById('pa-lm-bar-btn').style.display='';
 }
 
 // ── OUTREACH MESSAGES ──────────────────────────────────────────────
@@ -8096,7 +8099,7 @@ function _lighten([r,g,b], factor=0.35) {
 function _toHex([r,g,b]) { return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join(''); }
 
 async function generateLeadMagnetPDF() {
-  const btn = document.getElementById('pa-lm-btn');
+  const btn = document.getElementById('pa-lm-bar-btn') || document.getElementById('pa-lm-btn');
   btn.textContent = '⏳ Building PDF…';
   btn.disabled = true;
 
