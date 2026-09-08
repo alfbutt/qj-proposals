@@ -8106,8 +8106,15 @@ async function generateLeadMagnetPDF() {
 
   await new Promise(r=>setTimeout(r,50)); // let UI update
 
-  const brandRGB = await _getLogoDominantColor(clientLogoDataUrl);
-  const darkRGB  = _darken(brandRGB, 0.55);
+  // Detect active board to pull the right logo + client name
+  const onBoard9 = (typeof activeBoard !== 'undefined' && activeBoard === 9);
+  const logoUrl   = onBoard9 ? (window.vpLogoDataUrl || null) : (window.clientLogoDataUrl || null);
+  const clientName = onBoard9
+    ? (document.getElementById('vp-client-name')?.value?.trim() || 'Your Company')
+    : (document.getElementById('pa-client-name')?.value?.trim() || 'Your Company');
+
+  const brandRGB  = await _getLogoDominantColor(logoUrl);
+  const darkRGB   = _darken(brandRGB, 0.55);
   const accentRGB = _lighten(brandRGB, 0.5);
   const brandHex  = _toHex(brandRGB);
   const darkHex   = _toHex(darkRGB);
@@ -8119,8 +8126,6 @@ async function generateLeadMagnetPDF() {
   const PW = 297, PH = 210;
   const LEFT = PW * 0.38;  // left panel width mm
   const RIGHT_X = LEFT;
-
-  const clientName = document.getElementById('pa-client-name')?.value?.trim() || 'Your Company';
 
   // ── COVER PAGE ──────────────────────────────────────────────────────────────
   pdf.setFillColor(...darkRGB);
@@ -8145,10 +8150,10 @@ async function generateLeadMagnetPDF() {
   pdf.setTextColor(255,255,255);
   pdf.text(clientName, 22, PH - 16);
   // logo on cover if available
-  if (clientLogoDataUrl) {
+  if (logoUrl) {
     try {
-      const ext = clientLogoDataUrl.startsWith('data:image/png')?'PNG':'JPEG';
-      pdf.addImage(clientLogoDataUrl, ext, 22, PH-46, 40, 22, '', 'FAST');
+      const ext = logoUrl.startsWith('data:image/png')?'PNG':'JPEG';
+      pdf.addImage(logoUrl, ext, 22, PH-46, 40, 22, '', 'FAST');
     } catch(e) {}
   }
 
@@ -8201,10 +8206,10 @@ async function generateLeadMagnetPDF() {
     pdf.text(`${clientName}  |  ${num}`, 12, PH - 6);
 
     // Logo (small) in bottom-left
-    if (clientLogoDataUrl) {
+    if (logoUrl) {
       try {
-        const ext = clientLogoDataUrl.startsWith('data:image/png')?'PNG':'JPEG';
-        pdf.addImage(clientLogoDataUrl, ext, 12, PH-26, 22, 14, '', 'FAST');
+        const ext = logoUrl.startsWith('data:image/png')?'PNG':'JPEG';
+        pdf.addImage(logoUrl, ext, 12, PH-26, 22, 14, '', 'FAST');
       } catch(e) {}
     }
 
@@ -8246,10 +8251,10 @@ async function generateLeadMagnetPDF() {
   pdf.setFontSize(10);
   pdf.setTextColor(200,210,220);
   pdf.text(clientName, 22, 115);
-  if (clientLogoDataUrl) {
+  if (logoUrl) {
     try {
-      const ext = clientLogoDataUrl.startsWith('data:image/png')?'PNG':'JPEG';
-      pdf.addImage(clientLogoDataUrl, ext, 22, PH-50, 44, 26, '', 'FAST');
+      const ext = logoUrl.startsWith('data:image/png')?'PNG':'JPEG';
+      pdf.addImage(logoUrl, ext, 22, PH-50, 44, 26, '', 'FAST');
     } catch(e) {}
   }
 
