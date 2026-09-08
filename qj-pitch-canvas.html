@@ -3344,6 +3344,7 @@ We spoke with Scott from Rapid Plumbing Group. He's been running the business fo
         <div id="vp-preview-url" style="flex:1;font-size:11px;color:#444;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">No proposal generated yet — fill in the form and click Generate</div>
         <button id="vp-open-btn" onclick="if(window.vpProposalUrl) window.open(window.vpProposalUrl,'_blank')" style="display:none;background:#1a1a2a;color:#C9A225;border:1px solid rgba(201,162,37,0.3);border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;">↗ Open</button>
         <button id="vp-copy-btn" onclick="if(window.vpProposalUrl){navigator.clipboard.writeText(window.vpProposalUrl);this.textContent='✓ Copied!';setTimeout(()=>this.textContent='🔗 Copy Link',1800);}" style="display:none;background:#1a1a2a;color:#C9A225;border:1px solid rgba(201,162,37,0.3);border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;">🔗 Copy Link</button>
+        <button id="vp-lm-btn" onclick="generateLeadMagnetPDF()" style="display:inline-block;background:#2d5a2d;color:#4caf50;border:1px solid #4caf50;border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">🏠 Lead Magnet PDF</button>
       </div>
       <div id="vp-placeholder" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#2a2a3a;gap:16px;padding:40px;">
         <div style="font-size:64px;">🎬</div>
