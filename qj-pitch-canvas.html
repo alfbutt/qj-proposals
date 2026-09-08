@@ -2706,6 +2706,11 @@
 
       <div id="pa-footer">
         <button class="pa-generate-btn" id="pa-gen-btn" onclick="generateProposal()">⚡ Generate Proposal</button>
+        <div id="pa-leadmagnet" style="display:none;margin-top:10px;background:#0d1a0d;border:1px solid #1a3a1a;border-radius:10px;padding:12px 14px;">
+          <div style="font-size:11px;font-weight:700;color:#4caf50;letter-spacing:0.5px;margin-bottom:6px;">🏠 LEAD MAGNET READY</div>
+          <div style="font-size:10px;color:#555;margin-bottom:10px;line-height:1.5;">Branded Bathroom Design Guide PDF — in the client's colours, with their logo.</div>
+          <button id="pa-lm-btn" onclick="generateLeadMagnetPDF()" style="width:100%;padding:9px 12px;background:#4caf50;color:#000;border:none;border-radius:7px;font-weight:700;font-size:12px;cursor:pointer;letter-spacing:0.3px;transition:opacity 0.2s;">⬇ Download Lead Magnet PDF</button>
+        </div>
         <button id="pa-resync-btn" onclick="resyncNetlify()" title="Upload canvas images to GitHub so proposals display correctly" style="width:100%;margin-top:8px;padding:8px 12px;background:transparent;border:1px solid #2a2a2a;border-radius:8px;color:#444;font-size:11px;cursor:pointer;transition:all 0.2s;">🔄 Sync Images to GitHub</button>
       </div>
 
@@ -2731,14 +2736,6 @@
       <iframe id="pa-iframe" style="display:none;flex:1;border:none;background:#fff;"></iframe>
 
 
-      <!-- LEAD MAGNET PANEL -->
-      <div id="pa-leadmagnet" style="display:none;flex-shrink:0;background:#0a0a14;border-top:1px solid #1e1e2e;padding:14px 18px;gap:12px;align-items:center;flex-wrap:wrap;">
-        <div style="flex:1;min-width:180px;">
-          <div style="font-size:12px;font-weight:700;color:#C9A225;letter-spacing:0.5px;margin-bottom:3px;">🏠 LEAD MAGNET READY</div>
-          <div style="font-size:11px;color:#666;">Branded Bathroom Design Guide PDF — client's colours, their logo, ready to attach to your follow-up.</div>
-        </div>
-        <button id="pa-lm-btn" onclick="generateLeadMagnetPDF()" style="flex-shrink:0;padding:10px 20px;background:#C9A225;color:#000;border:none;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;letter-spacing:0.3px;transition:opacity 0.2s;">⬇ Download PDF</button>
-      </div>
       <!-- MESSAGES PANEL -->
       <div id="pa-messages" style="display:none;flex-direction:column;background:#0a0a12;border-top:1px solid #1e1e2e;overflow-y:auto;max-height:420px;">
         <!-- Tab bar -->
@@ -7765,6 +7762,7 @@ ${agreementUrl ? `
     openBtn.style.display = '';
     openBtn.onclick = () => window.open(blobUrl, '_blank');
     copyBtn.style.display = 'none';
+    document.getElementById('pa-leadmagnet').style.display='block';
     return;
   }
   proposalDataUrl = netlifyUrl;
@@ -7775,7 +7773,7 @@ ${agreementUrl ? `
   copyBtn.style.display = '';
   iframe.src = netlifyUrl;
   generateOutreach(netlifyUrl);
-  document.getElementById('pa-leadmagnet').style.display='flex';
+  document.getElementById('pa-leadmagnet').style.display='block';
 }
 
 // ── OUTREACH MESSAGES ──────────────────────────────────────────────
