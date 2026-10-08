@@ -837,6 +837,7 @@
   <!-- BOARD TABS -->
   <div id="tab-bar">
     <button class="tab-btn active" id="tab1-btn" onclick="switchBoard(1)">📋 Full System</button>
+    <button class="tab-btn" id="tab5-btn" onclick="switchBoard(5)">🪟 Full System W&D</button>
     <button class="tab-btn" id="tab2-btn" onclick="switchBoard(2)">📱 DIY CRM</button>
     <button class="tab-btn" id="tab3-btn" onclick="switchBoard(3)">🤖 Proposals</button>
     <button class="tab-btn" id="tab4-btn" onclick="switchBoard(4)">🗺️ Miro Board</button>
@@ -2898,8 +2899,8 @@ We spoke with Scott from Rapid Plumbing Group. He's been running the business fo
         <div class="frame-handle"><span></span><span></span><span></span></div>
         <div class="frame-label">Quality Jobs</div>
         <div style="margin-bottom:20px;"><img src="https://proposals.qualityjobs.com.au/qj-logo.png" alt="Quality Jobs" style="height:80px;width:auto;display:block;"></div>
-        <h1 style="font-size:72px;line-height:1.1;margin-bottom:20px;">The Window &amp;<br>Door Lead System</h1>
-        <p class="subtitle" style="font-size:22px;line-height:1.6;margin-bottom:24px;">A done-for-you lead generation system that connects your business with homeowners upgrading their windows &amp; doors — and builders actively sourcing a trusted supplier.</p>
+        <h1 style="font-size:72px;line-height:1.1;margin-bottom:20px;">The Windows &amp;<br>Doors Marketing System</h1>
+        <p class="subtitle" style="font-size:22px;line-height:1.6;margin-bottom:24px;">A done-for-you lead generation & sales system built exclusively for Australian windows & doors companies.</p>
         <div class="for-who" style="font-size:16px;margin-bottom:8px;">Presented to <strong>Your Business</strong> · 2026</div>
         <div style="margin-top:36px;padding-top:28px;border-top:1px solid #333;display:flex;gap:24px;">
           <div style="text-align:center;flex:1;"><div style="font-size:52px;font-weight:800;color:var(--gold);">2x</div><div style="font-size:16px;color:#888;margin-top:6px;">Audience streams</div></div>
@@ -2908,6 +2909,34 @@ We spoke with Scott from Rapid Plumbing Group. He's been running the business fo
       </div>
       <!-- Social media frame (cloned dynamically) -->
       <!-- ROI frame (cloned dynamically) -->
+
+      <!-- Closing photo frame -->
+      <div class="frame" id="b5-frame-closing" style="left:3100px;top:80px;width:700px;" data-w="700" data-h="600">
+        <div class="frame-handle"><span></span><span></span><span></span></div>
+        <div class="frame-label" style="background:var(--gold);color:#000;">Your Future</div>
+        <h2 style="margin-bottom:16px;">Ready to Fill Your <span style="color:var(--gold);">Pipeline?</span></h2>
+        <p style="font-size:13px;color:#aaa;margin-bottom:18px;line-height:1.7;">We handle the marketing, the leads, and the follow-up — so you can focus on what you do best: supplying and installing quality windows & doors.</p>
+        <div style="border-radius:14px;overflow:hidden;border:2px solid rgba(201,162,37,0.2);margin-bottom:16px;">
+          <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=700&q=80"
+               alt="Windows and doors installation"
+               style="width:100%;height:300px;object-fit:cover;display:block;"
+               onerror="this.style.background='#1a1a1a';this.alt='Windows & Doors';this.style.height='300px';">
+        </div>
+        <div style="display:flex;gap:10px;">
+          <div style="flex:1;background:rgba(201,162,37,0.08);border:1px solid rgba(201,162,37,0.2);border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-size:28px;font-weight:900;color:var(--gold);">20+</div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">Qualified leads/mo</div>
+          </div>
+          <div style="flex:1;background:rgba(40,200,64,0.08);border:1px solid rgba(40,200,64,0.2);border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-size:28px;font-weight:900;color:#28c840;">$500k</div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">Pipeline guaranteed</div>
+          </div>
+          <div style="flex:1;background:rgba(201,162,37,0.08);border:1px solid rgba(201,162,37,0.2);border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-size:28px;font-weight:900;color:var(--gold);">$100k</div>
+            <div style="font-size:11px;color:#888;margin-top:4px;">Revenue guarantee</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div id="minimap-b5" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(20,20,20,0.85);border-radius:24px;padding:10px 16px;gap:8px;align-items:center;z-index:999;backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,0.4);"></div>
@@ -4692,7 +4721,7 @@ function switchBoard(n) {
   document.getElementById('minimap-b4').style.display = n === 4 ? 'flex' : 'none';
   document.getElementById('minimap-b5').style.display = n === 5 ? 'flex' : 'none';
   document.getElementById('minimap-b7').style.display = n === 7 ? 'flex' : 'none';
-  [1,2,3,4,6,7,8,9].forEach(i => { const el = document.getElementById(`tab${i}-btn`); if(el) el.classList.toggle('active', i === n); });
+  [1,2,3,4,5,6,7,8,9].forEach(i => { const el = document.getElementById(`tab${i}-btn`); if(el) el.classList.toggle('active', i === n); });
   if (n === 1) document.getElementById('zoom-display').textContent = Math.round(scale*100)+'%';
   if (n === 2) setTimeout(()=>navToB2(0), 100);
   if (n === 4) { initBoard4(); setTimeout(()=>fitAllB4(), 200); }
@@ -4735,10 +4764,11 @@ function initBoard5() {
   });
   // Add minimap dots for all 3 frames
   [
-    { id: 'b5-frame-title',   label: 'Window & Door Lead System' },
+    { id: 'b5-frame-title',   label: 'Windows & Doors Marketing System' },
     { id: 'b5-frame-social',  label: 'Social Media Setup' },
     { id: 'b5-frame-ads',     label: 'Targeted Ads' },
-    { id: 'b5-frame-roi',     label: 'ROI & Tracking' }
+    { id: 'b5-frame-roi',     label: 'ROI & Tracking' },
+    { id: 'b5-frame-closing', label: 'Ready to Start?' }
   ].forEach(({ id, label }) => {
     const dot = document.createElement('button');
     dot.className = 'nav-dot';
