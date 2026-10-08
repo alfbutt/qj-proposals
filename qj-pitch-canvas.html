@@ -2907,36 +2907,7 @@ We spoke with Scott from Rapid Plumbing Group. He's been running the business fo
           <div style="text-align:center;flex:1;"><div style="font-size:52px;font-weight:800;color:var(--gold);">20+</div><div style="font-size:16px;color:#888;margin-top:6px;">Qualified leads per 30 days</div></div>
         </div>
       </div>
-      <!-- Social media frame (cloned dynamically) -->
-      <!-- ROI frame (cloned dynamically) -->
-
-      <!-- Closing photo frame -->
-      <div class="frame" id="b5-frame-closing" style="left:3100px;top:80px;width:700px;" data-w="700" data-h="600">
-        <div class="frame-handle"><span></span><span></span><span></span></div>
-        <div class="frame-label" style="background:var(--gold);color:#000;">Your Future</div>
-        <h2 style="margin-bottom:16px;">Ready to Fill Your <span style="color:var(--gold);">Pipeline?</span></h2>
-        <p style="font-size:13px;color:#aaa;margin-bottom:18px;line-height:1.7;">We handle the marketing, the leads, and the follow-up — so you can focus on what you do best: supplying and installing quality windows & doors.</p>
-        <div style="border-radius:14px;overflow:hidden;border:2px solid rgba(201,162,37,0.2);margin-bottom:16px;">
-          <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=700&q=80"
-               alt="Windows and doors installation"
-               style="width:100%;height:300px;object-fit:cover;display:block;"
-               onerror="this.style.background='#1a1a1a';this.alt='Windows & Doors';this.style.height='300px';">
-        </div>
-        <div style="display:flex;gap:10px;">
-          <div style="flex:1;background:rgba(201,162,37,0.08);border:1px solid rgba(201,162,37,0.2);border-radius:10px;padding:14px;text-align:center;">
-            <div style="font-size:28px;font-weight:900;color:var(--gold);">20+</div>
-            <div style="font-size:11px;color:#888;margin-top:4px;">Qualified leads/mo</div>
-          </div>
-          <div style="flex:1;background:rgba(40,200,64,0.08);border:1px solid rgba(40,200,64,0.2);border-radius:10px;padding:14px;text-align:center;">
-            <div style="font-size:28px;font-weight:900;color:#28c840;">$500k</div>
-            <div style="font-size:11px;color:#888;margin-top:4px;">Pipeline guaranteed</div>
-          </div>
-          <div style="flex:1;background:rgba(201,162,37,0.08);border:1px solid rgba(201,162,37,0.2);border-radius:10px;padding:14px;text-align:center;">
-            <div style="font-size:28px;font-weight:900;color:var(--gold);">$100k</div>
-            <div style="font-size:11px;color:#888;margin-top:4px;">Revenue guarantee</div>
-          </div>
-        </div>
-      </div>
+      <!-- All frames cloned dynamically by initBoard5() -->
     </div>
   </div>
   <div id="minimap-b5" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(20,20,20,0.85);border-radius:24px;padding:10px 16px;gap:8px;align-items:center;z-index:999;backdrop-filter:blur(8px);box-shadow:0 4px 20px rgba(0,0,0,0.4);"></div>
@@ -4747,28 +4718,80 @@ function initBoard5() {
   if (b5initialized) return;
   b5initialized = true;
   const minimap = document.getElementById('minimap-b5');
-  // Clone social and ROI frames from board 1, position them after the title
+
+  // Clone every board1 frame (except frame-title which has its own b5-frame-title)
   const toClone = [
-    { id: 'frame-social', newLeft: 1100 },
-    { id: 'frame-ads',    newLeft: 1660 },
-    { id: 'frame-roi',    newLeft: 2400 }
+    'frame-clients','frame-testimonials','frame-social','frame-ads','frame-landing-page',
+    'frame-vetting','frame-booking','frame-sale','frame-quoting','frame-finance',
+    'frame-portal','frame-pricing-a2','frame-pricing','frame-pricing-b','frame-pricing-c',
+    'frame-guarantee','frame-agreement'
   ];
-  toClone.forEach(({ id, newLeft }) => {
+  toClone.forEach(id => {
     const src = document.getElementById(id);
     if (!src) return;
     const clone = src.cloneNode(true);
     clone.id = 'b5-' + id;
-    clone.style.left = newLeft + 'px';
-    clone.style.top  = '80px';
+    // Swap renovation text for windows & doors
+    clone.innerHTML = clone.innerHTML
+      .replace(/Targeted Renovation Ads/g, 'Targeted Windows &amp; Doors Ads')
+      .replace(/renovation leads/gi, 'windows &amp; doors leads')
+      .replace(/renovation companies/gi, 'windows &amp; doors companies')
+      .replace(/high-quality renovation leads/gi, 'high-quality windows &amp; doors leads')
+      .replace(/Renovation portfolio/g, 'Windows &amp; Doors portfolio')
+      .replace(/Bathroom &amp; Kitchen Renos/g, 'Windows &amp; Doors Installation')
+      .replace(/Bathroom &amp; Kitchen/g, 'Windows &amp; Doors')
+      .replace(/bathroom\/kitchen/g, 'windows &amp; doors')
+      .replace(/The Renovation<br>Marketing System/g, 'The Windows &amp;<br>Doors Marketing System')
+      .replace(/Home Renovation intent/g, 'Windows &amp; Doors intent')
+      .replace(/Bathroom \/ Kitchen Renos/g, 'Windows &amp; Doors Installation');
     worldB5.appendChild(clone);
   });
-  // Add minimap dots for all 3 frames
+
+  // Add closing photo frame after frame-agreement (left ~14100px)
+  const closing = document.createElement('div');
+  closing.className = 'frame';
+  closing.id = 'b5-frame-closing';
+  closing.style.cssText = 'left:14100px;top:80px;width:700px;';
+  closing.dataset.w = '700';
+  closing.dataset.h = '620';
+  closing.innerHTML = `
+    <div class="frame-handle"><span></span><span></span><span></span></div>
+    <div class="frame-label" style="background:var(--gold);color:#000;">Your Future</div>
+    <h2 style="margin-bottom:16px;">Ready to Fill Your <span style="color:var(--gold);">Pipeline?</span></h2>
+    <p style="font-size:13px;color:#aaa;margin-bottom:18px;line-height:1.7;">We handle the marketing, the leads, and the follow-up — so you can focus on what you do best: supplying and installing quality windows &amp; doors.</p>
+    <div style="border-radius:14px;overflow:hidden;border:2px solid rgba(201,162,37,0.2);margin-bottom:16px;">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80"
+           alt="Windows and doors installation"
+           style="width:100%;height:300px;object-fit:cover;display:block;"
+           onerror="this.src='https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=700&q=80'">
+    </div>
+    <div style="display:flex;gap:10px;">
+      <div style="flex:1;background:rgba(201,162,37,0.08);border:1px solid rgba(201,162,37,0.2);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:28px;font-weight:900;color:var(--gold);">20+</div>
+        <div style="font-size:11px;color:#888;margin-top:4px;">Qualified leads/mo</div>
+      </div>
+      <div style="flex:1;background:rgba(40,200,64,0.08);border:1px solid rgba(40,200,64,0.2);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:28px;font-weight:900;color:#28c840;">$500k</div>
+        <div style="font-size:11px;color:#888;margin-top:4px;">Pipeline guaranteed</div>
+      </div>
+      <div style="flex:1;background:rgba(201,162,37,0.08);border:1px solid rgba(201,162,37,0.2);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:28px;font-weight:900;color:var(--gold);">$100k</div>
+        <div style="font-size:11px;color:#888;margin-top:4px;">Revenue guarantee</div>
+      </div>
+    </div>`;
+  worldB5.appendChild(closing);
+
+  // Minimap dots
   [
-    { id: 'b5-frame-title',   label: 'Windows & Doors Marketing System' },
-    { id: 'b5-frame-social',  label: 'Social Media Setup' },
-    { id: 'b5-frame-ads',     label: 'Targeted Ads' },
-    { id: 'b5-frame-roi',     label: 'ROI & Tracking' },
-    { id: 'b5-frame-closing', label: 'Ready to Start?' }
+    { id: 'b5-frame-title',       label: 'Windows & Doors Marketing System' },
+    { id: 'b5-frame-testimonials',label: 'Client Results' },
+    { id: 'b5-frame-social',      label: 'Social Media Setup' },
+    { id: 'b5-frame-ads',         label: 'Targeted Ads' },
+    { id: 'b5-frame-vetting',     label: 'Vetting Team' },
+    { id: 'b5-frame-booking',     label: 'Booking System' },
+    { id: 'b5-frame-guarantee',   label: 'Guarantee' },
+    { id: 'b5-frame-agreement',   label: 'Agreement' },
+    { id: 'b5-frame-closing',     label: 'Ready to Start?' }
   ].forEach(({ id, label }) => {
     const dot = document.createElement('button');
     dot.className = 'nav-dot';
