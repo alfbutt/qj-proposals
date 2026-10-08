@@ -4713,6 +4713,51 @@ const wrapB4  = document.getElementById('canvas-wrap-b4');
 let b5tx = 0, b5ty = 56, b5scale = 0.5;
 let b5initialized = false;
 const worldB5 = document.getElementById('world-b5');
+const wrapB5  = document.getElementById('canvas-wrap-b5');
+
+let b5rafPending = false;
+function applyTransformB5RAF() {
+  if (b5rafPending) return;
+  b5rafPending = true;
+  requestAnimationFrame(() => { b5rafPending = false; applyTransformB5(); });
+}
+
+let b5panning = false, b5panStartX = 0, b5panStartY = 0, b5panStartTx = 0, b5panStartTy = 0;
+
+wrapB5.addEventListener('wheel', e => {
+  e.preventDefault();
+  shieldIframes(true);
+  clearTimeout(wrapB5._unshieldTimer);
+  wrapB5._unshieldTimer = setTimeout(() => shieldIframes(false), 150);
+  if (e.ctrlKey) {
+    const delta = e.deltaY > 0 ? 0.9 : 1.1;
+    const rect = wrapB5.getBoundingClientRect();
+    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    b5tx = mx - (mx - b5tx) * delta;
+    b5ty = my - (my - b5ty) * delta;
+    b5scale = Math.max(0.05, Math.min(3, b5scale * delta));
+  } else {
+    b5tx -= e.deltaX; b5ty -= e.deltaY;
+  }
+  applyTransformB5RAF();
+}, { passive: false });
+
+wrapB5.addEventListener('mousedown', e => {
+  if (e.button !== 1 && !(e.button === 0 && !e.target.closest('.frame'))) return;
+  b5panning = true;
+  b5panStartX = e.clientX; b5panStartY = e.clientY;
+  b5panStartTx = b5tx; b5panStartTy = b5ty;
+  wrapB5.style.cursor = 'grabbing';
+  e.preventDefault();
+});
+wrapB5.addEventListener('mousemove', e => {
+  if (!b5panning) return;
+  b5tx = b5panStartTx + (e.clientX - b5panStartX);
+  b5ty = b5panStartTy + (e.clientY - b5panStartY);
+  applyTransformB5RAF();
+});
+wrapB5.addEventListener('mouseup', () => { b5panning = false; wrapB5.style.cursor = 'default'; });
+wrapB5.addEventListener('mouseleave', () => { b5panning = false; wrapB5.style.cursor = 'default'; });
 
 function initBoard5() {
   if (b5initialized) return;
@@ -4726,11 +4771,16 @@ function initBoard5() {
     'frame-portal','frame-pricing-a2','frame-pricing','frame-pricing-b','frame-pricing-c',
     'frame-guarantee','frame-agreement'
   ];
+
+  // Use a document fragment to batch all DOM inserts — much faster than appending one by one
+  const frag = document.createDocumentFragment();
+
   toClone.forEach(id => {
     const src = document.getElementById(id);
     if (!src) return;
     const clone = src.cloneNode(true);
     clone.id = 'b5-' + id;
+
     // Swap renovation text for windows & doors
     clone.innerHTML = clone.innerHTML
       .replace(/Targeted Renovation Ads/g, 'Targeted Windows &amp; Doors Ads')
@@ -4744,8 +4794,79 @@ function initBoard5() {
       .replace(/The Renovation<br>Marketing System/g, 'The Windows &amp;<br>Doors Marketing System')
       .replace(/Home Renovation intent/g, 'Windows &amp; Doors intent')
       .replace(/Bathroom \/ Kitchen Renos/g, 'Windows &amp; Doors Installation');
-    worldB5.appendChild(clone);
+
+    // PERFORMANCE: lazy-load all images in clone
+    clone.querySelectorAll('img').forEach(img => { img.loading = 'lazy'; });
+
+    // PERFORMANCE: strip iframes — they load eagerly and are very heavy.
+    // Replace with a lightweight click-to-load placeholder.
+    clone.querySelectorAll('iframe').forEach(iframe => {
+      const originalSrc = iframe.src || iframe.getAttribute('src') || '';
+      const ph = document.createElement('div');
+      ph.style.cssText = 'background:#111;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:8px;';
+      ph.style.width  = iframe.style.width  || '100%';
+      ph.style.height = iframe.style.height || '400px';
+      ph.innerHTML = `<div style="font-size:28px;">🖥️</div><div style="color:#aaa;font-size:12px;font-weight:600;">Click to load</div>`;
+      ph.onclick = function() {
+        const newIframe = document.createElement('iframe');
+        newIframe.src = originalSrc;
+        newIframe.style.cssText = iframe.style.cssText;
+        newIframe.scrolling = 'yes';
+        ph.replaceWith(newIframe);
+      };
+      iframe.replaceWith(ph);
+    });
+
+    // Fix: swap the "Nail The Sale" image to a windows & doors consultation photo
+    if (id === 'frame-sale') {
+      clone.querySelectorAll('img').forEach(img => {
+        if (img.src && img.src.includes('qj-img-sale')) {
+          img.src = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=680&q=80';
+          img.alt = 'Windows & Doors Sales Consultation';
+          img.style.height = '220px';
+          img.style.objectFit = 'cover';
+          img.style.borderRadius = '10px';
+          img.style.width = '100%';
+        }
+      });
+    }
+
+    // Fix: point the landing page iframe to the W&D landing page
+    if (id === 'frame-landing-page') {
+      // Update the visible URL text and the load-placeholder callback
+      clone.querySelectorAll('[style*="monospace"]').forEach(el => {
+        if (el.textContent.includes('gleeful-empanada')) {
+          el.textContent = 'proposals.qualityjobs.com.au/qj-wd-landing.html';
+        }
+      });
+      // Update the ↗ Open link
+      clone.querySelectorAll('a').forEach(a => {
+        if (a.href && a.href.includes('gleeful-empanada')) {
+          a.href = 'https://proposals.qualityjobs.com.au/qj-wd-landing.html';
+        }
+      });
+      // Update heading/description text
+      clone.querySelectorAll('h2').forEach(h => {
+        if (h.textContent.includes('Pre-Education')) h.textContent = '🌐 Windows & Doors Pricing Page';
+      });
+      clone.querySelectorAll('p').forEach(p => {
+        if (p.textContent.includes('before their booking call')) {
+          p.textContent = 'Every lead we generate is sent here before their booking call — so they already understand pricing, styles and options. Fewer tyre-kickers. Higher close rates.';
+        }
+      });
+      // Fix the click-to-load placeholder src for the iframe replacement
+      clone.querySelectorAll('div[onclick]').forEach(ph => {
+        if (ph.getAttribute('onclick') && ph.getAttribute('onclick').includes('gleeful')) {
+          ph.setAttribute('onclick', ph.getAttribute('onclick').replace(/gleeful-empanada-53cb42\.netlify\.app\//g, 'proposals.qualityjobs.com.au/qj-wd-landing.html'));
+        }
+      });
+    }
+
+    frag.appendChild(clone);
   });
+
+  // Single DOM write — far less layout thrash
+  worldB5.appendChild(frag);
 
   // Add closing photo frame after frame-agreement (left ~14100px)
   const closing = document.createElement('div');

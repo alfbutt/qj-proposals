@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows & Doors Pricing & Styles | Moonlight D&W</title>
+<style>
+  :root {
+    --gold: #C9A225;
+    --dark: #111;
+    --mid: #1e1e1e;
+    --light: #2a2a2a;
+    --cream: #f5f0e8;
+    --text: #333;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background:#fff; color:var(--text); }
+
+  /* NAV */
+  nav { background:var(--dark); padding:16px 32px; display:flex; align-items:center; justify-content:space-between; }
+  nav .brand { display:flex; align-items:center; gap:12px; }
+  nav .brand span { color:#fff; font-weight:700; font-size:18px; letter-spacing:0.5px; }
+  nav .brand .sub { font-size:12px; color:var(--gold); font-weight:500; letter-spacing:2px; display:block; }
+  nav .cta-btn { background:var(--gold); color:#000; font-weight:800; padding:10px 22px; border-radius:8px; text-decoration:none; font-size:14px; transition:opacity 0.2s; }
+  nav .cta-btn:hover { opacity:0.85; }
+
+  /* HERO */
+  .hero { background:var(--dark); color:#fff; text-align:center; padding:70px 32px 60px; }
+  .hero .eyebrow { font-size:11px; font-weight:700; letter-spacing:3px; color:var(--gold); text-transform:uppercase; margin-bottom:16px; }
+  .hero h1 { font-size:clamp(32px,5vw,56px); font-weight:900; line-height:1.1; margin-bottom:18px; }
+  .hero h1 em { color:var(--gold); font-style:normal; }
+  .hero p { font-size:18px; color:rgba(255,255,255,0.65); max-width:600px; margin:0 auto; line-height:1.7; }
+
+  /* TABS */
+  .tabs { display:flex; justify-content:center; gap:0; background:#000; padding:0 32px; border-bottom:1px solid #2a2a2a; }
+  .tabs button { background:none; border:none; color:#888; font-size:14px; font-weight:600; padding:18px 28px; cursor:pointer; border-bottom:3px solid transparent; transition:all 0.2s; white-space:nowrap; }
+  .tabs button.active { color:var(--gold); border-bottom-color:var(--gold); }
+  .tabs button:hover:not(.active) { color:#ddd; }
+
+  /* MAIN */
+  main { max-width:960px; margin:0 auto; padding:48px 24px; }
+
+  /* SLIDER SECTION */
+  .slider-section { margin-bottom:48px; }
+  .slider-wrap { background:var(--dark); border-radius:16px; padding:28px; color:#fff; margin-bottom:32px; }
+  .budget-label { font-size:13px; color:#aaa; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; }
+  .budget-amount { font-size:48px; font-weight:900; color:var(--gold); margin-bottom:4px; }
+  .slider { width:100%; -webkit-appearance:none; height:6px; border-radius:3px; background:linear-gradient(90deg, var(--gold) 40%, #444 40%); outline:none; margin:16px 0; cursor:pointer; }
+  .slider::-webkit-slider-thumb { -webkit-appearance:none; width:24px; height:24px; border-radius:50%; background:var(--gold); cursor:pointer; box-shadow:0 2px 8px rgba(201,162,37,0.6); }
+
+  /* TIER PILLS */
+  .tiers { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
+  .tier { flex:1; min-width:140px; border-radius:12px; padding:14px 16px; border:2px solid #2a2a2a; cursor:pointer; transition:all 0.2s; }
+  .tier.active { border-color:var(--gold); background:rgba(201,162,37,0.08); }
+  .tier h4 { font-size:13px; font-weight:800; color:#fff; margin-bottom:4px; }
+  .tier p { font-size:11px; color:#888; }
+
+  /* GRID */
+  .style-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:24px; }
+  .style-card { border-radius:16px; overflow:hidden; border:1px solid #e0e0e0; box-shadow:0 2px 12px rgba(0,0,0,0.08); transition:transform 0.2s, box-shadow 0.2s; }
+  .style-card:hover { transform:translateY(-4px); box-shadow:0 8px 32px rgba(0,0,0,0.15); }
+  .style-card img { width:100%; height:220px; object-fit:cover; display:block; }
+  .style-card .card-body { padding:20px; }
+  .style-card h3 { font-size:18px; font-weight:800; margin-bottom:6px; color:var(--dark); }
+  .style-card .tagline { font-size:13px; color:#888; margin-bottom:14px; line-height:1.5; }
+  .style-card ul { list-style:none; margin-bottom:16px; }
+  .style-card ul li { font-size:13px; color:var(--text); padding:4px 0; display:flex; align-items:center; gap:8px; }
+  .style-card ul li::before { content:'✓'; color:var(--gold); font-weight:800; flex-shrink:0; }
+  .style-card .ideal { font-size:12px; color:#888; font-style:italic; padding:10px; background:var(--cream); border-radius:8px; margin-bottom:16px; line-height:1.5; }
+  .style-card .ideal strong { color:var(--dark); font-style:normal; }
+  .style-card a { display:block; text-align:center; background:var(--gold); color:#000; font-weight:800; padding:12px; border-radius:8px; text-decoration:none; font-size:14px; transition:opacity 0.2s; }
+  .style-card a:hover { opacity:0.85; }
+
+  /* TAB PANES */
+  .tab-pane { display:none; }
+  .tab-pane.active { display:block; }
+
+  /* FOOTER */
+  footer { background:var(--dark); color:#888; text-align:center; padding:32px; font-size:12px; margin-top:0; }
+  footer strong { color:var(--gold); }
+
+  /* section divider */
+  .tier-desc { font-size:15px; color:#666; line-height:1.7; max-width:680px; margin:0 auto 32px; text-align:center; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">
+    <div>
+      <span>Moonlight D&W</span>
+      <span class="sub">WINDOWS &amp; DOORS</span>
+    </div>
+  </div>
+  <a href="https://moonlightdoorsandwindows.com" class="cta-btn" target="_blank">Book a Free Quote ↗</a>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow">Pricing &amp; Styles</div>
+  <h1>How Much Does a New <em>Window or Door</em> Really Cost?</h1>
+  <p>Slide to your budget, see exactly what it buys, and pick the style you love. Every price is a real Australian benchmark — no guessing, no hidden extras.</p>
+</div>
+
+<div class="tabs">
+  <button class="active" onclick="switchTab('windows', this)">🪟 Windows</button>
+  <button onclick="switchTab('doors', this)">🚪 Entry Doors</button>
+  <button onclick="switchTab('bifold', this)">↔ Bi-Fold / Stacking</button>
+</div>
+
+<main>
+
+<!-- WINDOWS TAB -->
+<div class="tab-pane active" id="tab-windows">
+  <div class="slider-section">
+    <div class="slider-wrap">
+      <div class="budget-label">Your budget per window</div>
+      <div class="budget-amount" id="win-amount">$2,500</div>
+      <input type="range" class="slider" id="win-slider" min="800" max="8000" value="2500" step="100" oninput="updateWinBudget(this.value)">
+      <div class="tiers">
+        <div class="tier active" id="win-tier-essential">
+          <h4>Essential</h4>
+          <p>$800 – $2,500</p>
+        </div>
+        <div class="tier" id="win-tier-enhanced">
+          <h4>Enhanced</h4>
+          <p>$2,500 – $5,000</p>
+        </div>
+        <div class="tier" id="win-tier-premium">
+          <h4>Premium</h4>
+          <p>$5,000 – $8,000+</p>
+        </div>
+      </div>
+    </div>
+    <p class="tier-desc" id="win-desc">Quality aluminium or uPVC double-hung windows — thermally efficient, clean sight lines, and built to Australian standards. Ideal for straightforward replacements without changing the opening size.</p>
+  </div>
+
+  <div class="style-grid">
+    <div class="style-card">
+      <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600&q=80" alt="Classic Double Hung" loading="lazy">
+      <div class="card-body">
+        <h3>Classic Double Hung</h3>
+        <div class="tagline">Timeless, practical, and works in any home.</div>
+        <ul>
+          <li>Aluminium or uPVC frame</li>
+          <li>Top &amp; bottom sash opening</li>
+          <li>Available in all RAL colours</li>
+        </ul>
+        <div class="ideal"><strong>Ideal for:</strong> Homeowners replacing ageing timber windows who want low maintenance and great thermal performance.</div>
+        <a href="https://moonlightdoorsandwindows.com" target="_blank">Enquire About This Style</a>
+      </div>
+    </div>
+    <div class="style-card">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Casement Window" loading="lazy">
+      <div class="card-body">
+        <h3>Casement &amp; Awning</h3>
+        <div class="tagline">Maximum ventilation with a sleek contemporary look.</div>
+        <ul>
+          <li>Side-hung or top-hung</li>
+          <li>Full-open ventilation</li>
+          <li>Flush handle options</li>
+        </ul>
+        <div class="ideal"><strong>Ideal for:</strong> Kitchens, bathrooms and bedrooms where airflow and a modern finish matter most.</div>
+        <a href="https://moonlightdoorsandwindows.com" target="_blank">Enquire About This Style</a>
+      </div>
+    </div>
+    <div class="style-card">
+      <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&q=80" alt="Louvre Window" loading="lazy">
+      <div class="card-body">
+        <h3>Louvre &amp; Slimline</h3>
+        <div class="tagline">Continuous breeze without sacrificing privacy.</div>
+        <ul>
+          <li>Adjustable glass blades</li>
+          <li>Powder-coated frame</li>
+          <li>Security &amp; insect screens</li>
+        </ul>
+        <div class="ideal"><strong>Ideal for:</strong> Queensland and coastal homes that need constant natural ventilation and privacy.</div>
+        <a href="https://moonlightdoorsandwindows.com" target="_blank">Enquire About This Style</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ENTRY DOORS TAB -->
+<div class="tab-pane" id="tab-doors">
+  <div class="slider-section">
+    <div class="slider-wrap">
+      <div class="budget-label">Your budget per door</div>
+      <div class="budget-amount" id="door-amount">$3,500</div>
+      <input type="range" class="slider" id="door-slider" min="1500" max="12000" value="3500" step="100" oninput="updateDoorBudget(this.value)">
+      <div class="tiers">
+        <div class="tier active" id="door-tier-essential">
+          <h4>Essential</h4>
+          <p>$1,500 – $3,500</p>
+        </div>
+        <div class="tier" id="door-tier-enhanced">
+          <h4>Enhanced</h4>
+          <p>$3,500 – $6,500</p>
+        </div>
+        <div class="tier" id="door-tier-premium">
+          <h4>Premium</h4>
+          <p>$6,500 – $12,000+</p>
+        </div>
+      </div>
+    </div>
+    <p class="tier-desc" id="door-desc">Solid-core or hollow-core aluminium framed entry doors with quality hardware — a strong, weather-sealed front door that lifts kerb appeal without the premium price tag.</p>
+  </div>
+
+  <div class="style-grid">
+    <div class="style-card">
+      <img src="https://images.unsplash.com/photo-1505873242700-f289a29e1724?w=600&q=80" alt="Contemporary Panel Door" loading="lazy">
+      <div class="card-body">
+        <h3>Contemporary Panel</h3>
+        <div class="tagline">Clean geometry. Instant kerb appeal.</div>
+        <ul>
+          <li>Flush aluminium panels</li>
+          <li>Pivot or hinged options</li>
+          <li>Smart lock ready</li>
+        </ul>
+        <div class="ideal"><strong>Ideal for:</strong> Modern homes wanting a statement front door that photographs beautifully and locks down tight.</div>
+        <a href="https://moonlightdoorsandwindows.com" target="_blank">Enquire About This Style</a>
+      </div>
+    </div>
+    <div class="style-card">
+      <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600&q=80" alt="Timber Look Door" loading="lazy">
+      <div class="card-body">
+        <h3>Timber Look Composite</h3>
+        <div class="tagline">Warmth of timber. Zero maintenance.</div>
+        <ul>
+          <li>Woodgrain foil finish</li>
+          <li>Solid composite core</li>
+          <li>Sidelite &amp; fanlight options</li>
+        </ul>
+        <div class="ideal"><strong>Ideal for:</strong> Traditional or Hamptons-style homes wanting the warmth of timber without painting or re-staining every few years.</div>
+        <a href="https://moonlightdoorsandwindows.com" target="_blank">Enquire About This Style</a>
+      </div>
+    </div>
+    <div class="style-card">
+      <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=80" alt="Glass Panel Door" loading="lazy">
+      <div class="card-body">
+        <h3>Feature Glass Entry</h3>
+        <div class="tagline">Light, drama, and a grand arrival.</div>
+        <ul>
+          <li>Double-glazed inserts</li>
+          <li>Frosted / clear / decorative</li>
+          <li>Acoustic &amp; thermal rated</li>
+        </ul>
+        <div class="ideal"><strong>Ideal for:</strong> Upscale homes wanting to flood the entry with natural light while keeping privacy and energy efficiency.</div>
+        <a href="https://moonlightdoorsandwindows.com" target="_blank">Enquire About This Style</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BI-FOLD TAB -->
+<div class="tab-pane" id="tab-bifold">
+  <div class="slider-section">
+    <div class="slider-wrap">
+      <div class="budget-label">Your budget (per lineal metre)</div>
+      <div class="budget-amount" id="bf-amount">$1,800/m</div>
+      <input type="range" class="slider" id="bf-slider" min="800" max="4500" value="1800" step="100" oninput="updateBfBudget(this.value)">
+      <div class="tiers">
+        <div class="tier active" id="bf-tier-essential">
+          <h4>Essential</h4>
+          <p>$800 – $1,800/m</p>
+        </div>
+        <div class="tier" id="bf-tier-enhanced">
+          <h4>Enhanced</h4>
+          <p>$1,800 – $3,000/m</p>
+        </div>
+        <div class="tier" id="bf-tier-premium">
+          <h4>Premium</h4>
+          <p>$3,000 – $4,500+/m</p>
+        </div>
+      </div>
+    </div>
+    <p class="tier-desc" id="bf-desc">Standard aluminium bi-fold or sliding stacking doors — a clean indoor/outdoor connection that works with most existing openings without structural work.</p>
+  </div>
+
+  <div class="style-grid">
+    <div class="style-card">
+      <img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=600&q=80" alt="Aluminium Bi-Fold" loading="lazy">
+      <div class="card-body">
+        <h3>Aluminium Bi-Fold</h3>
+        <div class="tagline">Wide open living — fold the wall away.</div>
+        <ul>
+          <li>Powder-coated aluminium</li>
+          <li>Single or double glazed</li>
+          <li>3, 4, 5 or 6 panel options</li>
+        </ul>
+        <div class="ideal"><strong>Ideal for:</strong> Alfresco-focused families who want a wide, unobstructed opening between inside and outside.</div>
+        <a href="https://moonlightdoorsandwindows.com" target="_blank">Enquire About This Style</a>
+      </div>
+    </div>
+    <div class="style-card">
+      <img src="https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=600&q=80" alt="Stacking Sliding Door" loading="lazy">
+      <div class="card-body">
+        <h3>Stacking Slider</h3>
+        <div class="tagline">Glide open. Stack neatly. No panels to fold.</div>
+        <ul>
+          <li>Multi-track stacking system</li>
+          <li>Flush floor track option</li>
+          <li>Thermal break available</li>
+        </ul>
+        <div class="ideal"><strong>Ideal for:</strong> Homeowners wanting the widest possible opening with the smoothest, easiest operation every day.</div>
+        <a href="https://moonlightdoorsandwindows.com" target="_blank">Enquire About This Style</a>
+      </div>
+    </div>
+    <div class="style-card">
+      <img src="https://images.unsplash.com/photo-1584622781564-1d987f7333c1?w=600&q=80" alt="Thermally Broken Premium" loading="lazy">
+      <div class="card-body">
+        <h3>Thermally Broken Premium</h3>
+        <div class="tagline">Maximum performance. Minimum heat loss.</div>
+        <ul>
+          <li>Thermal break aluminium</li>
+          <li>Double or triple glazed</li>
+          <li>NCC / BAL compliant</li>
+        </ul>
+        <div class="ideal"><strong>Ideal for:</strong> New builds and high-spec renovations where energy rating, acoustic performance and longevity are non-negotiable.</div>
+        <a href="https://moonlightdoorsandwindows.com" target="_blank">Enquire About This Style</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <strong>Moonlight Doors &amp; Windows</strong> &nbsp;·&nbsp; Australian Windows &amp; Doors Specialists &nbsp;·&nbsp; <a href="https://moonlightdoorsandwindows.com" style="color:var(--gold);text-decoration:none;" target="_blank">moonlightdoorsandwindows.com ↗</a>
+  <br><br>© 2026 Moonlight D&amp;W. All rights reserved.
+</footer>
+
+<script>
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+function fmt(v) { return '$' + parseInt(v).toLocaleString('en-AU'); }
+
+function updateWinBudget(v) {
+  v = parseInt(v);
+  document.getElementById('win-amount').textContent = fmt(v);
+  updateSliderGradient(document.getElementById('win-slider'), 800, 8000, v);
+  document.getElementById('win-tier-essential').classList.toggle('active', v <= 2500);
+  document.getElementById('win-tier-enhanced').classList.toggle('active', v > 2500 && v <= 5000);
+  document.getElementById('win-tier-premium').classList.toggle('active', v > 5000);
+  const desc = v <= 2500
+    ? 'Quality aluminium or uPVC double-hung windows — thermally efficient, clean sight lines, and built to Australian standards.'
+    : v <= 5000
+    ? 'Enhanced double-glazed aluminium windows with slim sightlines, premium hardware, and thermal break options — significantly better energy performance.'
+    : 'Top-spec thermally broken frames, triple glazing options, acoustic glass, and bespoke colours — built for high-end homes and BAL-rated zones.';
+  document.getElementById('win-desc').textContent = desc;
+}
+
+function updateDoorBudget(v) {
+  v = parseInt(v);
+  document.getElementById('door-amount').textContent = fmt(v);
+  updateSliderGradient(document.getElementById('door-slider'), 1500, 12000, v);
+  document.getElementById('door-tier-essential').classList.toggle('active', v <= 3500);
+  document.getElementById('door-tier-enhanced').classList.toggle('active', v > 3500 && v <= 6500);
+  document.getElementById('door-tier-premium').classList.toggle('active', v > 6500);
+  const desc = v <= 3500
+    ? 'Solid-core or hollow-core aluminium framed entry doors with quality hardware — a strong, weather-sealed front door that lifts kerb appeal.'
+    : v <= 6500
+    ? 'Premium composite or solid aluminium doors with sidelites, enhanced locking systems, and bespoke powder-coat finishes.'
+    : 'Architectural pivot doors, feature glass inserts, smart lock integration, and bespoke joinery — a true statement entry for premium homes.';
+  document.getElementById('door-desc').textContent = desc;
+}
+
+function updateBfBudget(v) {
+  v = parseInt(v);
+  document.getElementById('bf-amount').textContent = fmt(v) + '/m';
+  updateSliderGradient(document.getElementById('bf-slider'), 800, 4500, v);
+  document.getElementById('bf-tier-essential').classList.toggle('active', v <= 1800);
+  document.getElementById('bf-tier-enhanced').classList.toggle('active', v > 1800 && v <= 3000);
+  document.getElementById('bf-tier-premium').classList.toggle('active', v > 3000);
+  const desc = v <= 1800
+    ? 'Standard aluminium bi-fold or sliding stacking doors — a clean indoor/outdoor connection that works with most existing openings.'
+    : v <= 3000
+    ? 'Double-glazed bi-fold or sliders with flush sills, enhanced weather seals, and larger panel options — great performance in a premium finish.'
+    : 'Thermally broken, acoustically rated bi-fold or stacking systems with triple glazing options — the gold standard for high-spec Australian homes.';
+  document.getElementById('bf-desc').textContent = desc;
+}
+
+function updateSliderGradient(el, min, max, val) {
+  const pct = ((val - min) / (max - min)) * 100;
+  el.style.background = `linear-gradient(90deg, #C9A225 ${pct}%, #444 ${pct}%)`;
+}
+</script>
+</body>
+</html>
