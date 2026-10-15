@@ -7489,18 +7489,21 @@ async function _buildProposal(tunnelBase, polished = {}) {
 
   // Testimonials data
   const testimonials = [
-    { name:'Josh', company:'Quality Custom Homes', amount:'$330k', result:'in 2 weeks', photo:'qj-tp-josh2.jpg' },
-    { name:'Elijah', company:'Spa Space', amount:'$350k', result:'in 3 months', photo:'qj-tp-elijah.png' },
-    { name:'Vish', company:'Streamline Building', amount:'$200k', result:'in 2 months', photo:'qj-tp-vish.png' },
-    { name:'Ryan', company:'Mode Group', amount:'$200k', result:'in 2 months', photo:'qj-tp-ryan.png' },
-    { name:'Sean', company:'Quality Custom Homes', amount:'$136k', result:'in 30 days', photo:'qj-tp-sean.png' },
-    { name:'Jeremy', company:'Aurum Kitchens', amount:'$112k', result:'kitchen in 2 weeks', photo:'qj-tp-jeremy.png' },
-    { name:'Jorge', company:'Budget Reno', amount:'$93k', result:'in 1 month', photo:'qj-tp-jorge.png' },
-    { name:'Harry', company:'Simply Shutters & Shades', amount:'$80k MRR', result:'added per month', photo:'qj-tp-harry.png' },
-    { name:'Andrew', company:'Buildavate', amount:'$70k', result:'in first month', photo:'qj-tp-andrew.png' },
-    { name:'Renovate Right Homes', company:'Renovate Right Homes', amount:'$120k', result:'in 30 days', photo:'qj-tp-rr.png' },
-    { name:'L2 Homes', company:'L2 Homes', amount:'$2M+', result:'pipeline filled', photo:'qj-tp-l2.png' },
-    { name:'Barco Build', company:'Barco Build', amount:'$140k', result:'in 2 months', photo:null },
+    { name:'Josh', company:'Quality Custom Homes', amount:'$330k', result:'in 2 weeks', photo:'qj-tp-josh2.jpg', city:'South Burnett Region' },
+    { name:'Elijah', company:'Spa Space', amount:'$350k', result:'in 3 months', photo:'qj-tp-elijah.png', city:'Brisbane' },
+    { name:'Scott', company:'Rapid Bathroom Specialists', amount:'$450k', result:'pipeline in 3 months', photo:'qj-tp-scott.webp', city:'Sydney' },
+    { name:'Vish', company:'Streamline Building', amount:'$500k', result:'over 5 months', photo:'qj-tp-vish.png', city:'Canberra' },
+    { name:'Ryan', company:'Mode Group', amount:'$200k', result:'in 2 months', photo:'qj-tp-ryan.png', city:'Melbourne' },
+    { name:'Sean', company:'Quality Custom Homes', amount:'$500k', result:'in 3-4 months', photo:'qj-tp-sean2.webp', city:'South Burnett Region' },
+    { name:'KBG Renovations', company:'KBG Renovations', amount:'$1.2M', result:'in 2 months', photo:'qj-tp-kbg.jpg', city:'Melbourne' },
+    { name:'DWS', company:'DWS Building Co.', amount:'$300k', result:'in 2 months', photo:'qj-tp-dws.png', city:'Melbourne' },
+    { name:'Jeremy', company:'Aurum Kitchens', amount:'$112k', result:'kitchen in 2 weeks', photo:'qj-tp-jeremy.png', city:'Newcastle' },
+    { name:'Jorge', company:'Budget Reno', amount:'$93k', result:'in 1 month', photo:'qj-tp-jorge.png', city:'Canberra' },
+    { name:'Harry', company:'Simply Shutters & Shades', amount:'$300k', result:'over 5 months', photo:'qj-tp-harry.png', city:'Adelaide' },
+    { name:'Andrew', company:'Buildavate', amount:'$70k', result:'in first month', photo:'qj-tp-andrew.png', city:'Gold Coast' },
+    { name:'Derek', company:'Renovate Right Homes', amount:'$120k', result:'in 30 days', photo:'qj-tp-rr.png', city:'Gold Coast' },
+    { name:'Jackson', company:'L2 Homes', amount:'$2M+', result:'pipeline filled', photo:'qj-tp-l2.png', city:'Canberra' },
+    { name:'Ryan', company:'Barco Build', amount:'$140k', result:'in 2 months', photo:null, city:'Adelaide' },
   ];
 
   const clientLogoHtml = clientLogoDataUrl
@@ -7851,6 +7854,7 @@ async function _buildProposal(tunnelBase, polished = {}) {
         <div class="testi-info">
           <div class="testi-amount">${t.amount}</div>
           <div class="testi-name">${t.name}${t.name !== t.company ? ', '+t.company : ''}</div>
+          ${t.city ? `<div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 ${t.city}</div>` : ''}
           <div class="testi-result">${t.result}</div>
         </div>
       </div>`).join('')}
