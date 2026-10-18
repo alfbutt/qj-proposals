@@ -2648,6 +2648,39 @@
         <div class="pa-section-title">✍️ Agreement</div>
         <button onclick="openAgreementModal()" id="pa-agr-btn" style="width:100%;background:linear-gradient(135deg,#1a1a2a,#252535);border:1px solid rgba(201,162,37,0.4);color:#C9A225;border-radius:8px;padding:11px 14px;font-size:12px;font-weight:800;cursor:pointer;letter-spacing:0.5px;margin-bottom:10px;transition:all 0.2s;text-align:left;">📄 Generate Agreement from Transcript</button>
         <div id="pa-agr-status" style="font-size:10px;color:#444;line-height:1.6;margin-bottom:8px;">Paste your meeting transcript → we extract the details and build a signed-ready agreement.</div>
+
+        <!-- FOLLOW-UP MESSAGES -->
+        <div id="pa-followup-panel" style="display:none;margin-bottom:12px;">
+          <div style="font-size:11px;font-weight:800;color:#C9A225;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-top:8px;border-top:1px solid #1a1a2a;">📲 Follow-Up Messages</div>
+
+          <!-- SMS -->
+          <div style="margin-bottom:10px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+              <span style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.8px;">💬 SMS</span>
+              <div style="display:flex;gap:5px;">
+                <button onclick="copyFollowUp('sms')" style="background:#1a1a2a;border:1px solid #2a2a3a;color:#aaa;border-radius:5px;padding:3px 8px;font-size:10px;cursor:pointer;font-family:inherit;" onmouseover="this.style.borderColor='#C9A225';this.style.color='#C9A225'" onmouseout="this.style.borderColor='#2a2a3a';this.style.color='#aaa'">Copy</button>
+                <button onclick="sendFollowUp('sms')" style="background:linear-gradient(135deg,#1a3d26,#1a4a2e);border:1px solid rgba(76,175,80,0.3);color:#4caf50;border-radius:5px;padding:3px 8px;font-size:10px;cursor:pointer;font-family:inherit;" onmouseover="this.style.borderColor='#4caf50'" onmouseout="this.style.borderColor='rgba(76,175,80,0.3)'">Send ↗</button>
+              </div>
+            </div>
+            <textarea id="pa-sms-draft" rows="4" style="width:100%;background:#060610;border:1px solid #1e1e2e;border-radius:8px;padding:10px 12px;color:#ccc;font-size:12px;line-height:1.6;resize:vertical;outline:none;font-family:inherit;" onfocus="this.style.borderColor='#C9A225'" onblur="this.style.borderColor='#1e1e2e'"></textarea>
+          </div>
+
+          <!-- EMAIL -->
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+              <span style="font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.8px;">📧 Email</span>
+              <div style="display:flex;gap:5px;">
+                <button onclick="copyFollowUp('email')" style="background:#1a1a2a;border:1px solid #2a2a3a;color:#aaa;border-radius:5px;padding:3px 8px;font-size:10px;cursor:pointer;font-family:inherit;" onmouseover="this.style.borderColor='#C9A225';this.style.color='#C9A225'" onmouseout="this.style.borderColor='#2a2a3a';this.style.color='#aaa'">Copy</button>
+                <button onclick="sendFollowUp('email')" style="background:linear-gradient(135deg,#1a3d26,#1a4a2e);border:1px solid rgba(76,175,80,0.3);color:#4caf50;border-radius:5px;padding:3px 8px;font-size:10px;cursor:pointer;font-family:inherit;" onmouseover="this.style.borderColor='#4caf50'" onmouseout="this.style.borderColor='rgba(76,175,80,0.3)'">Send ↗</button>
+              </div>
+            </div>
+            <div style="margin-bottom:4px;">
+              <input id="pa-email-subject" type="text" placeholder="Subject line…" style="width:100%;background:#060610;border:1px solid #1e1e2e;border-radius:6px;padding:7px 10px;color:#ccc;font-size:11px;outline:none;font-family:inherit;box-sizing:border-box;" onfocus="this.style.borderColor='#C9A225'" onblur="this.style.borderColor='#1e1e2e'">
+            </div>
+            <textarea id="pa-email-draft" rows="7" style="width:100%;background:#060610;border:1px solid #1e1e2e;border-radius:8px;padding:10px 12px;color:#ccc;font-size:12px;line-height:1.6;resize:vertical;outline:none;font-family:inherit;" onfocus="this.style.borderColor='#C9A225'" onblur="this.style.borderColor='#1e1e2e'"></textarea>
+          </div>
+        </div>
+
         <label class="pa-label">Agreement Link (auto-filled or paste manually)</label>
         <input class="pa-input" id="pa-agreement-url" type="text" placeholder="Click Generate above, or paste your own link">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;margin-bottom:2px;">
@@ -2841,6 +2874,14 @@ We spoke with Scott from Rapid Plumbing Group. He's been running the business fo
         <div>
           <label style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:5px;">Contact Name</label>
           <input id="agr-t-contact" class="pa-input" type="text" placeholder="e.g. Scott">
+        </div>
+        <div>
+          <label style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:5px;">Client Phone</label>
+          <input id="agr-t-phone" class="pa-input" type="tel" placeholder="e.g. 0412 345 678">
+        </div>
+        <div>
+          <label style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:5px;">Client Email</label>
+          <input id="agr-t-email" class="pa-input" type="email" placeholder="e.g. scott@company.com.au">
         </div>
         <div>
           <label style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:5px;">Monthly Retainer</label>
@@ -6589,6 +6630,11 @@ async function buildAgreementFromModal() {
     const val = document.getElementById(mid)?.value;
     if (val) document.getElementById(sid).value = val;
   });
+  // Sync phone/email back too (for follow-up)
+  ['agr-t-phone', 'agr-t-email'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el?.value) window['_agr_' + id] = el.value;
+  });
 
   closeAgreementModal();
 
@@ -6625,6 +6671,96 @@ async function buildAgreementFromModal() {
   } catch(e) {}
 
   _buildAgreement(tunnelBase);
+  _generateFollowUpMessages();
+}
+
+async function _generateFollowUpMessages() {
+  const apiKey     = (document.getElementById('pa-api-key')?.value || '').trim();
+  const transcript = (document.getElementById('agr-transcript-input')?.value || '').trim();
+  const contact    = (document.getElementById('agr-t-contact')?.value || document.getElementById('pa-contact-name')?.value || 'there').trim();
+  const client     = (document.getElementById('agr-t-client')?.value || document.getElementById('pa-client-name')?.value || '').trim();
+  const price      = (document.getElementById('agr-t-price')?.value || document.getElementById('pa-price')?.value || '').trim();
+  const agreementUrl = (document.getElementById('pa-agreement-url')?.value || '').trim();
+  const panel      = document.getElementById('pa-followup-panel');
+
+  if (!transcript && !client) return;
+
+  panel.style.display = 'block';
+  document.getElementById('pa-sms-draft').value = '⏳ Generating…';
+  document.getElementById('pa-email-draft').value = '⏳ Generating…';
+  document.getElementById('pa-email-subject').value = '';
+
+  const linkLine = agreementUrl ? `\n\nYour agreement is ready to sign here:\n${agreementUrl}` : '';
+
+  if (apiKey && transcript) {
+    try {
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'content-type': 'application/json', 'anthropic-dangerous-direct-browser-access': 'true' },
+        body: JSON.stringify({
+          model: 'claude-opus-4-5',
+          max_tokens: 1000,
+          messages: [{
+            role: 'user',
+            content: `Based on this sales call transcript, write TWO follow-up messages for the client named "${contact}" from "${client}":
+
+TRANSCRIPT:
+${transcript.slice(0, 3000)}
+
+Write:
+1. SMS (max 160 chars, casual, warm, from Alfie at Quality Jobs, reference what was discussed, do NOT include a link - just a friendly wrap-up)
+2. EMAIL SUBJECT: punchy subject line
+3. EMAIL BODY: professional but warm email from Alfie, covering: the key points discussed on the call, what they're getting (services, price: ${price}), next steps, and let them know the agreement has been sent${agreementUrl ? ' (include this link: ' + agreementUrl + ')' : ''}. Keep it concise — max 200 words.
+
+Format your response EXACTLY as:
+SMS: [the SMS text]
+SUBJECT: [the subject line]
+EMAIL: [the email body]`
+          }]
+        })
+      });
+      const data = await resp.json();
+      const raw = data.content?.[0]?.text || '';
+      const smsMatch   = raw.match(/SMS:\s*([\s\S]*?)(?=\nSUBJECT:|$)/i);
+      const subMatch   = raw.match(/SUBJECT:\s*(.*?)(?=\n|$)/i);
+      const emailMatch = raw.match(/EMAIL:\s*([\s\S]*)/i);
+      document.getElementById('pa-sms-draft').value   = (smsMatch?.[1] || '').trim() + (linkLine ? '\n' + (agreementUrl || '') : '');
+      document.getElementById('pa-email-subject').value = (subMatch?.[1] || `Your Quality Jobs Agreement — ${client}`).trim();
+      document.getElementById('pa-email-draft').value  = (emailMatch?.[1] || '').trim();
+      return;
+    } catch(e) {}
+  }
+
+  // Fallback (no API key)
+  const smsText = `Hey ${contact}, just sent through your agreement! Really excited to get things moving for ${client}. Any questions, just shoot me a text. — Alfie, Quality Jobs`;
+  const emailSubject = `Your Quality Jobs Agreement — ${client}`;
+  const emailBody = `Hi ${contact},\n\nGreat chatting today — really excited about what we can do for ${client}.\n\nAs discussed, we'll be running your Meta Ads, setting up your CRM and lead system, and getting you results fast. Your retainer is ${price}.\n\nI've sent your service agreement through — please review and sign when you're ready.${linkLine ? '\n' + agreementUrl : ''}\n\nAny questions at all, reply here or text me directly.\n\nLooking forward to working with you!\n\nAlfie Butler\nQuality Jobs\nqualityjobs.com.au`;
+  document.getElementById('pa-sms-draft').value   = smsText;
+  document.getElementById('pa-email-subject').value = emailSubject;
+  document.getElementById('pa-email-draft').value  = emailBody;
+}
+
+function copyFollowUp(type) {
+  const el = document.getElementById(type === 'sms' ? 'pa-sms-draft' : 'pa-email-draft');
+  if (!el) return;
+  navigator.clipboard.writeText(el.value).then(() => {
+    const btns = document.querySelectorAll('#pa-followup-panel button');
+    btns.forEach(b => { if (b.textContent === 'Copy' && b.onclick?.toString().includes(type)) { b.textContent = '✓'; setTimeout(() => b.textContent = 'Copy', 1500); } });
+  });
+}
+
+function sendFollowUp(type) {
+  if (type === 'sms') {
+    const phone  = (document.getElementById('agr-t-phone')?.value || '').replace(/\s/g,'');
+    const body   = document.getElementById('pa-sms-draft')?.value || '';
+    const num    = phone.startsWith('0') ? '+61' + phone.slice(1) : phone;
+    window.open('sms:' + num + '?body=' + encodeURIComponent(body), '_blank');
+  } else {
+    const email   = document.getElementById('agr-t-email')?.value || '';
+    const subject = document.getElementById('pa-email-subject')?.value || '';
+    const body    = document.getElementById('pa-email-draft')?.value || '';
+    window.open('mailto:' + encodeURIComponent(email) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body), '_blank');
+  }
 }
 
 // Legacy direct-call kept for backward compat
