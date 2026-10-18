@@ -7249,57 +7249,32 @@ async function submitSignature() {
   btn.textContent = '⏳ Saving…'; btn.disabled = true;
 
   var signedDate = new Date().toLocaleString('en-AU');
-  var ts   = Date.now();
-  var slug = (document.title || 'agreement').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-  var filename = 'signed/qj-agreement-' + slug + '-SIGNED-' + ts + '.html';
+  var ts = Date.now();
+  var sigData = _sigMode === 'draw'
+    ? (document.getElementById('sig-canvas') ? document.getElementById('sig-canvas').toDataURL() : '')
+    : typed;
 
-  // Build signature display for the saved copy
-  var sigDisplay = _sigMode === 'draw'
-    ? '<img src="' + document.getElementById('sig-canvas').toDataURL() + '" style="height:60px;width:auto;display:block;margin-top:4px;">'
-    : '<span style="font-family:Georgia,serif;font-size:22px;font-style:italic;letter-spacing:1px;">' + typed + '<\/span>';
-
-  // Stamp signed footer + lock form
-  var stamp = \`<div style="position:fixed;bottom:0;left:0;right:0;background:#1a3d26;color:#fff;font-size:13px;font-weight:700;text-align:center;padding:10px;z-index:9999;">✅ Signed by \${name} on \${signedDate}<\/div>\`;
-  var signedHtml = document.documentElement.outerHTML
-    .replace('<\/body>', stamp + '<\/body>')
-    .replace(/<script[\s\S]*?<\/script>/gi, '');
-
-  // Upload to GitHub /signed/ folder
-  async function uploadToGitHub(fname, content) {
+  // Save lightweight JSON record only — not the full HTML
+  try {
     var token = 'EDWAv2bdYLcbSikNoPdkN1cDYkX5j4m2u0rZ_phg'.split('').reverse().join('');
     var repo  = 'alfbutt/qj-proposals';
-    var encoded = btoa(unescape(encodeURIComponent(content)));
-    var check = await fetch('https://api.github.com/repos/' + repo + '/contents/' + fname, {
-      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' }
-    });
-    var body = { message: 'Signed agreement — ' + name, content: encoded };
-    if (check.ok) { var d = await check.json(); body.sha = d.sha; }
-    var resp = await fetch('https://api.github.com/repos/' + repo + '/contents/' + fname, {
+    var record = JSON.stringify({
+      name: name, signature: typed || '[drawn]', signedAt: signedDate,
+      proposal: document.title, url: location.href, payUrl: window._QJ_PAY_URL || ''
+    }, null, 2);
+    var encoded = btoa(unescape(encodeURIComponent(record)));
+    var fname = 'signed/qj-sig-' + ts + '.json';
+    await fetch('https://api.github.com/repos/' + repo + '/contents/' + fname, {
       method: 'PUT',
       headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+      body: JSON.stringify({ message: 'Signed: ' + name, content: encoded })
     });
-    if (!resp.ok) throw new Error('Upload failed');
-    return 'https://proposals.qualityjobs.com.au/' + fname;
-  }
-
-  var signedUrl = '';
-  try {
-    signedUrl = await uploadToGitHub(filename, signedHtml);
-  } catch(e) {
-    console.warn('GitHub upload failed:', e);
-  }
+  } catch(e) { console.warn('Signature save error:', e); }
 
   btn.style.display = 'none';
   var banner = document.getElementById('signed-banner');
   banner.style.display = 'block';
   document.getElementById('signed-name').textContent = name;
-  if (signedUrl) {
-    var linkEl = document.createElement('div');
-    linkEl.style.cssText = 'margin-top:12px;font-size:12px;color:#666;';
-    linkEl.innerHTML = 'Signed copy saved: <a href="' + signedUrl + '" target="_blank" style="color:#C9A225;">' + signedUrl + '<\/a>';
-    banner.appendChild(linkEl);
-  }
   banner.scrollIntoView({ behavior: 'smooth' });
   var payUrl = window._QJ_PAY_URL || '';
   if (payUrl && payUrl !== '#') {
