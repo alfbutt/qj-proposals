@@ -8138,7 +8138,7 @@ ${agreementUrl ? `
 // ── OUTREACH MESSAGES ──────────────────────────────────────────────
 let _outreachCtx = {};
 
-function generateOutreach(publicUrl) {
+async function generateOutreach(publicUrl) {
   // Grab current form values (already read during generateProposal call)
   const contactName  = (document.getElementById('pa-contact-name').value || 'there').split(' ')[0];
   const clientName   = document.getElementById('pa-client-name').value || 'your business';
@@ -8147,8 +8147,91 @@ function generateOutreach(publicUrl) {
   const pain         = document.getElementById('pa-pain').value || '';
   const transcript   = document.getElementById('pa-transcript').value || '';
   const price        = document.getElementById('pa-price').value || '';
+  const apiKey       = (document.getElementById('pa-api-key')?.value || '').trim();
   const services     = [...document.querySelectorAll('#pa-sidebar .pa-checkbox-grid .pa-check.checked')].map(el=>el.textContent.trim()).join(', ');
 
+  // Show panel immediately with loading state
+  const panel = document.getElementById('pa-messages');
+  panel.style.display = 'flex';
+  showMsgTab('wa');
+  document.getElementById('msgcontent-wa').textContent     = '⏳ Writing personalised messages from your transcript…';
+  document.getElementById('msgcontent-email1').textContent = '⏳ Generating…';
+  document.getElementById('msgcontent-email2').textContent = '⏳ Generating…';
+  document.getElementById('msgcontent-email3').textContent = '⏳ Generating…';
+
+  // Use Claude API if key + transcript available
+  if (apiKey && (transcript || pain)) {
+    try {
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'content-type': 'application/json', 'anthropic-dangerous-direct-browser-access': 'true' },
+        body: JSON.stringify({
+          model: 'claude-opus-4-5',
+          max_tokens: 2000,
+          messages: [{
+            role: 'user',
+            content: `You are Alfie Butler from Quality Jobs, a marketing agency for tradies and renovators in Australia.
+
+Write 4 follow-up messages for ${contactName} from ${clientName} (${niche}) after a sales call. Base them on the SPECIFIC things discussed in the transcript below — mention their actual problems, goals, and what was agreed. Do NOT use generic filler.
+
+TRANSCRIPT / NOTES:
+${(transcript || pain).slice(0, 3000)}
+
+Services sold: ${services || 'Full Marketing System'}
+${price ? 'Price: ' + price : ''}
+Proposal link: ${publicUrl}
+
+Write ALL FOUR messages, formatted EXACTLY as:
+
+WA:
+[WhatsApp message — casual, warm, 120–150 words. Mention 1–2 SPECIFIC things from the call. Include the proposal link with 🔗. Sign off "– Alfie, Quality Jobs"]
+
+SUB1: [Email 1 subject — punchy, specific to their situation]
+EMAIL1:
+[Email 1 body — send same day. Reference what they specifically said on the call about their business/problems/goals. 100–130 words. Include proposal link.]
+
+SUB2: [Email 2 subject]
+EMAIL2:
+[Email 2 body — send 2 days later if no reply. Reference their specific situation again. 80–100 words.]
+
+SUB3: [Email 3 subject]
+EMAIL3:
+[Email 3 — final follow-up, 5 days later. Short, 60–80 words.]`
+          }]
+        })
+      });
+      const data = await resp.json();
+      const raw = data.content?.[0]?.text || '';
+
+      const waMatch  = raw.match(/WA:\s*([\s\S]*?)(?=\nSUB1:|$)/i);
+      const sub1Match= raw.match(/SUB1:\s*(.*?)(?=\n|$)/i);
+      const em1Match = raw.match(/EMAIL1:\s*([\s\S]*?)(?=\nSUB2:|$)/i);
+      const sub2Match= raw.match(/SUB2:\s*(.*?)(?=\n|$)/i);
+      const em2Match = raw.match(/EMAIL2:\s*([\s\S]*?)(?=\nSUB3:|$)/i);
+      const sub3Match= raw.match(/SUB3:\s*(.*?)(?=\n|$)/i);
+      const em3Match = raw.match(/EMAIL3:\s*([\s\S]*)/i);
+
+      const wa     = (waMatch?.[1] || '').trim();
+      const sub1   = (sub1Match?.[1] || `Your Custom Proposal — ${clientName} × Quality Jobs`).trim();
+      const email1 = (em1Match?.[1] || '').trim();
+      const sub2   = (sub2Match?.[1] || `Just checking in — ${clientName} proposal`).trim();
+      const email2 = (em2Match?.[1] || '').trim();
+      const sub3   = (sub3Match?.[1] || `Last one from me, ${contactName}`).trim();
+      const email3 = (em3Match?.[1] || '').trim();
+
+      _outreachCtx = { wa, email1, sub1, email2, sub2, email3, sub3 };
+      document.getElementById('msgcontent-wa').textContent     = wa;
+      document.getElementById('msgcontent-email1').textContent = email1;
+      document.getElementById('msgsubject-email1').textContent = sub1;
+      document.getElementById('msgcontent-email2').textContent = email2;
+      document.getElementById('msgsubject-email2').textContent = sub2;
+      document.getElementById('msgcontent-email3').textContent = email3;
+      document.getElementById('msgsubject-email3').textContent = sub3;
+      return;
+    } catch(e) { console.warn('Outreach AI error:', e); }
+  }
+
+  // ── Fallback templates (no API key or transcript) ──
   // Derive a short pain snippet for personalisation
   const painLines = pain.split('\n').map(l=>l.replace(/^[-•*]\s*/,'')).filter(Boolean);
   const mainPain = painLines[0] || 'the challenges you raised on our call';
