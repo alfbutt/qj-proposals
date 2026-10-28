@@ -8010,13 +8010,7 @@ async function _buildProposal(tunnelBase, polished = {}) {
       <div class="sec-tag">Ready to move?</div>
       <div class="sec-title">This was built<br>for <span style="color:var(--gold);">${clientName}</span></div>
       <p style="font-size:17px;color:rgba(255,255,255,0.45);max-width:560px;line-height:1.8;margin-top:20px;">Everything covered in your proposal — the system, the strategy, the guarantee — is locked in inside your agreement. Open it to see your investment and sign when you're ready.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:36px;margin-bottom:8px;">
-        ${price ? `<div style="background:#111;border:1px solid rgba(201,162,37,0.2);border-radius:12px;padding:20px 28px;min-width:180px;">
-          <div style="font-size:11px;color:#555;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Initial Retainer</div>
-          <div class="price-amount">${price}</div>
-          <div class="price-period">${duration} initial term</div>
-        </div>` : ''}
-      </div>
+      <div style="margin-top:36px;margin-bottom:8px;"></div>
       ${agreementUrl ? `<a href="${agreementUrl}" target="_blank" style="display:inline-block;margin-top:24px;background:linear-gradient(135deg,#C9A225,#E8C04A);color:#000;font-weight:900;font-size:16px;letter-spacing:0.5px;padding:18px 44px;border-radius:14px;text-decoration:none;box-shadow:0 8px 40px rgba(201,162,37,0.3);">📄 Open Your Agreement →</a>` : ''}
     </div>
   </div>
