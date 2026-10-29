@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><!-- v28sep -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quality Jobs — Proposal for Elite Touch Renovations</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{
+    --gold:#C9A225;--gold-light:#E8C04A;--gold-dark:#A07B10;
+    --charcoal:#1a1a1a;--charcoal2:#252525;--charcoal3:#2a2a2a;
+    --cream:#F2EDE4;--cream2:#EDE8DF;
+    --white:#ffffff;--text-mid:#555;
+  }
+  html{scroll-behavior:smooth;}
+  body{font-family:'Inter',sans-serif;background:var(--charcoal);color:var(--white);overflow-x:hidden;}
+
+  /* ── HERO ── */
+  #hero{
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:80px 40px;position:relative;overflow:hidden;
+    background:linear-gradient(180deg,#000 0%,var(--charcoal) 100%);
+  }
+  .grid-bg{
+    position:absolute;inset:0;pointer-events:none;
+    background-image:linear-gradient(rgba(201,162,37,0.05) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(201,162,37,0.05) 1px,transparent 1px);
+    background-size:80px 80px;
+  }
+  .hero-glow{
+    position:absolute;top:-200px;left:50%;transform:translateX(-50%);
+    width:700px;height:700px;border-radius:50%;
+    background:radial-gradient(circle,rgba(201,162,37,0.15) 0%,transparent 70%);
+    pointer-events:none;
+  }
+  .logos-row{
+    display:flex;align-items:center;gap:16px;margin-bottom:36px;
+    animation:fadeUp 0.5s ease both;
+  }
+  .logos-row .divider{
+    width:1px;height:48px;background:rgba(201,162,37,0.3);
+  }
+  .hero-tag{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(201,162,37,0.1);border:1px solid rgba(201,162,37,0.2);
+    border-radius:100px;padding:6px 18px;font-size:11px;font-weight:700;
+    color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;
+    margin-bottom:24px;animation:fadeUp 0.5s 0.1s ease both;
+  }
+  .hero-prepared{font-size:12px;color:#666;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;animation:fadeUp 0.5s 0.15s ease both;}
+  .hero-client{
+    font-size:clamp(52px,8vw,96px);font-weight:900;line-height:1;
+    background:linear-gradient(135deg,#fff 30%,var(--gold) 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    margin-bottom:20px;animation:fadeUp 0.5s 0.2s ease both;
+  }
+  .hero-sub{font-size:17px;color:rgba(255,255,255,0.45);max-width:580px;line-height:1.8;margin-bottom:48px;animation:fadeUp 0.5s 0.3s ease both;}
+  .hero-cta{
+    display:inline-flex;align-items:center;gap:10px;
+    background:linear-gradient(135deg,var(--gold),var(--gold-light));
+    color:#000;border:none;border-radius:100px;padding:16px 40px;
+    font-size:15px;font-weight:800;cursor:pointer;text-decoration:none;
+    box-shadow:0 8px 40px rgba(201,162,37,0.35);
+    transition:transform 0.2s,box-shadow 0.2s;animation:fadeUp 0.5s 0.4s ease both;
+  }
+  .hero-cta:hover{transform:translateY(-2px);box-shadow:0 14px 50px rgba(201,162,37,0.45);}
+  .scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-size:10px;color:#333;letter-spacing:2px;text-transform:uppercase;animation:bounce 2s infinite;}
+
+  /* ── SECTION BASE ── */
+  .sec{padding:100px 40px;max-width:1040px;margin:0 auto;}
+  .sec-tag{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+  .sec-title{font-size:clamp(32px,5vw,54px);font-weight:900;line-height:1.05;margin-bottom:16px;}
+  .sec-body{font-size:16px;color:rgba(255,255,255,0.45);line-height:1.8;max-width:680px;}
+
+  /* ── PROBLEM ── */
+  #problem{background:#111;border-top:1px solid #1e1e1e;border-bottom:1px solid #1e1e1e;max-width:100%;padding:100px 40px;}
+  #problem .inner{max-width:1040px;margin:0 auto;}
+  .pain-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:40px;}
+  .pain-card{
+    background:var(--charcoal2);border:1px solid #2e2e2e;border-radius:16px;padding:24px;
+    position:relative;overflow:hidden;
+  }
+  .pain-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#e74c3c,transparent);}
+  .pain-title{font-size:14px;font-weight:700;color:var(--white);margin-bottom:6px;line-height:1.4;}
+  .pain-no{font-size:28px;font-weight:900;color:#e74c3c;opacity:0.15;position:absolute;top:14px;right:16px;line-height:1;}
+
+  /* ── MIRO BOARD EMBED ── */
+  #system{background:var(--charcoal);max-width:100%;padding:100px 40px;}
+  #system .inner{max-width:1040px;margin:0 auto;}
+  .miro-frame{
+    margin-top:40px;border-radius:20px;overflow:hidden;
+    border:1px solid rgba(201,162,37,0.25);
+    box-shadow:0 20px 80px rgba(0,0,0,0.6);
+    position:relative;
+  }
+  .miro-bar{
+    background:#111;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #1e1e1e;
+  }
+  .miro-dots{display:flex;gap:5px;}
+  .miro-dots span{width:11px;height:11px;border-radius:50%;display:block;}
+  .miro-url{flex:1;background:#0a0a0a;border-radius:5px;padding:4px 12px;font-size:11px;color:#555;font-family:monospace;}
+  .miro-iframe{width:100%;height:600px;border:none;display:block;background:#1a1a1a;}
+
+  /* ── TESTIMONIALS ── */
+  #social{background:#111;border-top:1px solid #1e1e1e;border-bottom:1px solid #1e1e1e;max-width:100%;padding:100px 0 100px;}
+  #social .inner{max-width:1040px;margin:0 auto;padding:0 40px;}
+  .testi-track{
+    display:flex;gap:16px;overflow-x:auto;padding:32px 40px 16px;
+    scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;scrollbar-color:var(--gold) #222;
+  }
+  .testi-track::-webkit-scrollbar{height:4px;}
+  .testi-track::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+  .testi-card{
+    flex-shrink:0;width:220px;scroll-snap-align:start;
+    background:var(--charcoal2);border:1px solid #2e2e2e;border-radius:16px;overflow:hidden;
+    transition:transform 0.2s,border-color 0.2s;
+  }
+  .testi-card:hover{transform:translateY(-4px);border-color:var(--gold);}
+  .testi-photo{position:relative;}
+  .testi-photo img{width:100%;height:200px;object-fit:cover;object-position:top;display:block;}
+  .testi-photo .placeholder{width:100%;height:200px;background:linear-gradient(135deg,#1a1a2e,#2a2a4e);display:flex;align-items:center;justify-content:center;font-size:40px;}
+  .testi-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+  .testi-play div{width:46px;height:46px;background:rgba(0,0,0,0.6);border-radius:50%;border:2.5px solid rgba(255,255,255,0.8);display:flex;align-items:center;justify-content:center;}
+  .testi-play div::after{content:'';width:0;height:0;border-top:10px solid transparent;border-bottom:10px solid transparent;border-left:17px solid #fff;margin-left:3px;}
+  .testi-info{padding:12px 14px;}
+  .testi-amount{font-size:20px;color:var(--gold);font-weight:900;}
+  .testi-name{font-size:11px;font-weight:700;color:#fff;margin:3px 0 2px;}
+  .testi-result{font-size:10px;color:rgba(255,255,255,0.5);line-height:1.4;}
+
+  /* ── STATS ── */
+  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:40px 0;}
+  .stat-card{background:var(--charcoal2);border:1px solid #2e2e2e;border-radius:16px;padding:28px;text-align:center;}
+  .stat-val{font-size:52px;font-weight:900;color:var(--gold);line-height:1;}
+  .stat-label{font-size:11px;color:#555;margin-top:8px;text-transform:uppercase;letter-spacing:1px;}
+
+  /* ── INSIGHTS (from transcript) ── */
+  .insight-card{background:#111;border:1px solid #1e1e1e;border-radius:16px;padding:28px;margin-top:24px;}
+  .insight-card .itag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:16px;}
+  .insight-line{display:flex;gap:10px;font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;margin-bottom:10px;}
+  .insight-line span{color:var(--gold);flex-shrink:0;font-weight:700;}
+
+  /* ── INVESTMENT ── */
+  .price-card{
+    background:linear-gradient(145deg,var(--charcoal),var(--charcoal2));
+    border:1px solid var(--gold);border-radius:24px;padding:52px;
+    margin-top:40px;position:relative;overflow:hidden;text-align:center;
+  }
+  .price-card::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(201,162,37,0.08),transparent);
+  }
+  .price-amount{font-size:clamp(28px,5vw,42px);font-weight:800;color:var(--gold);line-height:1.2;}
+  .price-period{font-size:16px;color:#555;margin-top:6px;}
+  .price-adspend{font-size:13px;color:#444;margin-top:4px;}
+  .incl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:32px auto;max-width:600px;text-align:left;}
+  .incl-item{display:flex;align-items:center;gap:8px;font-size:13px;color:#ccc;}
+  .incl-item::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0;}
+  .guarantee{
+    display:inline-flex;align-items:center;gap:10px;
+    background:rgba(201,162,37,0.1);border:1px solid rgba(201,162,37,0.2);
+    border-radius:100px;padding:12px 24px;font-size:13px;color:var(--gold);font-weight:600;margin-top:24px;
+  }
+
+  /* ── NEXT STEPS ── */
+  .steps{margin-top:40px;display:flex;flex-direction:column;gap:14px;}
+  .step-row{display:flex;align-items:flex-start;gap:16px;background:var(--charcoal2);border:1px solid #2e2e2e;border-radius:14px;padding:20px;}
+  .step-num{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#000;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .step-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:4px;}
+  .step-desc{font-size:12px;color:#555;line-height:1.5;}
+
+  /* ── FOOTER ── */
+  footer{background:#000;border-top:1px solid #111;text-align:center;padding:70px 40px;}
+  footer img{height:44px;margin-bottom:16px;}
+  footer .cta{font-size:22px;font-weight:800;color:#fff;margin-bottom:8px;}
+  footer p{font-size:12px;color:#333;}
+
+  /* ── CREAM ACCENT STRIP ── */
+  .cream-strip{
+    background:var(--cream);padding:60px 40px;border-top:none;border-bottom:none;
+    max-width:100%;
+  }
+  .cream-strip .inner{max-width:1040px;margin:0 auto;}
+  .cream-strip .sec-tag{color:var(--gold-dark);}
+  .cream-strip .sec-title{color:var(--charcoal);}
+  .cream-strip .sec-body{color:var(--text-mid);}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(7px);}}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  /* ── MOBILE RESPONSIVE ── */
+  @media (max-width: 680px) {
+    .hero-title{font-size:clamp(32px,9vw,52px);}
+    .hero-sub{font-size:15px;}
+    .hero-cta{padding:14px 28px;font-size:14px;}
+    .sec{padding:64px 20px;}
+    #problem{padding:64px 20px;}
+    #social{padding:64px 0;}
+    #social .inner{padding:0 20px;}
+    .testi-track{padding:24px 20px 16px;}
+    .testi-card{width:180px;}
+    .testi-photo img,.testi-photo .placeholder{height:180px;}
+    .pain-grid{grid-template-columns:1fr;}
+    .stats-row{grid-template-columns:1fr;gap:12px;}
+    .incl-grid{grid-template-columns:1fr;}
+    .steps{gap:16px;}
+    .step-row{gap:14px;}
+    .step-num{width:36px;height:36px;font-size:14px;flex-shrink:0;}
+    /* Show mobile Miro board nav, hide desktop iframe */
+    .miro-iframe{display:none !important;}
+    .miro-mobile-fallback{display:flex !important;}
+    /* Logos bar */
+    .logo-bar{gap:16px 24px;}
+    /* Next steps section */
+    #next-steps{padding:64px 20px;}
+    /* Quoting bonus */
+    .quoting-inner{flex-direction:column;gap:24px;}
+    footer{padding:60px 20px;}
+    footer .cta{font-size:28px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="logos-row">
+    <img src="https://proposals.qualityjobs.com.au/qj-logo.png" style="height:56px;width:auto;" alt="Quality Jobs" onerror="this.style.display='none'">
+    <div class="divider"></div><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUQAAABICAYAAACOX4wJAAAKsGlDQ1BJQ0MgUHJvZmlsZQAASImVlwdUk9kSgO//pzdKAkgn1FAEKQIBpIQeem82QhJIKCEEgooNkcUVXAsqIqAs6KKAgqtSZC2IBQuLYMO+IIuCui4WbKC8HziE3X3nvXfenDOZL5O5c+fO+e9/JgBQ6ByxOBVWACBNlCUJ83Gnx8TG0XEvAAS0gRLQATgON1PMCgkJAIjM2r/Lh7tINCK3zKdy/fvv/1UUefxMLgBQCMIJvExuGsInEZ3giiVZAKCOIX79FVniKb6NsJIEKRDh4SlOmuGJKU6YZrTCdExEmAfCBgDgyRyOJAkAsiXip2dzk5A85Km9LEU8oQjhXIRd0tLSeQi3I2yMxIgRnsrPTPhLnqS/5UyQ5eRwkmQ8c5ZpwXsKM8WpnFX/Zzv+t6SlSmf3YCBKFkh8wxCrivTs95R0fxmLEoKCZ1nIm46fZoHUN3KWuZkecbOcmRrOnmUex9Nflic1KGCWE4XeshhhFjtilvmZXuGzLEkPk+2bKPFgzTJHMleDNCVS5hfw2bL8OYKI6FnOFkYFyWpLCfefi/GQ+SXSMNlZ+CIf97l9vWV9SMv8y9mFbNnaLEGEr6wPnLn6+SLWXM7MGFltPL6n11xMpCxenOUu20ucGiKL56f6yPyZ2eGytVnIwzm3NkTWw2SOX8gsg0AQDtiAjtgQYAXsEKUDL2CdxV+ZNXUYj3TxKokwSZBFZyE3jk9ni7gW8+nWltZ2AEzd35nH492N6XsJqSbM+YS5ANgKEOeXOV8iCYBW5N5QY+d8DKTf1M0AnH3AlUqyZ3zoqQ8MIAJ55M2ghrwf9IExMAfWSH1OwA2pzw8EgwgQC5YBLhCANCABK8AasAEUgCKwHewGZaASHACHwVFwHLSA0+A8uAyugx5wBzwE/WAIvASj4AMYhyAIB1EgGqQG6UCGkBlkDTEhF8gLCoDCoFgoHkqCRJAUWgNthIqgYqgMqoJqoZ+hU9B56CrUC92HBqAR6C30BUbBZFgJ1oKN4AUwE2bB/nAEvBROgjPgHDgf3gqXwtXwEbgZPg9fh+/A/fBLeAwFUCSUCkoXZY5iojxQwag4VCJKglqHKkSVoKpRDag2VCfqFqof9Qr1GY1F09B0tDnaCe2LjkRz0Rnodegt6DL0YXQz+iL6FnoAPYr+hqFgNDFmGEcMGxODScKswBRgSjA1mCbMJcwdzBDmAxaLVcEysPZYX2wsNhm7GrsFuw/biG3H9mIHsWM4HE4NZ4ZzxgXjOLgsXAFuL+4I7hzuJm4I9wlPwuvgrfHe+Di8CJ+HL8HX4c/ib+Kf48cJCgRDgiMhmMAjrCJsIxwktBFuEIYI40RFIoPoTIwgJhM3EEuJDcRLxEfEdyQSSY/kQAolCUm5pFLSMdIV0gDpM5lKNiV7kJeQpeSt5EPkdvJ98jsKhWJEcaPEUbIoWym1lAuUJ5RPcjQ5Czm2HE9uvVy5XLPcTbnX8gR5Q3mW/DL5HPkS+RPyN+RfKRAUjBQ8FDgK6xTKFU4p9CmMKdIUrRSDFdMUtyjWKV5VHKbiqEZULyqPmk89QL1AHaShaPo0DxqXtpF2kHaJNqSEVWIosZWSlYqUjip1K40qU5UXKkcpr1QuVz6j3K+CUjFSYaukqmxTOa5yV+XLPK15rHn8eZvnNcy7Oe+jqoaqmypftVC1UfWO6hc1upqXWoraDrUWtcfqaHVT9VD1Fer71S+pv9JQ0nDS4GoUahzXeKAJa5pqhmmu1jyg2aU5pqWt5aMl1tqrdUHrlbaKtpt2svYu7bPaIzo0HRcdoc4unXM6L+jKdBY9lV5Kv0gf1dXU9dWV6lbpduuO6zH0IvXy9Br1HusT9Zn6ifq79Dv0Rw10DAIN1hjUGzwwJBgyDQWGeww7DT8aMYyijTYZtRgNM1QZbEYOo57xyJhi7GqcYVxtfNsEa8I0STHZZ9JjCpvamgpMy01vmMFmdmZCs31mvfMx8x3mi+ZXz+8zJ5uzzLPN680HLFQsAizyLFosXi8wWBC3YMeCzgXfLG0tUy0PWj60olr5WeVZtVm9tTa15lqXW9+2odh426y3abV5s9BsIX/h/oX3bGm2gbabbDtsv9rZ20nsGuxG7A3s4+0r7PuYSswQ5hbmFQeMg7vDeofTDp8d7RyzHI87/ulk7pTiVOc0vIixiL/o4KJBZz1njnOVc78L3SXe5UeXflddV45rtetTN303nluN23OWCSuZdYT12t3SXeLe5P7Rw9FjrUe7J8rTx7PQs9uL6hXpVeb1xFvPO8m73nvUx9ZntU+7L8bX33eHbx9bi81l17JH/ez91vpd9Cf7h/uX+T8NMA2QBLQFwoF+gTsDHwUZBomCWoJBMDt4Z/DjEEZIRsgvodjQkNDy0GdhVmFrwjrDaeHLw+vCP0S4R2yLeBhpHCmN7IiSj1oSVRv1Mdozuji6P2ZBzNqY67HqscLY1jhcXFRcTdzYYq/FuxcPLbFdUrDk7lLG0pVLry5TX5a67Mxy+eWc5SfiMfHR8XXxE5xgTjVnLIGdUJEwyvXg7uG+5LnxdvFG+M78Yv7zROfE4sThJOeknUkjAldBieCV0ENYJnyT7JtcmfwxJTjlUMpkanRqYxo+LT7tlIgqShFdTNdOX5neKzYTF4j7MxwzdmeMSvwlNZlQ5tLM1iwlZFDqkhpLv5MOZLtkl2d/WhG14sRKxZWilV2rTFdtXvU8xzvnp9Xo1dzVHWt012xYM7CWtbZqHbQuYV3Hev31+euHcn1yD28gbkjZ8GueZV5x3vuN0Rvb8rXyc/MHv/P5rr5ArkBS0LfJaVPl9+jvhd93b7bZvHfzt0Je4bUiy6KSookt3C3XfrD6ofSHya2JW7u32W3bvx27XbT97g7XHYeLFYtzigd3Bu5s3kXfVbjr/e7lu6+WLCyp3EPcI93TXxpQ2rrXYO/2vRNlgrI75e7ljRWaFZsrPu7j7bu5321/Q6VWZVHllx+FP96r8qlqrjaqLjmAPZB94NnBqIOdPzF/qq1Rrymq+XpIdKj/cNjhi7X2tbV1mnXb6uF6af3IkSVHeo56Hm1tMG+oalRpLDoGjkmPvfg5/ue7x/2Pd5xgnmg4aXiyoonWVNgMNa9qHm0RtPS3xrb2nvI71dHm1Nb0i8Uvh07rni4/o3xm21ni2fyzk+dyzo21i9tfnU86P9ixvOPhhZgLty+GXuy+5H/pymXvyxc6WZ3nrjhfOX3V8eqpa8xrLdftrjd32XY1/Wr7a1O3XXfzDfsbrT0OPW29i3rP3nS9ef6W563Lt9m3r98JutN7N/Luvb4lff33ePeG76fef/Mg+8H4w9xHmEeFjxUelzzRfFL9m8lvjf12/WcGPAe6noY/fTjIHXz5e+bvE0P5zyjPSp7rPK8dth4+PeI90vNi8Yuhl+KX468K/lD8o+K18euTf7r92TUaMzr0RvJm8u2Wd2rvDr1f+L5jLGTsyYe0D+MfCz+pfTr8mfm580v0l+fjKyZwE6VfTb62ffP/9mgybXJSzJFwpkcBFKJwYiIAbw8BQIkFgNYDAHHxzHw9LdDMf4JpAv+JZ2bwaUEmlxo3AKZGr5B2ACqQOcUIsYpT3xFFxiTYxkams7Pw9Nw+vVwIgFvLFA1OnsoF/5CZmf4vdf/TAlnWv9l/Ac5YCd0nLqPFAAAAVmVYSWZNTQAqAAAACAABh2kABAAAAAEAAAAaAAAAAAADkoYABwAAABIAAABEoAIABAAAAAEAAAFEoAMABAAAAAEAAABIAAAAAEFTQ0lJAAAAU2NyZWVuc2hvdIWAWKoAAAHVaVRYdFhNTDpjb20uYWRvYmUueG1wAAAAAAA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJYTVAgQ29yZSA2LjAuMCI+CiAgIDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+CiAgICAgIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiCiAgICAgICAgICAgIHhtbG5zOmV4aWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vZXhpZi8xLjAvIj4KICAgICAgICAgPGV4aWY6UGl4ZWxZRGltZW5zaW9uPjcyPC9leGlmOlBpeGVsWURpbWVuc2lvbj4KICAgICAgICAgPGV4aWY6UGl4ZWxYRGltZW5zaW9uPjMyNDwvZXhpZjpQaXhlbFhEaW1lbnNpb24+CiAgICAgICAgIDxleGlmOlVzZXJDb21tZW50PlNjcmVlbnNob3Q8L2V4aWY6VXNlckNvbW1lbnQ+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgrRHV9GAAAcO0lEQVR4Ae1dB3wURRd/SJPiB0qxUAxV6TUB6S1ApINAIk2aSFG6Si9SDASU3pQSuiKiqIBSpXekiAhIRwiICihV93v/SWazd7lL9pK7COS93+9ud2dnZ2f+M/v2tZlNdubcGYOEBAFBQBAQBCiZwSQ4CAKCgCAgCBA9JiAIAoKAICAIRCIgDFFGgiAgCAgCUQgIQ5ShIAgIAoJAFALCEGUoCAKCgCAQhYAwRBkKgoAgIAhEISAMUYaCICAICAJRCAhDlKEgCAgCgkAUAsIQZSgIAoKAIBCFgDBEGQqCgCAgCEQhIAxRhoIgIAgIAlEICEOUoSAICAKCQBQCKR4EJP755x/6/fff6cKFC3Tx4kWKiIjg4z/o7t27lDJFCsr4ZEbKkiULPffcc5Q9W3Z6KtNTlILThQQBQUAQ8CYC/9niDv/++y/9/fffdOjQYVq4cCEdOXyEbt26TRkyZqCsWTJTlqxP0+OPp2ameI+uXomgCP79+cd1Sp48OeV/4QUKbt6MypQtQ+nSpaPHHhNB15uDQsoSBJIqAonOEMEIf/vtGq1du5ZWr15Nly9HUMkSJahY8WJUqGBBeva5Z5kRPq4YHzoFa/EYxr9KWrx06RL9+ONRZqKHaN++fSpfrVq1KCiotpIgRWpMqsNY2i0IeAeBRGOIWGXs3r17dPz4CRo+bDidOXuWQkKCqVWrlvTEE08oFThZsmS2WnX//n26ceMmrVr1Dc2YPovSpU9Dw4cPp0KFCikmabccWzeTTIKAIJBkEEgUhghmCPU4PDyc5s0Lp5eDXqY2r7WmHDlyJEjdhbR55coV+vTTT1XZDRs2pO7du1PatGlJmGKSGcPSUEHAawgkCkP8448/KCxsHG3atJGGDh1KlSpV8kgijK21YLZwyhw8eJAGDx6sVOdRo0bRM888I0wxNuDknCAgCMRAwKcMEczqzz//pN6936Zr167S2LFjyM/PzyceYqjR8FD37dtXSZ1TpkyhjBkzJkgCjYGWJAgCgsAjjYDP3LNghvAaT5gwkSIuX2Yb3zDKlSuXT5gheggOlWzZstGkSZPU/oABAxQzRj2EBAFBQBCwg4DPGOK9e/fpk0+W0hr2JE+eMpEKsgcZITO+JJSfOXNmmjhxIh0+9CMtWLCA7ty548tbStmCgCDwCCHgE4YIqezMmTM0Y8Ys6te/v5LcfM0MdZ8gJjFDhgw0NiyUHTjzaP369Ry2I1Kixke2goAg4B4BnzDEGzdu0JjQMVSxYkWqXbuWzyVD5+aBKfr7+1OjRo1o0aJFdP36decsciwICAKCQAwEvM4QIY1t/n4zHTx0kNq3b6fsef9FCAwk0q5du9Lt27dpxYoVIiXG6HpJEAQEAWcEvD4hGDa7VatWU83AmpQ3bx6PQl8wdxkhNAlRccEIU6dOrdqJgO+6derRnDnzqE6dOpQpUyaP6uMMlhwLAoLAo42A1xnir7/+SoePHGFVdaFHqjKCrEeMGEFH+FpXDBFpyAOCSuxO6nz66adp8uTJ6t5gjoE1a9DMmbNo//79VL16dbfXPdrdLK0TBAQBOwh4lSGCaS1ZsoSKFi3M0thTdu5v5gGDCwgIUA4YVwwRkuN3366lm3/9RQ0b1ncbvgOHipVZwutcq3YgbdiwgapWrerTuETU+6efjtKN6zcooEwZs217du+mzz//jPbz/Ovw+QspM6/cownxk2iblmp1uq+2u3bupKxPZ+V40Fxub/EXY7xz5w4qU6asWjzDbcb/4ASwXL58GR3gF9z8BYsoE/evUOIjgDGChVUeNfIqQ7x165ZiPM2bN6dUqVJ5hBWYWFBQkEvpEAVBnT5/7rxaFqxt27ZuGQjKsa5+kzJlSmrcuDF169ZNheAkZAGI7zdtolYtQxzqiPJBYIZgbiBMHTxw8IiaVz108CCaO3e2Kd1i1R7NEFFe1y5v8BzvuzSE53eHhLRQ1/vq7yY7u0KCm6o55XbuMWjwUOr4eic7WRMlz5BBAzlyYI6J5ZWrVzxmiBs3bqA2rVo49CFemug/v1y5KX++/JQvf35qHhzMc+z/lyjtephu8tvVq9Sgfl1equ88NWsWTKFjwx6m6sdZV686VbAaDTy6L774ooOUFmctojJAxQXDcvd7LPlj9FjyZEoddpcHZVgJzDFPnjxqBotmWNbznuxXqlyZtm3f5dC2bTt20clTZ+mX0+do7/4fqH6Dhmre9o4d21XRQ4e/Rw0bNXZ5m/Xr1nLw+B8q/6qvv3aZx5uJcHRhgY3S/gG0dftOVee8efOat1i85BP68afjNHTYeypt37695rkHYWfYeyNYO2iUoKpUqVKVtm7b6VDGmu/W0eatO6h7j5504MB+XnxkCNUKrE6QRoUcEdi9ZzedPXtGaTUrV35hCgGOuR7eI68yxMs8IwWMKmfOnA8UIpDY4FT53/8S/sbPlj27W9tolixZ6cMJkyh//hdoI6vomrQUqY/19rV27ahO3XpUrVp16tm7j042t19/tZIgFXmLfvjhgJJap8+YyQtr5Iw0O7BErSk591369OmpXfsO1IAZz8GDP+hTD8w2RZREnpAKZXexqAjaDWa5iF8KuXPnofPnz1PTVxrRt2tWJ+RWD+21J0+coOZNm8Sof/XqNah1m9eUSWjEyNGRYyhGroc3wasq89Wrvyk1A3OIXRGcIvi5shE654fqC2kPW0WIrVbx1dEPMNJRVlyeaUiJsTliVPle+sMLYdToUF7r8Zs4S/Tzy0XTps90me/kyZPUu1cPKlmqtMvz8Uk8dvQotWrdhrLy4rtxUY8evSiwRlV6VG1F7tqPSIRXW7SkEe8NU+Pqg/HjqGat2u6yP5LpiBR5o1NHOnnyRIz24eUORvioklcZItS/rCwlOautAA9M6+eff6YtW7YotTqaKWoG5zibBMDD7ueqLN0ZKANB4LNnz3YtunORqTgEJ0+e3FSZ1V1IAb6kGzeu8z2eUG9Pq1MltnvCCfPVyi+pYKHC9PLLddhOeo6+/vorWrJ4oVKlt2z+nmbNnKGKCKxZk8BENUF12bF9O+1hNQbe9eLFS1BllnLAlF3RO/0G0FNP2XN25WFVev3G7x0M55Aadu3eSQf27eeFfJ9TTrASJUtRmjRpHG53he2kK7/8kmNAb1GXrm+a5/CgffftGqWK9urTN4bEHhFxmbZv20YwN6DMAgUKUr36DZRUaxbitAPb8prVq2jbtq3KdguGb8XIKbutQ3927mk6duwnNXat4xCxrfv27lH1vHzpMhUtVowq8CSE55/305eprXPfHufx/+23q+mXX34h3AM2OLyonSkunM+cOc2S6xqHy5588klq8kpTZWtftGgB3eeps6AyZcuyk7OY2j/MCyvv3sMmHu5H9AXWFkAdtE0bWC5cEE4beHYX2g3SY69wkSL00kvlVBr6Cf0Ln0G3N99SafoPZqlDbJqBuQFlFCxYiE00/rxWaeEYz7JzObBPYo3T/fv3KSyhqTg/s1d5ub8vv/yCo1EOKz9ChYqV6BJHtsABWKhwYV2NeG9dPznxLA4ApU2XJkYnA+hFixbT1KlTWZ3Mp1RqSH7Mz5jAELETzRBxzkE61NkU73TMB6Z47do1F1IiMidTTpjly5er4Ozx48crgFG+L6hnj+7MeKsoKSyu8jGoO3XswCuAH1FZa9cOUgwRq4Vf5G/LQELUhBcN1H6rV2/qlEn0/uhRSpopXLgITZ82hSZ8+IGSZqZMne7S6fTss8/qIm1tNWMBxoMHDaAF88OpRctWBGa5dOliGj9uLPfl87T0k2UEUwLyteN1LuG4wAswQ4aMJkOcNnUyTZ40Ub3AcPMGPIuoRImSZj0+5XnvfXr3VKo6MFy6ZDF9NGsmLwA8jeaFL1Dlm5mjdsBYejHmhw8fMk8t5SgH2HIT4rU3osK7UGjWrI4v+MuXL1GTRg3VGH+90xtsTztLA/q/q5j2Rx/PYcZYiaetOvZtLe7bM6dPURiv9gQbLgjt/Z3Hbecu3dQx/uzinCJFSsKLcsOG9epaaGTv8ssOlJzt7HiwxoWNUS+UylWqKK0M/Tc/fB6vQ9qWOnfuyqFpE9X4mcqrQn3NccNg5mDOfKmKMFCF8R/GXvLkKegJftGjfm3btFLL+On+tTJE+A/gsDp+/Di90bmLihgZFzaW+/w6h7zVoOkzP1L9Ai0R4wTLAaIc1B/MrFePt3g1/d/0rZmp7qJwjiTQdILLfTWkOb/wk1P/AYMU88eYBBadu3T1CkNEI71G06ZNM1iqM5gxmmVy4w3+XIBRv14DY8uWrQYvB6bOI09sP34L87j81yznzu07Rv9+/Y3OnTvHKB953ZV18+ZfBneQwZ5mY+bMmQYzZ7PM+O7kej67kSPbM+rXq2d3I/T90UbPHm8ZfjmzGe3bvRajWH7Qzfz8ZlPneSAYPKDN9I7t25rXXb/+p5keEtzMTNc7PAjUees1LCGZ17Cap7PGua1apaJ53fbt21zm79unl8rTo/ub5nmONzVKFC+i0ssGlDJwDGKp1ShWpKBKL1zwRTM/v7QUNho3dtiY51hCNp7P8ZzRskWwmXb69CmzXiNHDDfT2YxgplepVN5gKcRgScN4vUM7Mx3lxUW4n64LrrfS6FEjzXNswzVP8bqeBvDKmf1ZQ/cjTjZt0kjlz5fHz8BYRN+uX7/OLAP3WbhgvnHj+nVj08aNapwgrVrVSmbZ2PEEZ7ZxKsxQTkDpkg7lMNM1CryQ1zh08KBKX7durVkXflmptJ+PHTPTRo8c4XB97Zo11DmMc2diDcZl/7KmZujr+GVmXsaRFAov1BNjGdiAzp09a5aDc+8NH6r6Ef1ZqUI5dX88T9a+GTxwgEq31hdtbftaa6NBvTrmPROyE1Ne1+zYS1uI5hMmTKC69eqwWBug1CRIQXH98IZ3Lck5SnfIg7zuykuXLi1lZ+kFq+3gzYW3kzcJKijsTgjVKF3aX6mweOvFRXgbw/kSH5o+baq6LLBmLfNySFvaebN1y2YzPaE7UGMgrYHg/NGEBXihboHwtUQ4gEBw1qRzYZqASudOQoVki34JCqqjysAfJBb0G8hddMCUaTMUhnBmtWnbTuXFHyQPTwgxjdAymIkRM31WE6ery6vXCKSBvOiwJkQFQErBMnNQBTVp8wgzQ9rLqrRz31ZiiRd2yfQ8cwqRChgnIKjQmMgA8hRn1KFqVH/8+utF2r1rlyoHfxtZcsyTJy9BzQWlT5de2fZffLEAz/GPNAdA49B0ka+3S9AEYBZypk2sFUCNBVnHSUVeDFprApDkjrIdGwTHlh4nKVOmooGDhvDizllVfzbgle9BeI62bI4eyzARgZYsWaQkbISRwTw0lcdBo8YxHUAqs4d/XlWZne/NnJqwWjY+KlW8eHG3ti3n69weO/JCt9msJ/CgwTEA+yXiHF3ZbKz5Pd3v0PF1tt89oy5r166DMkZjUVy7tjpP74cHByoZCCrl0aM/qn3grNUx1y8Slc3jv61btyhVCRc6M6ZatWsTVHcQS5fUvkNHte/JH7BiqUBdAruklT79bAUdYxsr1FBXZO1LxBJq0jjo47i2UyZPoquMq37gkL9uvfrqQbNeC1stiKUzFZqjz21gRgpSuEPndKJ0FuaDU9a63r8fqULHB+eWbL5Yt/Y7dTcwCW37/GTpEsWAdTXAsA//+JMbAUPnSth2i+UlfC8qHleXiHGiQ7h28DjBt4+sBKHFSpkyue7LcuUrEEu76uUFh2O/d9+mKlWrcZxxE2UKsJYR332fMkRUCg8RBkratOniW8fI60xmGHPAxVYwpJdx48YpZoxvrrhzOMRWht1zkFTnzA1X2RHigo6HvcebdPzEcbM4GPIbN2lqHrfv8LqyIeXNm89MS+jO+fPnzCLw7WwrWSVcOIPiQ6y6mQwX0ldVHuCaIAXh52ua9fFsJZ3g/jUDq6kxi3U84XyAvVQTzmtq8kozvcvOjMj9zJkzmS9H86TNnfjgDGaAb5VjpXhI6MOGj1B2NTilPuDwLyshvpLVdmWbfpzHKZuYrKcTvO9Y/2sO2oB1nJyL5zhBBSF8oK3h8+byy/+uaivCovCD8+7dfv0T3A6fq8yRNTS5WYIrbLcASKdghm/3fVuBCIeK87Q+u2V5mg8SXGOeXmg1EHtahrv8UNW0ZBQREaGYLhiv/kEtOsZMxlvk7x89BdEqBaB8qF26LlpttN4XfRAXFShQQDnQkM+dqg/VMjEob758LGlEqt544CCBWEmroGhz6lSpTMw19lD9tApsvc7OfnxwhuMxOKSFKh4fcVvJ3tcVny9n51xdBwfcFys+p4b16xIkx2bNmqtYyw8nOjJMO3WMLY+1/ls5ksRKMBVocjVO9Lm4tmjjkKHDaN+BgxQ6JozND1XMsQOnIpw3CaVEYoiGkgLwgHjyc2hc3M+WmR22h11sU+nYsRP5+fkRvq8Cb6E3VUnzZi52xo4J5Td3tnhLC8nZq6cZDcIMQLDFsqNB2WB1eMGXX6xQ9hRrFebOmU0jhg+1JiVovzh/M1t7tzd/v8lh0F29Glk33ACeYU2wL4LYOUSnTp3SyYT6OhMeFnjJQbDhIe7Pauf98IPxvAL6h86X+ey4V+/eyiaMG0DSgjdYU7ly5dUu6gePODzOmtBPzV5p7KB263N2tvHBGeUGh7xqMoUlixcpphfSIpJJ6vvOmDFNPXcY/wi4xzZlLJqLnnYL7U5rBdqsoct03laoUMFM+obDxqx0hV/cINi4y7PaG1+qVzeIEMEAwSbk1Ra0YOFimvXRbFUc+iQiIno8xvceicIQ8TmBPXv2qHnOG3gGh53fpk3fOzwYqoGKKbqXNsFswTg28RzhNzk+qmjRoixGv6tsNt5ihhfYfmR1mmCxBE0YPGNC31cPvrXjrerJbYuqYk2/xTF7miB5vRT18GEgjhr5HrFHmaeVHVBZRo56X4W0oL1v9+lN7JVT4Q7s7aUhgwdSaw6tsEMIk4ANT9NZXuXcmTCIEU6CuEBg261LZ9V+DMCZM6arPnrzrR4EB4Sm+vUjjeI47tSxPYGpsSeQ80a/1axtHzFqtAq9QP4PxodRsSKFVHiFf6kSHEo0nlq2ao1TiqzXQWLQZN2/ZUnX561bqPdWpguboCbMX+7aLTq2DgHamqlDRX2laaR6DJtY5Yrl6ZUmDalxowZUtkxpZY4JCIiUqK39/Pet6HriPta66v344Iyy8PLR2CN+D7bQYsWK45RJqVM/rvYxXjAXHON0Ncduarp48YJi/AiPA+nysP9O396E+fhzPv4Yh4qxwnkEunv3jvksYALBO+/2U+lwLE3hsB7QzZs3lYoLc9LMWR8rZoZ01CW6nMhl/5AOsuKl8UG6f+kA6v5mV9q7ZzcOFSG0CwQHHOIqE0xcMa+Rc9gNDzqDbQZGyZKlDA7qNHj5Ldu/oNp1DLjUNUWH3XRxCLvR53EvBtj47LPlRoB/WaNIkWLGtq3bDH7L6SwJ3lpDCBAqoH8IT8jtl8M8RjrbdNT9OB7MDDtAOkJSEFLC0oVRqkQxh2uGDhls1pGlMRWWgWsQIoLQHWvIEMcvqnAPhHroepR/qYwK9zALiWWHY/i4zjnNa3UZ7CRxedXOHTsMnspl5M+bS4V0VChX1giqHWiwRBojPz9wRlCtQLPsmjWqGQizOXHihPFSmdIqHSE5rAqb17pqDzMcwxoKFDY21AFLhPuww8xAyEcZ/5Lm/RAWg7yuCGEnOK/bq7fzw+ep7MC4etXKDufz5n7eQP1AGGcIsyr3UoCZB5jwg6rqgTzo25IliprncY/Zsz/CKYMdYQ7pyIf8mjzBWV/DkqwZyrPs0090srlle7YKS9HtxhhctHCBwS9asy48M8XMjxAqhBIh7AV1b9ignhlWpUOMNG7oZyshJAzjAteibehvjBs2h1izmaFKuhx+carzGCd5ckWPS2CPECYQ+g5jFmWyCUCFab2QL7e6nzUMSmWO5x84tdfIHUMsX76icejQYRWDxNKV7a21YnExRJYcjHFh443y5SoZGzZsNMLD5xvBwSEGvzGtxfh8H/F2iPuyMvOE3BRxX/yWdVsE27pUTByYUGIQ7gfmACYUG6GfwfCsD3ts+fW5xG6Pvm98tmgb4vm8+dLV9bCLs86vXgwc5xgbseqqXsbWPJcu/RojTZ/Hs8OmAH3o0RbjA+ME7fAWYUyxNK+Kg1DBErHJqL11jxQJFjFtFMAmC2W30HYxG5fYzsJAKLG8N9t+8GGrZZ8tVSoyVMHZs+ewXWoDNWnS2LTJ2S44nhkRb2eNw4pnMeZliPuKjeDFtsbExZbXG+dwP0ypi4vQ13BSeEqJ3R5P62fNjznhduaFW6+xu28XZ12eNa5QpzlvMUUvM2VxSNYhYw6JUQeIr40vYcqdnXHiSfkYUzrqAHGq+HmbEsWG6O1KW8uDTalXz97shr+vPj+ahTsdoTWIA+zatTOt5HnCiEMUEgQEAUEgLgQeaoYI6RCOARj8x40Lo3wskSAUAQQnCgKx4SlbwxPhrUb0uECR84KAIJA0EXi4GCKr3uyfMnsKTA+SYCiHuUBVdVbJoUYgGBthN/C+gYEKCQKCgCDgDgGfM0Qd7sIGUXd1sJeumGHMrIiZSpPmcZcxhrh3YGCgsimu5pkHIiXGxE9SBAFBIBoBnzJEMCQYVyGZneYA3f9CQsMq2f369aNZs2appaf+izpEwy17goAg8CAj4FOGiIbj28jBzYNp2bJlagodgj8hLdr5eQM42BTx3RA/Pz+aOxdzIO95o1gpQxAQBB5BBHwedgO73mtt29CZs6epdevWasmoHDl0KAlseq51YSx0CXXXahfEPn5aDbfbH7AltmnThkJDQwlfBER0v6dl2L2X5BMEBIGHFwGfM0RAA7V54MCBvBLvLp5jvJtO/XKKU5kZJuOf4ZohpkyVgmrUqGEiC0boz0uRI4TGyiTNDLHsIAynIq8Mg29GY/Xsjh07evyZ1FiKl1OCgCDwiCCQKAwRWMGWV6NGdV5KvDofQTKMm3QIDXKCqdWrV09dFB/pDnNF2/FX7vr27UtVqlRRK5XEXQPJIQgIAkkJAZ/bEDWYYGKQ7KAKg9HZ+elr9RZlxIcZ4nrcu2TJkmoC+IoVK9Raarpc2QoCgoAgAAQSjSE+CHDjMwN9+vThZZ12qI8DPQh1kjoIAoLAg4OA11Vm2PgunL/An/9M9cC0EuoypvRBKsWCpEX4WxMTJ06ksLAwsSU+ML0kFREE/nsEvMoQYefbu3cfhWAVX/aVwF2irYWRrpNoBwovFWu2XqXCwQKKcrIY9C8f4AyryUg3HTD8+VJ1TiXij9Vo99fifJYsmWjGjBlqYjjWZatfvz698847amVpMEchQUAQEASAQDIOVI7mTIKJICAICAJJGIEkZUNMwv0sTRcEBAEbCAhDtAGSZBEEBIGkgYAwxKTRz9JKQUAQsIGAMEQbIEkWQUAQSBoICENMGv0srRQEBAEbCAhDtAGSZBEEBIGkgYAwxKTRz9JKQUAQsIGAMEQbIEkWQUAQSBoICENMGv0srRQEBAEbCAhDtAGSZBEEBIGkgYAwxKTRz9JKQUAQsIFAisvnj9vIJlkEAUFAEHj0EUh29/ZNWdzh0e9naaEgIAjYQEBUZhsgSRZBQBBIGgj8HzZm4Ov55Rt0AAAAAElFTkSuQmCC" style="height:56px;width:auto;object-fit:contain;border-radius:8px;background:rgba(255,255,255,0.05);padding:6px;">
+  </div>
+  <div class="hero-tag">✦ Exclusive Proposal · 29 October 2026</div>
+  <div class="hero-prepared">Prepared exclusively for</div>
+  <div class="hero-client">Elite Touch Renovations</div>
+  <div class="hero-sub">Hi Omar — this is exactly how Quality Jobs is going to take your Bathroom Renovations, Sydney business to Generate 2-4 Bathroom renovation projects every month. Built just for you.</div>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;align-items:center;">
+    <a class="hero-cta" href="#problem">See the plan →</a>
+    <a href="https://proposals.qualityjobs.com.au/qj-agreement-elite-touch-renovations-1793242698642.html" target="_blank" style="display:inline-block;background:transparent;border:2px solid rgba(201,162,37,0.6);color:#C9A225;font-weight:800;font-size:15px;letter-spacing:0.5px;padding:16px 36px;border-radius:14px;text-decoration:none;transition:all 0.2s;">✍️ Review &amp; Sign Agreement</a>
+  </div>
+  <div class="scroll-hint">↓ scroll to explore</div>
+</div>
+
+<!-- PROBLEM -->
+<div id="problem">
+  <div class="inner">
+    <div class="reveal">
+      <div class="sec-tag">The Problem</div>
+      <div class="sec-title">What we identified<br>standing in your way</div>
+      <div class="sec-body">From our conversation, these are the exact friction points we're going to eliminate.</div>
+    </div>
+    <div class="pain-grid">
+      
+          <div class="pain-card reveal">
+            <div class="pain-no">1</div>
+            <div class="pain-title">Right now, your lead generation lacks a consistent, systematic approach—which is holding your renovation business to 1-2 projects monthly when you have the capacity for 2-4. We identified that your foundations aren't working in concert, and together we'll build an integrated system that generates predictable, high-quality leads and scales your business.</div>
+          </div>
+    </div>
+  </div>
+</div>
+
+<!-- SYSTEM: MIRO BOARD EMBED -->
+<div id="system">
+  <div class="inner">
+    <div class="reveal">
+      <div class="sec-tag">Your Custom Renovation System</div>
+      <div class="sec-title">The full system<br>we walked you through</div>
+      <div class="sec-body">This is the exact framework we're implementing for Elite Touch Renovations. Scroll through every component below.</div>
+    </div>
+    <div class="miro-frame reveal">
+      <div class="miro-bar">
+        <div class="miro-dots">
+          <span style="background:#ff5f57;"></span>
+          <span style="background:#febc2e;"></span>
+          <span style="background:#28c840;"></span>
+        </div>
+        <div class="miro-url">qualityjobs.com.au — Renovation Marketing System</div>
+      </div>
+      <iframe class="miro-iframe" src="https://proposals.qualityjobs.com.au/qj-pitch-canvas.html?board=4" scrolling="yes" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" id="miro-embed"></iframe>
+
+      <!-- MOBILE MIRO NAV — actual Board 4 iframe with step navigation -->
+      <div class="miro-mobile-fallback" style="display:none;flex-direction:column;background:#0a0a14;">
+        <!-- Step label bar -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#111;border-bottom:1px solid #1a1a2a;flex-shrink:0;">
+          <div>
+            <div id="mb-step-label" style="font-size:13px;font-weight:800;color:#fff;line-height:1.2;">Renovation Marketing System</div>
+            <div id="mb-step-counter" style="font-size:10px;color:#C9A225;font-weight:700;margin-top:1px;">Step 1 of 9</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button id="mb-prev" onclick="event.preventDefault();event.stopPropagation();mbPrev();" style="width:44px;height:44px;border-radius:50%;background:#1a1a2a;border:1px solid #2a2a3a;color:#888;font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;" disabled>‹</button>
+            <button id="mb-next" onclick="event.preventDefault();event.stopPropagation();mbNext();" style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#C9A225,#E8C04A);border:none;color:#000;font-size:18px;font-weight:900;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;">›</button>
+          </div>
+        </div>
+        <!-- The actual Miro Board iframe -->
+        <iframe id="mb-iframe" src="https://proposals.qualityjobs.com.au/qj-pitch-canvas.html?board=4"
+          style="width:100%;height:480px;border:none;display:block;background:#111;pointer-events:none;"
+          scrolling="no"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+        </iframe>
+        <!-- Dot strip -->
+        <div style="display:flex;gap:5px;align-items:center;justify-content:center;padding:10px;background:#111;border-top:1px solid #1a1a2a;flex-wrap:wrap;">
+          <div class="mb-dot" onclick="mbGoTo(0)" title="Renovation Marketing System" style="width:18px;height:6px;border-radius:3px;background:#C9A225;transition:all 0.3s;cursor:pointer;flex-shrink:0;"></div><div class="mb-dot" onclick="mbGoTo(1)" title="Social Media Set Up" style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,0.12);transition:all 0.3s;cursor:pointer;flex-shrink:0;"></div><div class="mb-dot" onclick="mbGoTo(2)" title="Targeted Renovation Ads" style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,0.12);transition:all 0.3s;cursor:pointer;flex-shrink:0;"></div><div class="mb-dot" onclick="mbGoTo(3)" title="Lead Vetting Team" style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,0.12);transition:all 0.3s;cursor:pointer;flex-shrink:0;"></div><div class="mb-dot" onclick="mbGoTo(4)" title="CRM Ecosystem" style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,0.12);transition:all 0.3s;cursor:pointer;flex-shrink:0;"></div><div class="mb-dot" onclick="mbGoTo(5)" title="Booking System" style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,0.12);transition:all 0.3s;cursor:pointer;flex-shrink:0;"></div><div class="mb-dot" onclick="mbGoTo(6)" title="Quoting Software" style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,0.12);transition:all 0.3s;cursor:pointer;flex-shrink:0;"></div><div class="mb-dot" onclick="mbGoTo(7)" title="ROI Dashboard" style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,0.12);transition:all 0.3s;cursor:pointer;flex-shrink:0;"></div><div class="mb-dot" onclick="mbGoTo(8)" title="Client Results" style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,0.12);transition:all 0.3s;cursor:pointer;flex-shrink:0;"></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:32px;">
+      
+        <div class="reveal" style="background:var(--charcoal2);border:1px solid rgba(201,162,37,0.2);border-radius:14px;padding:20px;transition:transform 0.2s,border-color 0.2s;">
+          <div style="font-size:28px;margin-bottom:10px;">🎯</div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;">Meta Ads</div>
+          <div style="font-size:11px;color:#555;line-height:1.5;">Hyper-targeted campaigns engineered to reach homeowners with real renovation budgets.</div>
+        </div>
+        <div class="reveal" style="background:var(--charcoal2);border:1px solid rgba(201,162,37,0.2);border-radius:14px;padding:20px;transition:transform 0.2s,border-color 0.2s;">
+          <div style="font-size:28px;margin-bottom:10px;">📱</div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;">Social Media Setup</div>
+          <div style="font-size:11px;color:#555;line-height:1.5;">Your pages rebuilt from the ground up to attract and convert high-quality leads.</div>
+        </div>
+        <div class="reveal" style="background:var(--charcoal2);border:1px solid rgba(201,162,37,0.2);border-radius:14px;padding:20px;transition:transform 0.2s,border-color 0.2s;">
+          <div style="font-size:28px;margin-bottom:10px;">💬</div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;">CRM Ecosystem</div>
+          <div style="font-size:11px;color:#555;line-height:1.5;">Every enquiry, message and follow-up centralised in one branded mobile app.</div>
+        </div>
+        <div class="reveal" style="background:var(--charcoal2);border:1px solid rgba(201,162,37,0.2);border-radius:14px;padding:20px;transition:transform 0.2s,border-color 0.2s;">
+          <div style="font-size:28px;margin-bottom:10px;">📅</div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;">Booking System</div>
+          <div style="font-size:11px;color:#555;line-height:1.5;">Qualified leads book directly into your calendar — fully automated.</div>
+        </div>
+        <div class="reveal" style="background:var(--charcoal2);border:1px solid rgba(201,162,37,0.2);border-radius:14px;padding:20px;transition:transform 0.2s,border-color 0.2s;">
+          <div style="font-size:28px;margin-bottom:10px;">📋</div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;">Quoting Software</div>
+          <div style="font-size:11px;color:#555;line-height:1.5;">Professional proposals that close jobs faster and justify premium pricing.</div>
+        </div>
+        <div class="reveal" style="background:var(--charcoal2);border:1px solid rgba(201,162,37,0.2);border-radius:14px;padding:20px;transition:transform 0.2s,border-color 0.2s;">
+          <div style="font-size:28px;margin-bottom:10px;">📊</div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;">ROI Tracking</div>
+          <div style="font-size:11px;color:#555;line-height:1.5;">Full transparency — every dollar tracked from ad impression to closed job.</div>
+        </div>
+        <div class="reveal" style="background:var(--charcoal2);border:1px solid rgba(201,162,37,0.2);border-radius:14px;padding:20px;transition:transform 0.2s,border-color 0.2s;">
+          <div style="font-size:28px;margin-bottom:10px;">🎙️</div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;">Vetting Team</div>
+          <div style="font-size:11px;color:#555;line-height:1.5;">Our team calls every lead within minutes so only serious buyers reach your calendar.</div>
+        </div>
+        <div class="reveal" style="background:var(--charcoal2);border:1px solid rgba(201,162,37,0.2);border-radius:14px;padding:20px;transition:transform 0.2s,border-color 0.2s;">
+          <div style="font-size:28px;margin-bottom:10px;">💳</div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;">Finance Partner</div>
+          <div style="font-size:11px;color:#555;line-height:1.5;">Give clients flexible payment options and close bigger jobs with ease.</div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOCIAL PROOF: TESTIMONIALS -->
+<div id="social">
+  <div class="inner reveal">
+    <div class="sec-tag">Client Results</div>
+    <div class="sec-title">What other renovation<br>companies are achieving</div>
+    <div class="sec-body">These are real clients, real numbers. Scroll through to see what's possible.</div>
+  </div>
+  <div class="testi-track">
+    
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-josh3.webp" alt="Josh" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$330k</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">in 2 weeks</div></div>
+          <div class="testi-name">Josh, Quality Custom Homes</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 South Burnett Region</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-elijah.png" alt="Elijah" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$350k</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">in 3 months</div></div>
+          <div class="testi-name">Elijah, Spa Space</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 Brisbane</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-scott.webp" alt="Scott" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$450k</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">pipeline in 3 months</div></div>
+          <div class="testi-name">Scott, Rapid Bathroom Specialists</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 Sydney</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-vish.png" alt="Vish" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$500k</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">over 5 months</div></div>
+          <div class="testi-name">Vish, Streamline Building Projects</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 Canberra</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-ryan.png" alt="Ryan" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$200k</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">in 2 months</div></div>
+          <div class="testi-name">Ryan, Mode Group</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 Melbourne</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-sean2.webp" alt="Sean" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$500k</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">in 3-4 months</div></div>
+          <div class="testi-name">Sean, Quality Custom Homes</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 South Burnett Region</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-kbg.webp" alt="Zoran" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$1.2M</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">in 2 months</div></div>
+          <div class="testi-name">Zoran, KBG Renovations</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 Melbourne</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-dws.png" alt="DWS" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$300k</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">in 2 months</div></div>
+          <div class="testi-name">DWS, DWS Building Co.</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 Melbourne</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-jeremy2.png" alt="Jeremy" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$112k</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">kitchen in 2 weeks</div></div>
+          <div class="testi-name">Jeremy, Aurum Kitchens</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 Newcastle</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-jorge.png" alt="Jorge" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$93k</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">in 1 month</div></div>
+          <div class="testi-name">Jorge, Budget Reno</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 Canberra</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-harry.png" alt="Harry" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$300k</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">over 5 months</div></div>
+          <div class="testi-name">Harry, Simply Shutters & Shades</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 Adelaide</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-andrew.png" alt="Andrew" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$70k</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">in first month</div></div>
+          <div class="testi-name">Andrew, Buildavate</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 Gold Coast</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-rr.png" alt="Derek" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$120k</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">in 30 days</div></div>
+          <div class="testi-name">Derek, Renovate Right Homes</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 Gold Coast</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-l2-2.jpg" alt="Jackson" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$2M+</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">pipeline filled</div></div>
+          <div class="testi-name">Jackson, L2 Homes</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 Canberra</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-barco2.png" alt="Ryan" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$140k</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">in 2 months</div></div>
+          <div class="testi-name">Ryan, Barco Build</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 Adelaide</div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-photo">
+          <img src="https://proposals.qualityjobs.com.au/qj-tp-boss.png" alt="Boss Carpentry Group" onerror="this.parentElement.innerHTML='<div class=\'placeholder\'>🏗️</div><div class=\'testi-play\'><div></div></div>'">
+          <div class="testi-play"><div></div></div>
+        </div>
+        <div class="testi-info">
+          <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;"><div class="testi-amount">$100k</div><div class="testi-result" style="font-weight:800;color:rgba(255,255,255,0.8);">in first month</div></div>
+          <div class="testi-name">Boss Carpentry Group</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.4);margin-bottom:2px;">📍 Melbourne</div>
+        </div>
+      </div>
+  </div>
+  <div class="inner">
+    
+  </div>
+</div>
+
+<!-- INVESTMENT -->
+<div style="background:var(--charcoal);padding:100px 40px;">
+  <div style="max-width:1040px;margin:0 auto;">
+    <div class="reveal">
+      <div class="sec-tag">Ready to move?</div>
+      <div class="sec-title">This was built<br>for <span style="color:var(--gold);">Elite Touch Renovations</span></div>
+      <p style="font-size:17px;color:rgba(255,255,255,0.45);max-width:560px;line-height:1.8;margin-top:20px;">Everything covered in your proposal — the system, the strategy, the guarantee — is locked in inside your agreement. Open it to see your investment and sign when you're ready.</p>
+      <div style="margin-top:36px;margin-bottom:8px;"></div>
+      <a href="https://proposals.qualityjobs.com.au/qj-agreement-elite-touch-renovations-1793242698642.html" target="_blank" style="display:inline-block;margin-top:24px;background:linear-gradient(135deg,#C9A225,#E8C04A);color:#000;font-weight:900;font-size:16px;letter-spacing:0.5px;padding:18px 44px;border-radius:14px;text-decoration:none;box-shadow:0 8px 40px rgba(201,162,37,0.3);">📄 Open Your Agreement →</a>
+    </div>
+  </div>
+</div>
+
+<!-- NEXT STEPS -->
+<div id="next-steps" style="background:#111;border-top:1px solid #1e1e1e;padding:100px 40px;">
+  <div style="max-width:1040px;margin:0 auto;">
+    <div class="reveal">
+      <div class="sec-tag">Next Steps</div>
+      <div class="sec-title">Here's how we<br>get started</div>
+    </div>
+    <div class="steps">
+      <div class="step-row reveal"><div class="step-num">1</div><div><div class="step-title">You say yes</div><div class="step-desc">Sign the agreement and lock in your kick-off date. <a href="https://proposals.qualityjobs.com.au/qj-agreement-elite-touch-renovations-1793242698642.html" target="_blank" style="color:#C9A225;font-weight:700;text-decoration:none;">Sign here →</a></div></div></div>
+      <div class="step-row reveal"><div class="step-num">2</div><div><div class="step-title">Onboarding call (Day 1)</div><div class="step-desc">We access your pages, configure the CRM and brief the team on everything about Elite Touch Renovations.</div></div></div>
+      <div class="step-row reveal"><div class="step-num">3</div><div><div class="step-title">Ads live (Day 5–7)</div><div class="step-desc">Your campaigns go live and qualified leads start flowing into your system.</div></div></div>
+      <div class="step-row reveal"><div class="step-num">4</div><div><div class="step-title">First appointments (Week 2)</div><div class="step-desc">You'll see real, qualified bookings appearing on your calendar.</div></div></div>
+      <div class="step-row reveal"><div class="step-num">5</div><div><div class="step-title">Scale (Day 30+)</div><div class="step-desc">We optimise hard on live data and push every metric toward your Generate 2-4 Bathroom renovation projects every month target.</div></div></div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- SIGN AGREEMENT CTA -->
+<div style="background:linear-gradient(160deg,#0a0a0a,#111820);border-top:1px solid #1e1e2e;padding:100px 40px;text-align:center;">
+  <div style="max-width:700px;margin:0 auto;" class="reveal">
+    <div style="font-size:11px;font-weight:800;color:#C9A225;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;">✍️ Ready to Lock It In?</div>
+    <div style="font-size:52px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:20px;">Sign your<br>agreement</div>
+    <p style="font-size:16px;color:#888;line-height:1.7;max-width:540px;margin:0 auto 40px;">Everything we walked through is covered in your agreement. Click below to review and sign — it takes less than 2 minutes, and once it's done we'll lock in your kick-off date and get everything rolling.</p>
+    <a href="https://proposals.qualityjobs.com.au/qj-agreement-elite-touch-renovations-1793242698642.html" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#C9A225,#E8C04A);color:#000;font-weight:900;font-size:16px;letter-spacing:0.5px;padding:20px 48px;border-radius:14px;text-decoration:none;box-shadow:0 8px 40px rgba(201,162,37,0.35);">Review &amp; Sign Agreement →</a>
+    <div style="margin-top:20px;font-size:12px;color:#333;">Secure digital signing · Takes less than 2 minutes</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <img src="https://proposals.qualityjobs.com.au/qj-logo.png" alt="Quality Jobs" onerror="this.style.display='none'">
+  <div class="cta">Ready to get started, Omar?</div>
+  <p>This proposal was prepared exclusively for <strong style="color:#fff;">Elite Touch Renovations</strong>.</p>
+  <p style="margin-top:6px;">Quality Jobs · qualityjobs.com.au</p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(e=>e.forEach(en=>{if(en.isIntersecting)en.target.classList.add('visible');}),{threshold:0.08});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // ── MIRO MOBILE BOARD NAVIGATION ─────────────────────────────────
+  const mbFrames = [{"id":"b4-frame-title","label":"Renovation Marketing System"},{"id":"b4-frame-social","label":"Social Media Set Up"},{"id":"b4-frame-ads","label":"Targeted Renovation Ads"},{"id":"b4-frame-vetting","label":"Lead Vetting Team"},{"id":"b4-frame-crm","label":"CRM Ecosystem"},{"id":"b4-frame-booking","label":"Booking System"},{"id":"b4-frame-quoting","label":"Quoting Software"},{"id":"b4-frame-roi","label":"ROI Dashboard"},{"id":"b4-frame-testimonials","label":"Client Results"}];
+  let mbIdx = 0;
+  function mbGoTo(n) {
+    mbIdx = Math.max(0, Math.min(n, mbFrames.length - 1));
+    const frame = mbFrames[mbIdx];
+    // Update label + counter
+    document.getElementById('mb-step-label').textContent   = frame.label;
+    document.getElementById('mb-step-counter').textContent = 'Step ' + (mbIdx+1) + ' of ' + mbFrames.length;
+    // Tell the Miro Board iframe to navigate to this frame via postMessage
+    const ifrm = document.getElementById('mb-iframe');
+    if (ifrm && ifrm.contentWindow) {
+      const navAction = frame.id.startsWith('b7-') ? 'navToB7Frame' : frame.id.startsWith('b5-') ? 'navToB5Frame' : 'navToB4Frame';
+      ifrm.contentWindow.postMessage({ action: navAction, frameId: frame.id }, '*');
+    }
+    // Dots
+    document.querySelectorAll('.mb-dot').forEach((d, i) => {
+      d.style.width      = i === mbIdx ? '18px' : '6px';
+      d.style.background = i === mbIdx ? '#C9A225' : 'rgba(255,255,255,0.12)';
+    });
+    // Prev arrow
+    const prev = document.getElementById('mb-prev');
+    prev.disabled        = mbIdx === 0;
+    prev.style.opacity   = mbIdx === 0 ? '0.3' : '1';
+    prev.style.color     = mbIdx === 0 ? '#444' : '#fff';
+    // Next arrow
+    const next = document.getElementById('mb-next');
+    const last = mbIdx === mbFrames.length - 1;
+    next.disabled          = last;
+    next.style.background  = last ? '#1a1a2a' : 'linear-gradient(135deg,#C9A225,#E8C04A)';
+    next.style.color       = last ? '#444'    : '#000';
+    next.style.border      = last ? '1px solid #2a2a3a' : 'none';
+  }
+  function mbNext() { mbGoTo(mbIdx + 1); }
+  function mbPrev() { mbGoTo(mbIdx - 1); }
+  // Navigate to first frame once iframe has loaded
+  const mbIframe = document.getElementById('mb-iframe');
+  if (mbIframe) {
+    mbIframe.addEventListener('load', () => { setTimeout(() => mbGoTo(0), 600); });
+  }
+</script>
+</body>
+</html>
