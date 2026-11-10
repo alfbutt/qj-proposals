@@ -6848,78 +6848,82 @@ async function faGenerate() {
 
   if (!clientName) { alert('Please enter the client business name.'); return; }
 
-  const btn = document.getElementById('fa-gen-btn');
+  const btn    = document.getElementById('fa-gen-btn');
   const status = document.getElementById('fa-status');
-  btn.textContent = '⏳ Generating…';
+  btn.textContent = '⏳ Building…';
   btn.disabled = true;
   status.textContent = 'Building agreement…';
 
-  // Sync values into the main sidebar agreement fields so _buildAgreement() reads them
-  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
-  set('agr-t-client',   clientName);
-  set('agr-t-contact',  contactName);
-  set('agr-t-price',    price);
-  set('agr-t-duration', duration);
-  set('agr-t-adspend',  adspend);
-  set('pa-price',       price);
-  set('pa-duration',    duration);
+  // Sync values into the main sidebar fields so _buildAgreement() reads them
+  const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+  set('agr-t-client',    clientName);
+  set('agr-t-contact',   contactName);
+  set('agr-t-price',     price);
+  set('agr-t-duration',  duration);
+  set('agr-t-adspend',   adspend);
+  set('pa-price',        price);
+  set('pa-duration',     duration);
   set('pa-contact-name', contactName);
   set('pa-client-name',  clientName);
   set('pa-payment-url',  paymentUrl);
   if (guarantee) set('agr-t-guarantee', guarantee);
 
   try {
-    // Build the agreement HTML using the existing template function
+    // Build HTML (async — must await)
     const tunnelBase = 'https://proposals.qualityjobs.com.au';
-    const html = _buildAgreement(tunnelBase);
+    const html = await _buildAgreement(tunnelBase);
 
-    // Generate filename and push to GitHub
-    const slug = (clientName + '-' + contactName).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g,'');
+    // Show instantly in preview via srcdoc (no network wait)
+    const iframe = document.getElementById('fa-iframe');
+    iframe.srcdoc = html;
+    iframe.removeAttribute('src');
+    status.textContent = '✅ Preview ready — pushing link in background…';
+
+    // Generate public URL immediately (before push completes)
+    const slug = (clientName + (contactName ? '-' + contactName : '')).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g,'');
     const ts   = Date.now();
     const fname = 'qj-agreement-' + slug + '-' + ts + '.html';
     const publicUrl = 'https://proposals.qualityjobs.com.au/' + fname;
 
+    // Show copy + open buttons immediately with the anticipated URL
+    document.getElementById('fa-url-bar').textContent = publicUrl.replace('https://','');
+    const copyBtn = document.getElementById('fa-copy-btn');
+    const openBtn = document.getElementById('fa-open-btn');
+    copyBtn._url  = publicUrl;
+    copyBtn.style.display = 'inline-block';
+    openBtn.href  = publicUrl;
+    openBtn.style.display = 'inline-block';
+    set('pa-agreement-url', publicUrl);
+
+    // Auto-copy link to clipboard
+    navigator.clipboard.writeText(publicUrl).catch(()=>{});
+
+    btn.textContent = '✍️ Generate Agreement';
+    btn.disabled = false;
+
+    // Push to GitHub in the background
     const token   = 'EDWAv2bdYLcbSikNoPdkN1cDYkX5j4m2u0rZ_phg'.split('').reverse().join('');
     const encoded = btoa(unescape(encodeURIComponent(html)));
-    status.textContent = 'Saving to server…';
-
-    const pushResp = await fetch('https://api.github.com/repos/alfbutt/qj-proposals/contents/' + fname, {
+    fetch('https://api.github.com/repos/alfbutt/qj-proposals/contents/' + fname, {
       method: 'PUT',
       headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: 'Agreement: ' + clientName, content: encoded })
+    }).then(r => {
+      if (r.ok) {
+        status.textContent = '✅ Done — link ready to send: ' + publicUrl.split('/').pop();
+      } else {
+        status.textContent = '⚠️ Preview ready but save failed (' + r.status + ') — try again';
+      }
+    }).catch(e => {
+      status.textContent = '⚠️ Preview ready but save failed — check connection';
     });
-
-    if (!pushResp.ok) throw new Error('GitHub push failed: ' + pushResp.status);
-
-    // Update sidebar field + frame iframe
-    set('pa-agreement-url', publicUrl);
-    document.getElementById('fa-url-bar').textContent = publicUrl.replace('https://','');
-
-    // Show copy + open buttons
-    document.getElementById('fa-copy-btn').style.display = 'inline-block';
-    const openBtn = document.getElementById('fa-open-btn');
-    openBtn.href = publicUrl;
-    openBtn.style.display = 'inline-block';
-
-    // Load agreement in preview iframe (after a brief delay for CDN)
-    setTimeout(() => {
-      const iframe = document.getElementById('fa-iframe');
-      iframe.src = publicUrl;
-    }, 4000);
-
-    status.textContent = '✅ Agreement ready — link copied to clipboard!';
-    navigator.clipboard.writeText(publicUrl).catch(()=>{});
-
-    // Store for copy button
-    document.getElementById('fa-copy-btn')._url = publicUrl;
 
   } catch(e) {
     console.error('faGenerate error:', e);
     status.textContent = '❌ Error: ' + e.message;
+    btn.textContent = '✍️ Generate Agreement';
+    btn.disabled = false;
   }
-
-  btn.textContent = '✍️ Generate Agreement';
-  btn.disabled = false;
 }
 
 function faCopyLink() {
