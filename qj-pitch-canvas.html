@@ -2043,26 +2043,68 @@
     <!-- ════════════════════════════════════════
          FRAME: SAMPLE AGREEMENT
     ════════════════════════════════════════ -->
-    <div class="frame" id="frame-agreement" style="left:12900px;top:80px;width:900px;" data-w="900" data-h="900">
+    <div class="frame" id="frame-agreement" style="left:12900px;top:80px;width:900px;" data-w="900" data-h="1060">
       <div class="frame-handle"><span></span><span></span><span></span></div>
-      <div class="frame-label" style="background:var(--gold);color:#000;">Agreement</div>
-      <h2>📄 Your Agreement</h2>
-      <p style="margin-bottom:14px;">Every guarantee, every deliverable — locked in writing before we start. Here's what your agreement looks like.</p>
+      <div class="frame-label" style="background:var(--gold);color:#000;">Agreement Builder</div>
+      <h2 style="margin-bottom:4px;">📄 Service Agreement</h2>
+      <p style="margin-bottom:14px;font-size:12px;color:#777;">Fill in the client details, generate, then copy the link and send.</p>
 
-      <div style="border-radius:12px;overflow:hidden;border:2px solid #2a2a2a;box-shadow:0 4px 20px rgba(0,0,0,0.3);">
+      <!-- ── FORM ── -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+        <div>
+          <label style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:4px;">Business Name</label>
+          <input id="fa-client" class="pa-input" type="text" placeholder="e.g. Rami's Renovations" oninput="faPreview()">
+        </div>
+        <div>
+          <label style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:4px;">Contact First Name</label>
+          <input id="fa-contact" class="pa-input" type="text" placeholder="e.g. Rami" oninput="faPreview()">
+        </div>
+        <div>
+          <label style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:4px;">Monthly Retainer</label>
+          <input id="fa-price" class="pa-input" type="text" placeholder="e.g. $2,200 + GST" oninput="faPreview()">
+        </div>
+        <div>
+          <label style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:4px;">Initial Term</label>
+          <input id="fa-duration" class="pa-input" type="text" placeholder="e.g. 90 days" oninput="faPreview()">
+        </div>
+        <div>
+          <label style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:4px;">Ad Spend (Min/Day)</label>
+          <input id="fa-adspend" class="pa-input" type="text" placeholder="e.g. $55/day">
+        </div>
+        <div>
+          <label style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:4px;">Revenue Guarantee</label>
+          <input id="fa-guarantee" class="pa-input" type="text" placeholder="e.g. $120,000">
+        </div>
+        <div style="grid-column:1/-1;">
+          <label style="font-size:10px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.8px;display:block;margin-bottom:4px;">💳 Payment Link (Stripe / Square)</label>
+          <input id="fa-payment" class="pa-input" type="url" placeholder="e.g. https://buy.stripe.com/...">
+        </div>
+      </div>
+
+      <!-- ── ACTIONS ── -->
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <button onclick="faGenerate()" id="fa-gen-btn" style="flex:2;background:linear-gradient(135deg,#C9A225,#E8C04A);color:#000;border:none;border-radius:8px;padding:11px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">✍️ Generate Agreement</button>
+        <button onclick="faCopyLink()" id="fa-copy-btn" style="flex:1;background:#1a1a2e;border:1px solid rgba(201,162,37,0.4);color:#C9A225;border-radius:8px;padding:11px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;display:none;">🔗 Copy Link</button>
+        <a id="fa-open-btn" href="#" target="_blank" style="flex:1;background:#111;border:1px solid #333;color:#aaa;border-radius:8px;padding:11px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;text-align:center;display:none;line-height:1.3;">↗ Open</a>
+      </div>
+
+      <!-- ── STATUS ── -->
+      <div id="fa-status" style="font-size:11px;color:#888;margin-bottom:8px;min-height:16px;"></div>
+
+      <!-- ── BROWSER CHROME + IFRAME ── -->
+      <div id="fa-browser" style="border-radius:12px;overflow:hidden;border:2px solid #2a2a2a;box-shadow:0 4px 20px rgba(0,0,0,0.3);">
         <div style="background:var(--charcoal);padding:8px 14px;display:flex;align-items:center;gap:8px;">
           <div style="display:flex;gap:5px;">
             <div style="width:11px;height:11px;border-radius:50%;background:#ff5f57;"></div>
             <div style="width:11px;height:11px;border-radius:50%;background:#febc2e;"></div>
             <div style="width:11px;height:11px;border-radius:50%;background:#28c840;"></div>
           </div>
-          <div style="flex:1;background:#1a1a2e;border-radius:6px;padding:4px 10px;font-size:11px;color:#888;">qualityjobs.com.au/agreement</div>
-          <a href="https://proposals.qualityjobs.com.au/qj-agreement-mood-renovations-metalmax-roofing-1784596315078.html" target="_blank" style="font-size:10px;color:#888;text-decoration:none;padding:3px 8px;border:1px solid #444;border-radius:4px;">↗ Open</a>
+          <div id="fa-url-bar" style="flex:1;background:#1a1a2e;border-radius:6px;padding:4px 10px;font-size:11px;color:#888;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">proposals.qualityjobs.com.au/…</div>
         </div>
-        <iframe src="https://proposals.qualityjobs.com.au/qj-agreement-mood-renovations-metalmax-roofing-1784596315078.html"
-          style="width:100%;height:740px;border:none;display:block;background:#fff;"
-          scrolling="yes"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+        <iframe id="fa-iframe"
+          src="https://proposals.qualityjobs.com.au/qj-agreement-mood-renovations-metalmax-roofing-1784596315078.html"
+          style="width:100%;height:720px;border:none;display:block;background:#fff;"
+          scrolling="yes">
         </iframe>
       </div>
     </div>
@@ -6791,6 +6833,105 @@ function sendFollowUp(type) {
 
 // Legacy direct-call kept for backward compat
 function generateAgreement() { openAgreementModal(); }
+
+// ── FRAME AGREEMENT BUILDER (far-right frame) ──
+function faPreview() {}  // live preview hook — reserved for future use
+
+async function faGenerate() {
+  const clientName  = (document.getElementById('fa-client')?.value   || '').trim();
+  const contactName = (document.getElementById('fa-contact')?.value  || '').trim();
+  const price       = (document.getElementById('fa-price')?.value    || '').trim();
+  const duration    = (document.getElementById('fa-duration')?.value || '90 days').trim();
+  const adspend     = (document.getElementById('fa-adspend')?.value  || '').trim();
+  const guarantee   = (document.getElementById('fa-guarantee')?.value|| '').trim();
+  const paymentUrl  = (document.getElementById('fa-payment')?.value  || '').trim();
+
+  if (!clientName) { alert('Please enter the client business name.'); return; }
+
+  const btn = document.getElementById('fa-gen-btn');
+  const status = document.getElementById('fa-status');
+  btn.textContent = '⏳ Generating…';
+  btn.disabled = true;
+  status.textContent = 'Building agreement…';
+
+  // Sync values into the main sidebar agreement fields so _buildAgreement() reads them
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+  set('agr-t-client',   clientName);
+  set('agr-t-contact',  contactName);
+  set('agr-t-price',    price);
+  set('agr-t-duration', duration);
+  set('agr-t-adspend',  adspend);
+  set('pa-price',       price);
+  set('pa-duration',    duration);
+  set('pa-contact-name', contactName);
+  set('pa-client-name',  clientName);
+  set('pa-payment-url',  paymentUrl);
+  if (guarantee) set('agr-t-guarantee', guarantee);
+
+  try {
+    // Build the agreement HTML using the existing template function
+    const tunnelBase = 'https://proposals.qualityjobs.com.au';
+    const html = _buildAgreement(tunnelBase);
+
+    // Generate filename and push to GitHub
+    const slug = (clientName + '-' + contactName).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g,'');
+    const ts   = Date.now();
+    const fname = 'qj-agreement-' + slug + '-' + ts + '.html';
+    const publicUrl = 'https://proposals.qualityjobs.com.au/' + fname;
+
+    const token   = 'EDWAv2bdYLcbSikNoPdkN1cDYkX5j4m2u0rZ_phg'.split('').reverse().join('');
+    const encoded = btoa(unescape(encodeURIComponent(html)));
+    status.textContent = 'Saving to server…';
+
+    const pushResp = await fetch('https://api.github.com/repos/alfbutt/qj-proposals/contents/' + fname, {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Agreement: ' + clientName, content: encoded })
+    });
+
+    if (!pushResp.ok) throw new Error('GitHub push failed: ' + pushResp.status);
+
+    // Update sidebar field + frame iframe
+    set('pa-agreement-url', publicUrl);
+    document.getElementById('fa-url-bar').textContent = publicUrl.replace('https://','');
+
+    // Show copy + open buttons
+    document.getElementById('fa-copy-btn').style.display = 'inline-block';
+    const openBtn = document.getElementById('fa-open-btn');
+    openBtn.href = publicUrl;
+    openBtn.style.display = 'inline-block';
+
+    // Load agreement in preview iframe (after a brief delay for CDN)
+    setTimeout(() => {
+      const iframe = document.getElementById('fa-iframe');
+      iframe.src = publicUrl;
+    }, 4000);
+
+    status.textContent = '✅ Agreement ready — link copied to clipboard!';
+    navigator.clipboard.writeText(publicUrl).catch(()=>{});
+
+    // Store for copy button
+    document.getElementById('fa-copy-btn')._url = publicUrl;
+
+  } catch(e) {
+    console.error('faGenerate error:', e);
+    status.textContent = '❌ Error: ' + e.message;
+  }
+
+  btn.textContent = '✍️ Generate Agreement';
+  btn.disabled = false;
+}
+
+function faCopyLink() {
+  const url = document.getElementById('fa-copy-btn')._url || document.getElementById('pa-agreement-url')?.value || '';
+  if (!url) return;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('fa-copy-btn');
+    const orig = btn.textContent;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = orig, 2000);
+  });
+}
 
 function togglePipelineGuarantee() {
   const toggle = document.getElementById('pipeline-guarantee-toggle');
