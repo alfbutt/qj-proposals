@@ -7170,7 +7170,7 @@ async function _buildAgreement(tunnelBase) {
     var sent = sessionStorage.getItem('qj_notified');
     if (sent) return;
     sessionStorage.setItem('qj_notified','1');
-    fetch('https://live--qj-ad-previews.netlify.app/qj-notify', {
+    fetch('https://qj-ad-previews.netlify.app/.netlify/functions/qj-notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -7823,7 +7823,7 @@ async function _buildProposal(tunnelBase, polished = {}) {
     var sent = sessionStorage.getItem('qj_notified');
     if (sent) return;
     sessionStorage.setItem('qj_notified','1');
-    fetch('https://live--qj-ad-previews.netlify.app/qj-notify', {
+    fetch('https://qj-ad-previews.netlify.app/.netlify/functions/qj-notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
