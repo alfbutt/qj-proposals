@@ -7164,6 +7164,30 @@ async function _buildAgreement(tunnelBase) {
 <meta charset="UTF-8"><!-- v28sep -->
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Service Agreement — ${clientName} × Quality Jobs</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"><\/script>
+<script>
+(function(){
+  var EJS_SERVICE  = 'service_qj_notify';
+  var EJS_TEMPLATE = 'template_qj_open';
+  var EJS_KEY      = 'YOUR_EMAILJS_PUBLIC_KEY';
+  if (EJS_KEY === 'YOUR_EMAILJS_PUBLIC_KEY') return;
+  try {
+    emailjs.init({ publicKey: EJS_KEY });
+    var sent = sessionStorage.getItem('qj_notified');
+    if (!sent) {
+      sessionStorage.setItem('qj_notified','1');
+      emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
+        doc_type:    'Service Agreement',
+        client_name: '${clientName}',
+        contact_name:'${contactName}',
+        doc_url:     location.href,
+        opened_at:   new Date().toLocaleString('en-AU',{timeZone:'Australia/Sydney'}),
+        to_email:    'alfiebutler1@gmail.com'
+      });
+    }
+  } catch(e) {}
+})();
+<\/script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F5F3EF;color:#1a1a1a;line-height:1.7;}
@@ -7797,6 +7821,30 @@ async function _buildProposal(tunnelBase, polished = {}) {
 <meta charset="UTF-8"><!-- v28sep -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quality Jobs — Proposal for ${clientName}</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"><\/script>
+<script>
+(function(){
+  var EJS_SERVICE  = 'service_qj_notify';
+  var EJS_TEMPLATE = 'template_qj_open';
+  var EJS_KEY      = 'YOUR_EMAILJS_PUBLIC_KEY';
+  if (EJS_KEY === 'YOUR_EMAILJS_PUBLIC_KEY') return;
+  try {
+    emailjs.init({ publicKey: EJS_KEY });
+    var sent = sessionStorage.getItem('qj_notified');
+    if (!sent) {
+      sessionStorage.setItem('qj_notified','1');
+      emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
+        doc_type:    'Proposal',
+        client_name: '${clientName}',
+        contact_name:'${contactName}',
+        doc_url:     location.href,
+        opened_at:   new Date().toLocaleString('en-AU',{timeZone:'Australia/Sydney'}),
+        to_email:    'alfiebutler1@gmail.com'
+      });
+    }
+  } catch(e) {}
+})();
+<\/script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap');
   *{margin:0;padding:0;box-sizing:border-box;}
