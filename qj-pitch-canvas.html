@@ -2109,6 +2109,27 @@
       </div>
     </div>
 
+  <!-- PROPOSAL PIPELINE PANEL -->
+  <div class="frame" id="frame-pipeline" style="left:12900px;top:1250px;width:900px;" data-w="900" data-h="680">
+    <div style="background:#0d0d0d;border:1.5px solid #1e1e2e;border-radius:16px;padding:24px 28px;height:100%;box-sizing:border-box;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-shrink:0;">
+        <div>
+          <div style="font-size:11px;font-weight:800;color:#C9A225;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;">Proposal Pipeline</div>
+          <div style="font-size:18px;font-weight:900;color:#fff;">All Generated Docs</div>
+        </div>
+        <button onclick="pipelineRefresh()" style="background:#1a1a2e;border:1px solid rgba(201,162,37,0.3);color:#C9A225;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">↻ Refresh</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;flex-shrink:0;">
+        <div id="pl-stat-total"  style="flex:1;background:#111;border:1px solid #222;border-radius:8px;padding:10px 12px;text-align:center;"><div style="font-size:20px;font-weight:900;color:#fff;" id="pl-n-total">—</div><div style="font-size:9px;color:#555;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Total</div></div>
+        <div id="pl-stat-opened" style="flex:1;background:#111;border:1px solid #222;border-radius:8px;padding:10px 12px;text-align:center;"><div style="font-size:20px;font-weight:900;color:#4caf50;" id="pl-n-opened">—</div><div style="font-size:9px;color:#555;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Opened</div></div>
+        <div id="pl-stat-signed" style="flex:1;background:#111;border:1px solid #222;border-radius:8px;padding:10px 12px;text-align:center;"><div style="font-size:20px;font-weight:900;color:#C9A225;" id="pl-n-signed">—</div><div style="font-size:9px;color:#555;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Signed</div></div>
+      </div>
+      <div id="pl-list" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding-right:4px;">
+        <div style="color:#444;font-size:12px;text-align:center;padding:40px 0;">Loading pipeline…</div>
+      </div>
+    </div>
+  </div>
+
   </div><!-- /world -->
 
   <!-- DRAW CANVAS -->
@@ -6937,6 +6958,68 @@ function faCopyLink() {
   });
 }
 
+// ── PROPOSAL PIPELINE ──────────────────────────────────────────────
+const NOTIFY_URL = 'https://qj-ad-previews.netlify.app/.netlify/functions/qj-notify';
+
+async function pipelineRefresh() {
+  const list = document.getElementById('pl-list');
+  if (!list) return;
+  list.innerHTML = '<div style="color:#444;font-size:12px;text-align:center;padding:30px 0;">Loading…</div>';
+  try {
+    const res = await fetch(NOTIFY_URL);
+    const entries = await res.json();
+    document.getElementById('pl-n-total').textContent  = entries.length;
+    document.getElementById('pl-n-opened').textContent = entries.filter(e=>e.opened).length;
+    document.getElementById('pl-n-signed').textContent = entries.filter(e=>e.signed).length;
+    if (!entries.length) { list.innerHTML = '<div style="color:#444;font-size:12px;text-align:center;padding:30px 0;">No documents yet — generate a proposal or agreement to see it here.</div>'; return; }
+    list.innerHTML = entries.map(e => {
+      const date = e.generatedAt ? new Date(e.generatedAt).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}) : '—';
+      const typeColor = e.type === 'Service Agreement' ? '#C9A225' : '#7c9bff';
+      return `<div style="background:#111;border:1px solid #1e1e2e;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;">
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+            <span style="font-size:9px;font-weight:800;color:${typeColor};text-transform:uppercase;letter-spacing:1px;background:${typeColor}18;padding:2px 7px;border-radius:4px;">${e.type||'Doc'}</span>
+            <span style="font-size:9px;color:#444;">${date}</span>
+          </div>
+          <div style="font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${e.client||'—'}</div>
+          <div style="font-size:11px;color:#666;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${e.contact||''}</div>
+        </div>
+        <div style="display:flex;gap:5px;align-items:center;flex-shrink:0;">
+          <span title="${e.opened ? 'Opened '+new Date(e.openedAt).toLocaleDateString('en-AU') : 'Not opened'}" style="font-size:11px;font-weight:700;padding:4px 8px;border-radius:6px;background:${e.opened?'rgba(76,175,80,0.12)':'#1a1a1a'};color:${e.opened?'#4caf50':'#333'};border:1px solid ${e.opened?'rgba(76,175,80,0.3)':'#222'};">👁 ${e.opened?'Opened':'—'}</span>
+          <span title="${e.signed ? 'Signed '+new Date(e.signedAt).toLocaleDateString('en-AU') : 'Not signed'}" style="font-size:11px;font-weight:700;padding:4px 8px;border-radius:6px;background:${e.signed?'rgba(201,162,37,0.12)':'#1a1a1a'};color:${e.signed?'#C9A225':'#333'};border:1px solid ${e.signed?'rgba(201,162,37,0.3)':'#222'};">✍ ${e.signed?'Signed':'—'}</span>
+          <a href="${e.url||'#'}" target="_blank" title="Open doc" style="font-size:11px;color:#555;padding:4px 8px;border-radius:6px;background:#1a1a1a;border:1px solid #222;text-decoration:none;cursor:pointer;">↗</a>
+          <button onclick="pipelineDelete('${e.id||e.url||''}')" title="Delete" style="font-size:11px;color:#e53935;padding:4px 8px;border-radius:6px;background:#1a1a1a;border:1px solid #2a1a1a;cursor:pointer;font-family:inherit;">✕</button>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(err) {
+    list.innerHTML = `<div style="color:#e53935;font-size:12px;text-align:center;padding:30px 0;">Failed to load pipeline. Check your connection.</div>`;
+  }
+}
+
+async function pipelineDelete(id) {
+  if (!id || !confirm('Delete this entry from the pipeline?')) return;
+  try {
+    await fetch(NOTIFY_URL, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'delete', filename: id, doc_url: id })
+    });
+    pipelineRefresh();
+  } catch(e) {}
+}
+
+// Auto-load pipeline when the panel scrolls into view
+(function() {
+  let _loaded = false;
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !_loaded) { _loaded = true; pipelineRefresh(); }
+  }, { threshold: 0.1 });
+  document.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById('frame-pipeline');
+    if (el) obs.observe(el);
+  });
+})();
+
 function togglePipelineGuarantee() {
   const toggle = document.getElementById('pipeline-guarantee-toggle');
   const knob   = document.getElementById('pipeline-guarantee-knob');
@@ -7158,6 +7241,10 @@ async function _buildAgreement(tunnelBase) {
 </body>
 </html>`;
 
+  // Filename must be defined BEFORE the template string so _QJ_FILENAME is baked in
+  const aSlug = (clientName).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  const filename = `qj-agreement-${aSlug}-${Date.now()}.html`;
+
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7174,10 +7261,12 @@ async function _buildAgreement(tunnelBase) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        action:       'opened',
         doc_type:     'Service Agreement',
         client_name:  '${clientName}',
         contact_name: '${contactName}',
         doc_url:      location.href,
+        filename:     window._QJ_FILENAME || '',
         opened_at:    new Date().toLocaleString('en-AU',{timeZone:'Australia/Sydney'})
       })
     });
@@ -7487,6 +7576,8 @@ async function _buildAgreement(tunnelBase) {
 <script>
 window._QJ_PAY_URL      = '${paymentUrl}';
 window._QJ_SAVE_BASE    = '${tunnelBase || ''}';
+window._QJ_FILENAME     = '${filename}';
+window._QJ_CLIENT_NAME  = '${clientName}';
 window._QJ_INVOICE_HTML = ${JSON.stringify(invoiceHtml)};
 
 // ── SIGNING LOGIC ─────────────────────────────────────────────────────
@@ -7600,6 +7691,22 @@ async function submitSignature() {
     });
   } catch(e) { console.warn('Signature save error:', e); }
 
+  // Notify signed
+  try {
+    fetch('https://qj-ad-previews.netlify.app/.netlify/functions/qj-notify', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'signed', doc_type: 'Service Agreement',
+        client_name: window._QJ_CLIENT_NAME || document.title,
+        contact_name: name,
+        signed_by: name,
+        signed_at: new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' }),
+        doc_url: location.href,
+        filename: window._QJ_FILENAME || ''
+      })
+    });
+  } catch(e) {}
+
   btn.style.display = 'none';
   var banner = document.getElementById('signed-banner');
   banner.style.display = 'block';
@@ -7636,9 +7743,6 @@ if (document.readyState === 'loading') {
 </html>`;
 
   // Upload to Netlify → permanent URL
-  const slug = (document.getElementById('pa-client-name').value || 'client')
-    .toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-  const filename = `qj-agreement-${slug}-${Date.now()}.html`;
 
   btn.textContent = '⏳ Uploading…';
   let netlifyUrl;
@@ -7656,6 +7760,18 @@ if (document.readyState === 'loading') {
 
   document.getElementById('pa-agreement-url').value = netlifyUrl;
   if (window._persistSidebar) window._persistSidebar();
+
+  // Log to pipeline
+  try {
+    fetch('https://qj-ad-previews.netlify.app/.netlify/functions/qj-notify', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'log', doc_type: 'Service Agreement',
+        client_name: clientName, contact_name: contactName,
+        doc_url: netlifyUrl, filename: filename
+      })
+    });
+  } catch(e) {}
 
   btn.textContent = '✅ Agreement Generated';
   btn.style.background = 'linear-gradient(135deg,#0d2b1a,#1a3d26)';
@@ -7827,10 +7943,12 @@ async function _buildProposal(tunnelBase, polished = {}) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        action:       'opened',
         doc_type:     'Proposal',
         client_name:  '${clientName}',
         contact_name: '${contactName}',
         doc_url:      location.href,
+        filename:     window._QJ_FILENAME || '',
         opened_at:    new Date().toLocaleString('en-AU',{timeZone:'Australia/Sydney'})
       })
     });
@@ -8329,6 +8447,18 @@ ${agreementUrl ? `
     return;
   }
   proposalDataUrl = netlifyUrl;
+
+  // Log to pipeline
+  try {
+    fetch('https://qj-ad-previews.netlify.app/.netlify/functions/qj-notify', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'log', doc_type: 'Proposal',
+        client_name: clientName, contact_name: contactName,
+        doc_url: netlifyUrl, filename: filename
+      })
+    });
+  } catch(e) {}
 
   urlBar.innerHTML = `<span style="color:#4caf50;font-size:11px;display:block;margin-bottom:2px;">✓ Permanent link — send this to your client:</span><span style="font-size:13px;">${netlifyUrl}</span>`;
   urlBar.style.color = '#C9A225';
