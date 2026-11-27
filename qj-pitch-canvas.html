@@ -7738,6 +7738,45 @@ if (document.readyState === 'loading') {
 } else {
   _initSigForm();
 }
+
+// ── CHECK FOR EXISTING SIGNATURE ON LOAD ─────────────────────────
+(async function checkExistingSig() {
+  try {
+    var token = 'EDWAv2bdYLcbSikNoPdkN1cDYkX5j4m2u0rZ_phg'.split('').reverse().join('');
+    var api = 'https://api.github.com/repos/alfbutt/qj-proposals/contents/signed';
+    var res = await fetch(api, { headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' } });
+    if (!res.ok) return;
+    var files = await res.json();
+    var myUrl = location.href.split('?')[0];
+    for (var i = 0; i < files.length; i++) {
+      var f = files[i];
+      if (!f.download_url) continue;
+      var r = await fetch(f.download_url);
+      if (!r.ok) continue;
+      var data = await r.json();
+      if ((data.url || '').split('?')[0] === myUrl) {
+        // Found — show signed state
+        var submitBtn = document.getElementById('sig-submit-btn');
+        var banner    = document.getElementById('signed-banner');
+        var nameEl    = document.getElementById('signed-name');
+        if (submitBtn) submitBtn.style.display = 'none';
+        if (nameEl)    nameEl.textContent = data.name || data.signature || '';
+        if (banner) {
+          banner.style.display = 'block';
+          // Add signed date below the name
+          var dateDiv = document.createElement('div');
+          dateDiv.style.cssText = 'font-size:12px;color:#666;margin-top:-12px;margin-bottom:16px;';
+          dateDiv.textContent = 'Signed ' + (data.signedAt || '');
+          banner.insertBefore(dateDiv, banner.children[3]);
+        }
+        // Also hide the form fields
+        var sigSection = document.getElementById('sig-section') || document.querySelector('.sig-section');
+        if (sigSection) sigSection.style.display = 'none';
+        break;
+      }
+    }
+  } catch(e) {}
+})();
 <\/script>
 </body>
 </html>`;
